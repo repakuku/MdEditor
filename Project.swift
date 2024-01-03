@@ -28,7 +28,7 @@ let project = Project(
 	name: "MdEditor",
 	targets: [
 		Target(
-			name: "App",
+			name: "MdEditor",
 			destinations: .iOS,
 			product: .app,
 			bundleId: "com.repakuku.MdEditor",
