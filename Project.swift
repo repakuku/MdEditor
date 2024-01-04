@@ -32,7 +32,7 @@ let project = Project(
 			destinations: .iOS,
 			product: .app,
 			bundleId: "com.repakuku.MdEditor",
-			infoPlist: "Resources/Info.plist",
+//			infoPlist: "Resources/Info.plist",
 			sources: ["Sources/**"],
 			resources: ["Resources/**"],
 			scripts: scripts
