@@ -1,14 +1,16 @@
-name: Swift
+name: Build iOS Project
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs: 
   build:
     name: Build app
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Build
-        run: exec ./.github/build.sh
+        run: ./.github/build.sh
