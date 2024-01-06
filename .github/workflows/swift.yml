@@ -12,12 +12,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Swift latest
-        uses: swift-actions/setup-swift@v1
-
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '15.1'
 
       - name: Build
         run: ./.github/build.sh
