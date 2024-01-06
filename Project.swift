@@ -26,13 +26,15 @@ public var scripts: [TargetScript] {
 
 let project = Project(
 	name: "MdEditor",
+	packages: [
+		.remote(url: "https://github.com/repakuku/TaskManagerPackage.git", requirement: .branch("main"))
+	],
 	targets: [
 		Target(
 			name: "MdEditor",
 			destinations: .iOS,
 			product: .app,
 			bundleId: "com.repakuku.MdEditor",
-//			infoPlist: "Resources/Info.plist",
 			sources: ["Sources/**"],
 			resources: ["Resources/**"],
 			scripts: scripts
