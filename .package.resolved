@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/repakuku/TaskManagerPackage.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "0ebc008195b8db2e83769c79f17ac8b43adb6083"
+        "branch" : "tuist",
+        "revision" : "32ffb4015b8ec1e7fbe8feff45dbf420f5d6908f"
       }
     }
   ],

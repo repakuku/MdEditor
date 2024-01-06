@@ -6,14 +6,8 @@
 //
 
 import UIKit
+import TaskManagerPackage
 
 class ViewController: UIViewController {
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		// Do any additional setup after loading the view.
-	}
-
-
+	let task = Task(title: "Task")
 }
-
