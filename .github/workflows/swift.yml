@@ -12,8 +12,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Select Xcode
-        uses: actions/setup-swift@v2
+      - name: Select Swift and Xcode
+        uses: apple/setup-swift@latest
         with:
           xcode-version: '15.1'
 
