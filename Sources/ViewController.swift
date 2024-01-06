@@ -9,5 +9,5 @@ import UIKit
 import TaskManagerPackage
 
 class ViewController: UIViewController {
-	let task = Task(title: "Task")
+	let task = Task(title: "It works!")
 }
