@@ -15,5 +15,9 @@ jobs:
       - name: Swift latest
         uses: swift-actions/setup-swift@v1
 
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       - name: Build
         run: ./.github/build.sh
