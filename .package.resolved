@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "taskmanagerpackage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/repakuku/TaskManagerPackage.git",
+      "state" : {
+        "branch" : "tuist",
+        "revision" : "32ffb4015b8ec1e7fbe8feff45dbf420f5d6908f"
+      }
+    }
+  ],
+  "version" : 2
+}
