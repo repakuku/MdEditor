@@ -28,11 +28,11 @@ let project = Project(
 	name: "MdEditor",
 	targets: [
 		Target(
-			name: "App",
+			name: "MdEditor",
 			destinations: .iOS,
 			product: .app,
 			bundleId: "com.repakuku.MdEditor",
-			infoPlist: "Resources/Info.plist",
+//			infoPlist: "Resources/Info.plist",
 			sources: ["Sources/**"],
 			resources: ["Resources/**"],
 			scripts: scripts
