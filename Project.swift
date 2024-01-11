@@ -26,9 +26,6 @@ public var scripts: [TargetScript] {
 
 let project = Project(
 	name: "MdEditor",
-	packages: [
-		.remote(url: "https://github.com/repakuku/TaskManagerPackage.git", requirement: .branch("tuist"))
-	],
 	targets: [
 		Target(
 			name: "MdEditor",
@@ -37,10 +34,7 @@ let project = Project(
 			bundleId: "com.repakuku.MdEditor",
 			sources: ["Sources/**"],
 			resources: ["Resources/**"],
-			scripts: scripts,
-			dependencies: [
-				.package(product: "TaskManagerPackage", condition: nil)
-			]
+			scripts: scripts
 		)
 	]
 )
