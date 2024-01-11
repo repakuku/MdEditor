@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import TaskManagerPackage
 
 class ViewController: UIViewController {
-	let task = Task(title: "It works!")
 }
