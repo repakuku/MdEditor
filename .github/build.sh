@@ -6,4 +6,4 @@ xcodebuild clean -quiet
 xcodebuild build-for-testing \
     -workspace 'MdEditor.xcworkspace' \
     -scheme 'MdEditor' \
-    -destination 'platform=iOS Simulator,name=iPhone 14 Pro'
+    -destination 'platform=iOS Simulator,name=iPhone 14 Pro Max'
