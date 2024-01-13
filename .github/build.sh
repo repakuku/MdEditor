@@ -1,5 +1,5 @@
 cd ./Project
-ls
+mise install tuist
 tuist fetch
 tuist generate
 
