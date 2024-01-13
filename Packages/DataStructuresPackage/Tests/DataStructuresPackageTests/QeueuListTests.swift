@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  QeueuListTests.swift
+//
 //
 //  Created by Alexey Turulin on 1/7/24.
 //
@@ -118,7 +118,7 @@ final class QueueListTests: XCTestCase {
 }
 
 extension QueueListTests {
-	func makeSUT() -> QueueList<Int> {
-		QueueList<Int>()
+	func makeSUT() -> Queue<Int> {
+		Queue<Int>()
 	}
 }
