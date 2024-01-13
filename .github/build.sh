@@ -1,4 +1,5 @@
-# cd ./Project
+cd ./Project
+ls
 tuist fetch
 tuist generate
 
