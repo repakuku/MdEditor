@@ -1,4 +1,4 @@
-cd ./Project
+# cd ./Project
 tuist fetch
 tuist generate
 
