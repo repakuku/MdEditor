@@ -1,5 +1,5 @@
 cd ./Project
-curl https://mise.jdx.dev/install.sh | sh
+brew install mise
 mise install tuist
 tuist fetch
 tuist generate
