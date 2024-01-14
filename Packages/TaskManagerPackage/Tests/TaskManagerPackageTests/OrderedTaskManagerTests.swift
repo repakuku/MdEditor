@@ -23,8 +23,8 @@ final class OrderedTaskManagerTests: XCTestCase {
 
 		let resultTasks = sut.allTasks()
 
-		XCTAssertEqual(resultTasks.count, 5, "")
-		XCTAssertEqual(resultTasks, validResultTasks, "")
+		XCTAssertEqual(resultTasks.count, 5, "Expected 5 tasks, but found \(resultTasks.count).")
+		XCTAssertEqual(resultTasks, validResultTasks, "Tasks are not ordered correctly.")
 	}
 
 	func test_completedTasks_shouldBeAllCompletedTaskOrderedByPriority() {
@@ -34,8 +34,8 @@ final class OrderedTaskManagerTests: XCTestCase {
 
 		let resultTasks = sut.completedTasks()
 
-		XCTAssertEqual(resultTasks.count, 1, "")
-		XCTAssertEqual(resultTasks, validResultTasks, "")
+		XCTAssertEqual(resultTasks.count, 1, "Expected 1 completed task, but found \(resultTasks.count).")
+		XCTAssertEqual(resultTasks, validResultTasks, "Completed tasks are not ordered correctly.")
 	}
 
 	func test_uncompletedTasks_shouldBeAllUncompletedTaskOrderedByPriority() {
@@ -51,8 +51,8 @@ final class OrderedTaskManagerTests: XCTestCase {
 
 		let resultTasks = sut.uncompletedTasks()
 
-		XCTAssertEqual(resultTasks.count, 4, "")
-		XCTAssertEqual(resultTasks, validResultTasks, "")
+		XCTAssertEqual(resultTasks.count, 4, "Expected 4 uncompleted tasks, but found \(resultTasks.count).")
+		XCTAssertEqual(resultTasks, validResultTasks, "Uncompleted tasks are not ordered correctly.")
 	}
 }
 
