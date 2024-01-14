@@ -7,7 +7,7 @@ enum ProjectSettings {
 	public static var projectName: String { "MdEditor" }
 	public static var appVersionName: String { "1.0.0" }
 	public static var appVersionBuild: Int { 1 }
-	public static var developmentTeam: String { "repakuku@icloud.com" }
+	public static var developmentTeam: String { "" }
 	public static var targetVersion: String { "15.0" }
 	public static var bundleId: String { "\(organizationName).\(projectName)" }
 }
@@ -30,48 +30,8 @@ private var swiftLintTargetScript: TargetScript {
 	)
 }
 
-private var swiftgenTargetScript: TargetScript {
-	let swiftgenScriptSctirng = """
-		export PATH="$PATH:/opt/homebrew/bin"
-		OUTPUT_FILES=()
-		COUNTER=0
-		while [ $COUNTER -lt ${SCRIPT_OUTPUT_FILE_COUNT} ];
-		do
-		 tmp="SCRIPT_OUTPUT_FILE_$COUNTER"
-		 OUTPUT_FILES+=("${!tmp}")
-		 COUNTER=$[$COUNTER+1]
-		done
-		for file in "${OUTPUT_FILES[@]}"
-		do
-		 if [ -f "$file" ]
-		 then
-		  chmod a=rw "$file"
-		 fi
-		done
-
-		if which swiftgen > /dev/null; then
-		 swiftgen config run --config swiftgen.yml
-		else
-		 echo "warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen"
-		 exit 1
-		fi
-
-		for file in "${OUTPUT_FILES[@]}"
-		do
-		 chmod a=r "$file"
-		done
-		"""
-
-	return TargetScript.pre(
-		script: swiftgenScriptSctirng,
-		name: "Run Swiftgen",
-		basedOnDependencyAnalysis: false
-	)
-}
-
 private let scripts: [TargetScript] = [
-	swiftLintTargetScript,
-	swiftgenTargetScript
+	swiftLintTargetScript
 ]
 
 private let infoPlistExtension: [String: Plist.Value] = [
