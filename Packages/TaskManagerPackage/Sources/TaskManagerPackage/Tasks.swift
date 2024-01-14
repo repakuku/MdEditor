@@ -62,3 +62,9 @@ public final class ImportantTask: Task {
 		super.init(title: title)
 	}
 }
+
+extension Task: Equatable {
+	public static func == (lhs: Task, rhs: Task) -> Bool {
+		lhs === rhs
+	}
+}
