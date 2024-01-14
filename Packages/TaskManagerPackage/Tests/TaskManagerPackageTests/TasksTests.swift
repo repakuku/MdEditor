@@ -39,6 +39,8 @@ final class TasksTests: XCTestCase {
 	}
 }
 
+// MARK: - TestData
+
 private extension TasksTests {
 	var title: String {
 		"Test Task"
