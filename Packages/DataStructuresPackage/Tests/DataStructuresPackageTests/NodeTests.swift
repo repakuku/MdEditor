@@ -14,39 +14,39 @@ final class NodeTests: XCTestCase {
 
 	func test_init_withValue_shouldReturnNodeWithCorrectValue() {
 
-		let sut = DoubleLinkedList<Int>.Node(42)
+		let sut = DoublyLinkedList<Int>.Node(42)
 
 		XCTAssertEqual(sut.value, 42, "A Node should be initialized with the correct value.")
 	}
 
 	func test_init_withValue_shouldBeNilPreviousNode() {
 
-		let sut = DoubleLinkedList<Int>.Node(42)
+		let sut = DoublyLinkedList<Int>.Node(42)
 
 		XCTAssertNil(sut.previous, "A Node initialized with only a value should have its previous node set to nil")
 	}
 
 	func test_init_withValue_shouldBeNilNextNode() {
 
-		let sut = DoubleLinkedList<Int>.Node(42)
+		let sut = DoublyLinkedList<Int>.Node(42)
 
 		XCTAssertNil(sut.next, "A Node initialized with the only a value should have its next node set to nil.")
 	}
 
 	func test_init_withValueAndPreviousNode_shouldReturnPreviousNodeWithCorrectValue() {
 
-		let previousNode = DoubleLinkedList<Int>.Node(41)
+		let previousNode = DoublyLinkedList<Int>.Node(41)
 
-		let sut = DoubleLinkedList<Int>.Node(42, previous: previousNode)
+		let sut = DoublyLinkedList<Int>.Node(42, previous: previousNode)
 
 		XCTAssertEqual(sut.previous?.value, 41, "Previous node should have the correct value.")
 	}
 
 	func test_init_withValueAndNextNode_shouldReturnNextNodeWithCorrectValue() {
 
-		let nextNode = DoubleLinkedList<Int>.Node(43)
+		let nextNode = DoublyLinkedList<Int>.Node(43)
 
-		let sut = DoubleLinkedList<Int>.Node(42, next: nextNode)
+		let sut = DoublyLinkedList<Int>.Node(42, next: nextNode)
 
 		XCTAssertEqual(sut.next?.value, 43, "Next node should have the correct value.")
 	}
@@ -55,7 +55,7 @@ final class NodeTests: XCTestCase {
 
 	func test_description_withValue_shouldReturnStringWithCorrectValue() {
 
-		let sut = DoubleLinkedList<Int>.Node(42)
+		let sut = DoublyLinkedList<Int>.Node(42)
 
 		XCTAssertEqual(sut.description, "42", "The description should return a string with the correct value.")
 	}

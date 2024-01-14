@@ -9,7 +9,7 @@ import Foundation
 
 public struct Queue<T: Equatable> {
 
-	private var elements = DoubleLinkedList<T>()
+	private var elements = DoublyLinkedList<T>()
 
 	public var count: Int {
 		elements.count
