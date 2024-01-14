@@ -14,7 +14,7 @@ final class TasksTests: XCTestCase {
 		let sut = Task(title: title, completed: true)
 
 		XCTAssertEqual(sut.title, title, "The task title should match the provided title.")
-		XCTAssertTrue(sut.completed, "The task should be marked as completed")
+		XCTAssertTrue(sut.completed, "The task status should match the provided status.")
 	}
 
 	func test_init_defaultCompleted_propertyCompletedShouldbeFalse() {
@@ -27,11 +27,12 @@ final class TasksTests: XCTestCase {
 		let sut = Task(title: title, completed: false)
 
 		XCTAssertEqual(sut.title, title, "The task title should match the provided title.")
-		XCTAssertFalse(sut.completed, "The task should not be marked as completed.")
+		XCTAssertFalse(sut.completed, "The task status should match the provided status.")
 	}
 
-	func test_completed_togglePropertyCompleted_propertyCompletedShouldbeTrue() {
+	func test_completed_togglePropertyCompleted_propertyCompletedShouldBeTrue() {
 		let sut = Task(title: title, completed: false)
+
 		sut.completed.toggle()
 
 		XCTAssertTrue(sut.completed, "Toggled the completed property should make the task completed.")

@@ -14,7 +14,7 @@ final class RegularTaskTests: XCTestCase {
 		let sut = RegularTask(title: title, completed: true)
 
 		XCTAssertEqual(sut.title, title, "The task title should match the provided title.")
-		XCTAssertTrue(sut.completed, "The task should be marked as completed")
+		XCTAssertTrue(sut.completed, "The task status should match the provided status.")
 	}
 
 	func test_init_defaultCompleted_propertyCompletedShouldbeFalse() {
@@ -30,8 +30,9 @@ final class RegularTaskTests: XCTestCase {
 		XCTAssertFalse(sut.completed, "The task should not be marked as completed.")
 	}
 
-	func test_completed_togglePropertyCompleted_propertyCompletedShouldbeTrue() {
+	func test_completed_togglePropertyCompleted_propertyCompletedShouldBeTrue() {
 		let sut = RegularTask(title: title, completed: false)
+
 		sut.completed.toggle()
 
 		XCTAssertTrue(sut.completed, "Toggled the completed property should make the task completed.")
