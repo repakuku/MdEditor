@@ -2,18 +2,18 @@
 //  Tasks.swift
 //  TaskManagerPackage
 //
-//  Created by ioskendev on 27.12.2023.
+//  Created by Alexey Turulin on 11/22/23.
 //
 
 import Foundation
 
-/// Task to tasklist.
+/// Задание, для ведения списка дел.
 public class Task {
 
-	/// Task title.
+	/// Наименование задания.
 	public var title: String
 
-	/// Task status: completead or not (bool).
+	/// Состояние задания -- выполнено ли задание.
 	public var completed = false
 
 	public init(title: String, completed: Bool = false) {
@@ -22,23 +22,23 @@ public class Task {
 	}
 }
 
-/// Simple task for tasklist.
+/// Обычное задание для ведения списка дел.
 public final class RegularTask: Task { }
 
-/// ImportantTask for tasklist.
+/// Важное задание с приоритетом для ведения списка дел.
 public final class ImportantTask: Task {
 
-	/// Task priority. Priority is manage of task deadline.
+	/// Приоритет задания. Приоритет влияет на крайний срок выполнения задания.
 	public enum TaskPriority: Int {
-		/// Low priority. 3 days.
+		/// Низкий приоритет. На выполнение задания с низким приоритетом, отводится 3 дня.
 		case low
-		/// Medium priority. 2 days.
+		/// Средний приоритет. На выполнение задания со средним приоритетом, отводится 2 дня.
 		case medium
-		/// High priority. 1 day.
+		/// Высокий приоритет. На выполнение задания с высоким приоритетом, отводится 1 день.
 		case high
 	}
 
-	/// Task deadline.
+	/// Крайний срок выполнения задания.
 	public var deadLine: Date {
 		switch taskPriority {
 		case .low:
@@ -50,10 +50,10 @@ public final class ImportantTask: Task {
 		}
 	}
 
-	/// Task creation date.
+	/// Дата создания задания.
 	private let createDate: Date
 
-	/// Task priority.
+	/// Приоритет задания.
 	public var taskPriority: TaskPriority
 
 	public init(title: String, taskPriority: TaskPriority, createDate: Date = Date()) {

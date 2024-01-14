@@ -2,57 +2,57 @@
 //  TaskManager.swift
 //  TaskManagerPackage
 //
-//  Created by ioskendev on 27.12.2023.
+//  Created by Alexey Turulin on 11/22/23.
 //
 
-/// Task manager.
+/// Менеджер списка заданий.
 public final class TaskManager {
 	private var taskList = [Task]()
 
-	/// Task list creation.
-	/// - Parameter taskList: Tasks to put into tasklist storage.
+	/// Создание списка заданий.
+	/// - Parameter taskList: Набор заданий, которые надо поместить в список.
 	public init(taskList: [Task] = [Task]()) {
 		self.taskList = taskList
 	}
 
-	/// All tasks link.
-	/// - Returns: Array of tasks.
+	/// Список всех заданий.
+	/// - Returns: Массив заданий.
 	public func allTasks() -> [Task] {
 		taskList
 	}
 
-	/// Tasks list.
-	/// - Returns: task array.
+	/// Список выполненных заданий.
+	/// - Returns: Массив заданий.
 	public func completedTasks() -> [Task] {
 		taskList.filter { $0.completed }
 	}
 
-	/// Task list to do.
-	/// - Returns: Array of tasks.
+	/// Список заданий для выполнения.
+	/// - Returns: Массив заданий.
 	public func uncompletedTasks() -> [Task] {
 		taskList.filter { !$0.completed }
 	}
 
-	/// Add new task.
+	/// Добавление нового задания.
 	///
-	/// - Complexity: O(1) with multiple append(_:) calls in array.
-	/// - Parameter task: Task.
+	/// Сложность: В среднем O(1) при многих вызовах append(_:) в массиве.
+	/// - Parameter task: Задание.
 	public func addTask(task: Task) {
 		taskList.append(task)
 	}
 
-	/// Add tasklist.
+	/// Добавление перечня заданий.
 	///
-	/// - Complexity: O(m), where m is taskList size, with multiple append(_:) calls in array.
-	/// - Parameter tasks: Task array.
+	/// Сложность: В среднем O(m), где m размер добавляемого списка заданий, при многих вызовах append(_:) в массиве.
+	/// - Parameter tasks: Массив заданий.
 	public func addTasks(tasks: [Task]) {
 		taskList.append(contentsOf: tasks)
 	}
 
-	/// Delete task from list. When it calls Task deletes with identical object link "x === y".
+	/// Удаление задания из списка. При вызове метода будут удалены все варианты этого задания по идентичности Task.
 	///
-	/// - Complexity: O(n), where n -- taskList saze.
-	/// - Parameter task: Task to delete.
+	///Сложность: O(n), где n -- размер списка заданий.
+	/// - Parameter task: Задание, которое необходимо удалить.
 	public func removeTask(task: Task) {
 		taskList.removeAll { $0 === task }
 	}
