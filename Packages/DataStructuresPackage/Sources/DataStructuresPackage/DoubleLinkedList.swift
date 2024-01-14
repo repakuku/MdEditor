@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LinkedList<T: Equatable> {
+public struct DoubleLinkedList<T: Equatable> {
 
 	final class Node<N> {
 		var value: N
@@ -151,13 +151,13 @@ public struct LinkedList<T: Equatable> {
 	}
 }
 
-extension LinkedList.Node: CustomStringConvertible {
+extension DoubleLinkedList.Node: CustomStringConvertible {
 	var description: String {
 		"\(value)"
 	}
 }
 
-extension LinkedList: CustomStringConvertible {
+extension DoubleLinkedList: CustomStringConvertible {
 	public var description: String {
 		var values = [String]()
 		var current = head

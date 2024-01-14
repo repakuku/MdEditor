@@ -1,5 +1,5 @@
 //
-//  QeueuListTests.swift
+//  QeueuTests.swift
 //
 //
 //  Created by Alexey Turulin on 1/7/24.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import DataStructuresPackage
 
-final class QueueListTests: XCTestCase {
+final class QueueTests: XCTestCase {
 
 	// MARK: - Count Tests
 
@@ -117,7 +117,7 @@ final class QueueListTests: XCTestCase {
 	}
 }
 
-extension QueueListTests {
+extension QueueTests {
 	func makeSUT() -> Queue<Int> {
 		Queue<Int>()
 	}

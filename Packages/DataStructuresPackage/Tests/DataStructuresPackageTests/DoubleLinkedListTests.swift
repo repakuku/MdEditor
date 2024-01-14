@@ -8,5 +8,5 @@
 import XCTest
 @testable import DataStructuresPackage
 
-final class LinkedListTests: XCTestCase {
+final class DoubleLinkedListTests: XCTestCase {
 }
