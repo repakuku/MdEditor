@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LinkedList<T: Equatable> {
+public struct DoublyLinkedList<T: Equatable> {
 
 	final class Node<N> {
 		var value: N
@@ -21,8 +21,8 @@ public struct LinkedList<T: Equatable> {
 		}
 	}
 
-	private var head: Node<T>?
-	private var tail: Node<T>?
+	private(set) var head: Node<T>?
+	private(set) var tail: Node<T>?
 
 	private(set) var count = 0
 
@@ -30,7 +30,7 @@ public struct LinkedList<T: Equatable> {
 		head == nil && tail == nil
 	}
 
-	public init(value: T? = nil) {
+	public init(_ value: T? = nil) {
 		if let value = value {
 			let newNode = Node(value)
 			head = newNode
@@ -148,26 +148,5 @@ public struct LinkedList<T: Equatable> {
 		}
 
 		return currentNode
-	}
-}
-
-extension LinkedList.Node: CustomStringConvertible {
-	var description: String {
-		"\(value)"
-	}
-}
-
-extension LinkedList: CustomStringConvertible {
-	public var description: String {
-		var values = [String]()
-		var current = head
-
-		while current != nil {
-			values.append("\(current!)")
-			current = current?.next
-		}
-
-		return "count = \(count); list = " + values.joined(separator: " <-> ")
-
 	}
 }
