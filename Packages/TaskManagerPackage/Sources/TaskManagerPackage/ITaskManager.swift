@@ -2,32 +2,32 @@
 //  ITaskManager.swift
 //  TaskManagerPackage
 //
-//  Created by ioskendev on 27.12.2023.
+//  Created by Alexey Turulin on 11/22/23.
 //
 
-/// TaskManager protocol
+/// Протокол для TaskManager
 public protocol ITaskManager {
-	/// All tasks list.
-	/// - Returns: Array of task list.
+	/// Список всех заданий.
+	/// - Returns: Массив заданий.
 	func allTasks() -> [Task]
 	
-	/// List of compleated tasks..
+	/// Список выполненных заданий.
 	/// - Returns: Массив заданий.
 	func completedTasks() -> [Task]
 
-	/// List of uncompleated tasks.
+	/// Список заданий для выполнения.
 	/// - Returns: Массив заданий.
 	func uncompletedTasks() -> [Task]
 
-	/// Add new task.
-	/// - Parameter task: Task to add.
+	/// Добавление нового задания.
+	/// - Parameter task: Задание.
 	func addTask(task: Task)
 
-	/// Adding task list.
-	/// - Parameter tasks: Array of tasks.
+	/// Добавление перечня заданий.
+	/// - Parameter tasks: Массив заданий.
 	func addTasks(tasks: [Task])
 
-	/// Delete task from list. Delete all tasks with identical obgect link with parameter "task".
+	/// Удаление задания из списка. При вызове метода будут удалены все варианты этого задания по идентичности Task.
 	/// - Parameter task: Задание, которое необходимо удалить.
 	func removeTask(task: Task)
 }
