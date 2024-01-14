@@ -39,6 +39,8 @@ final class RegularTaskTests: XCTestCase {
 	}
 }
 
+// MARK: - TestData
+
 private extension RegularTaskTests {
 	var title: String {
 		"Regular Test Task"

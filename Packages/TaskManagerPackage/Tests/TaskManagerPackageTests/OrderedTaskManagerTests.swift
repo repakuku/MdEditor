@@ -56,6 +56,8 @@ final class OrderedTaskManagerTests: XCTestCase {
 	}
 }
 
+// MARK: - TestData
+
 private extension OrderedTaskManagerTests {
 	func makeSUT() -> OrderedTaskManager {
 		let mockTaskManager = MockTaskManager()
