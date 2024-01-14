@@ -40,6 +40,6 @@ final class TasksTests: XCTestCase {
 
 private extension TasksTests {
 	var title: String {
-		"Test task"
+		"Test Task"
 	}
 }
