@@ -30,7 +30,7 @@ public struct DoublyLinkedList<T: Equatable> {
 		head == nil && tail == nil
 	}
 
-	public init(value: T? = nil) {
+	public init(_ value: T? = nil) {
 		if let value = value {
 			let newNode = Node(value)
 			head = newNode

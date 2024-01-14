@@ -24,6 +24,5 @@ extension DoublyLinkedList: CustomStringConvertible {
 		}
 
 		return "count = \(count); list = " + values.joined(separator: " <-> ")
-
 	}
 }
