@@ -65,6 +65,6 @@ public final class ImportantTask: Task {
 
 extension Task: Equatable {
 	public static func == (lhs: Task, rhs: Task) -> Bool {
-		lhs.title == rhs.title && lhs.completed == rhs.completed
+		lhs === rhs
 	}
 }
