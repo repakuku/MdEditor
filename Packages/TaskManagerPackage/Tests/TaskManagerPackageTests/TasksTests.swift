@@ -9,4 +9,37 @@ import XCTest
 @testable import TaskManagerPackage
 
 final class TasksTests: XCTestCase {
+
+	func test_init_withTitleAndCompleted_shouldHaveCorrect() {
+		let sut = Task(title: title, completed: true)
+
+		XCTAssertEqual(sut.title, title, "The task title should match the provided title.")
+		XCTAssertTrue(sut.completed, "The task should be marked as completed")
+	}
+
+	func test_init_defaultCompleted_propertyCompletedShouldbeFalse() {
+		let sut = Task(title: title)
+
+		XCTAssertFalse(sut.completed, "The default completed property should be false")
+	}
+
+	func test_init_withTitleNotCompleted_shouldHaveCorrect() {
+		let sut = Task(title: title, completed: false)
+
+		XCTAssertEqual(sut.title, title, "The task title should match the provided title.")
+		XCTAssertFalse(sut.completed, "The task should not be marked as completed.")
+	}
+
+	func test_completed_togglePropertyCompleted_propertyCompletedShouldbeTrue() {
+		let sut = Task(title: title, completed: false)
+		sut.completed.toggle()
+
+		XCTAssertTrue(sut.completed, "Toggled the completed property should make the task completed.")
+	}
+}
+
+private extension TasksTests {
+	var title: String {
+		"Test task"
+	}
 }
