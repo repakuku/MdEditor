@@ -30,8 +30,48 @@ private var swiftLintTargetScript: TargetScript {
 	)
 }
 
+private var swiftgenTargetScript: TargetScript {
+	let swiftgenScriptSctirng = """
+		export PATH="$PATH:/opt/homebrew/bin"
+		OUTPUT_FILES=()
+		COUNTER=0
+		while [ $COUNTER -lt ${SCRIPT_OUTPUT_FILE_COUNT} ];
+		do
+		 tmp="SCRIPT_OUTPUT_FILE_$COUNTER"
+		 OUTPUT_FILES+=("${!tmp}")
+		 COUNTER=$[$COUNTER+1]
+		done
+		for file in "${OUTPUT_FILES[@]}"
+		do
+		 if [ -f "$file" ]
+		 then
+		  chmod a=rw "$file"
+		 fi
+		done
+
+		if which swiftgen > /dev/null; then
+		 swiftgen config run --config swiftgen.yml
+		else
+		 echo "warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen"
+		 exit 1
+		fi
+
+		for file in "${OUTPUT_FILES[@]}"
+		do
+		 chmod a=r "$file"
+		done
+		"""
+
+	return TargetScript.pre(
+		script: swiftgenScriptSctirng,
+		name: "Run Swiftgen",
+		basedOnDependencyAnalysis: false
+	)
+}
+
 private let scripts: [TargetScript] = [
-	swiftLintTargetScript
+	swiftLintTargetScript,
+	swiftgenTargetScript
 ]
 
 private let infoPlistExtension: [String: Plist.Value] = [
