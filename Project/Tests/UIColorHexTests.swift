@@ -7,5 +7,5 @@
 
 import XCTest
 
-final class MdEditorTests: XCTestCase {
+final class UIColorHexTests: XCTestCase {
 }
