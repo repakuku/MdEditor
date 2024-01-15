@@ -84,7 +84,7 @@ private extension TodoListViewController {
 
 	private func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = "TodoList"
+		title = L10n.TodoListScreen.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.hidesBackButton = true
 
