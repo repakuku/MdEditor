@@ -10,14 +10,14 @@ import Foundation
 import TaskManagerPackage
 
 extension ImportantTask.TaskPriority: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .high:
-            return "!!!"
-        case .medium:
-            return "!!"
-        case .low:
-            return "!"
-        }
-    }
+	public var description: String {
+		switch self {
+		case .high:
+			return "!!!"
+		case .medium:
+			return "!!"
+		case .low:
+			return "!"
+		}
+	}
 }
