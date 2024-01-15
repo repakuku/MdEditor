@@ -7,7 +7,7 @@ enum ProjectSettings {
 	public static var projectName: String { "MdEditor" }
 	public static var appVersionName: String { "1.0.0" }
 	public static var appVersionBuild: Int { 1 }
-	public static var developmentTeam: String { "repakuku@icloud.com" }
+	public static var developmentTeam: String { "" }
 	public static var targetVersion: String { "15.0" }
 	public static var bundleId: String { "\(organizationName).\(projectName)" }
 }

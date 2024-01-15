@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  MdEditor
+
+  Created by Alexey Turulin on 1/14/24.
+  Copyright © 2024 repakuku. All rights reserved.
+*/
+
+// MARK: - LoginScreen
+
+"LoginScreen.Title" = "Authorization";
+"LoginScreen.Textfield.Login.Placeholder" = "Login";
+"LoginScreen.Textfield.Password.Placeholder" = "Login";
+"LoginScreen.Button.Login.Title" = "Login";
+
+// MARK: - TodoListScreen
+
+"TodoListScreen.Title" = "ToDoList";
