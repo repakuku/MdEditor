@@ -16,7 +16,9 @@ final class SomeTestCase: XCTestCase {
 		// Два типа, как мы можем влиять на наше приложение.
 
 		// Аргументы
-		app.launchArguments = ["-enableTesting"]
+		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
+		// Можно переключать локализацию
+		app.launchArguments = ["-AppleLanguages", "(en)"]
 		
 		// Окружение
 		app.launchEnvironment = ["serverURL":"Swiftbook.ru"]
