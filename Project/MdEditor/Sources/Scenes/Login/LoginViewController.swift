@@ -21,7 +21,7 @@ final class LoginViewController: UIViewController {
 		accessibilityIndentifier: AccessibilityIdentifier.textFieldLogin.rawValue
 	)
 	private lazy var textFieldPass: UITextField = makeTextField(
-		accessibilityIndentifier: AccessibilityIdentifier.textFieldLogin.rawValue
+		accessibilityIndentifier: AccessibilityIdentifier.textFieldPass.rawValue
 	)
 	private lazy var buttonLogin: UIButton = makeButtonLogin(
 		accessibilityIndentifier: AccessibilityIdentifier.buttonLogin.rawValue

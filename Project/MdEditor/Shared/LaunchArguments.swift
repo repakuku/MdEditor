@@ -10,7 +10,4 @@ import Foundation
 
 enum LaunchArguments: String {
 	case enableTesting = "-enableTesting"
-	
-	// Можно так
-	// static let = enableTesting = "-enableTesting"
 }

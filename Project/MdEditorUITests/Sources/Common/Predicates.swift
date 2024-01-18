@@ -15,7 +15,7 @@ enum Predicate {
 	case exists
 	case doesNotExist
 
-	case `is`(String)
+	case `is`(String) // swiftlint:disable:this identifier_name
 	case isNot(String)
 
 	case isLike(String)

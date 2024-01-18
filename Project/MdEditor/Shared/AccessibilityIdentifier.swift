@@ -11,9 +11,3 @@ enum AccessibilityIdentifier: String {
 	case textFieldPass
 	case buttonLogin
 }
-
-enum AccessibilityIdentifier2: String {
-	case textFieldLogin = "textFieldLogin"
-	case textFieldPass = "textFieldPass"
-	case buttonLogin = "buttonLogin"
-}

@@ -50,7 +50,7 @@ final class TestCase: XCTestCase {
 		}
 	}
 	
-	override func tearDown() { // 9.
+	override func tearDown() { // 9. swiftlint:disable:this unneeded_override
 		// Это метод экзмепляра tearDown().
 		// Он вызывается после завершения каждого тестового метода.
 		// Используйте tearDownWithError() для любой очистки для каждого теста,
@@ -58,7 +58,7 @@ final class TestCase: XCTestCase {
 		super.tearDown()
 	}
 	
-	override func tearDownWithError() throws { // 10.
+	override func tearDownWithError() throws { // 10. swiftlint:disable:this unneeded_override
 		// Это метод экземпляра tearDownWithError().
 		// Он вызывается после завершения каждого тестового метода.
 		// Выполните здесь любую очистку для каждого теста.
@@ -71,5 +71,3 @@ final class TestCase: XCTestCase {
 		// Выполните любую общую очистку здесь.
 	}
 }
-
-
