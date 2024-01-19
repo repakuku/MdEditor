@@ -16,3 +16,8 @@
 // MARK: - TodoListScreen
 
 "TodoListScreen.Title" = "ToDoList";
+"TodoListScreen.Section.Completed" = "Completed";
+"TodoListScreen.Section.Uncompleted" = "Uncompleted";
+"TodoListScreen.Section.AllTasks" = "All";
+"TodoListScreen.Section.Important" = "Important";
+"TodoListScreen.Section.Regular" = "Regular";
