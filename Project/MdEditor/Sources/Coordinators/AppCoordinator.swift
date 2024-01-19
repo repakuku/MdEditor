@@ -23,7 +23,7 @@ final class AppCoordinator: BaseCoordinator {
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
 	}
-	
+
 	// MARK: - Internal methods
 
 	override func start() {
@@ -31,7 +31,8 @@ final class AppCoordinator: BaseCoordinator {
 	}
 
 	func runLoginFlow() {
-		let coordinator = LoginCoordinator(navigationController: navigationController) 
+
+		let coordinator = LoginCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in
