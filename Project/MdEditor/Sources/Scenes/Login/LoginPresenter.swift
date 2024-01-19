@@ -41,6 +41,6 @@ final class LoginPresenter: ILoginPresenter {
 
 extension LoginError: LocalizedError {
 	var errorDescription: String? {
-		"Wrong login or password"
+		L10n.Error.WrongLoginOrPassword.text
 	}
 }

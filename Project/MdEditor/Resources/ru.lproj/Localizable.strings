@@ -6,6 +6,15 @@
   Copyright © 2024 repakuku. All rights reserved.
 */
 
+// MARK: - Error
+
+"Error.WrongLoginOrPassword.text" = "Неверный логин или пароль";
+
+// MARK: -  Common strings
+
+"Ok.text" = "Ок";
+"Error.text" = "Ошибка";
+
 // MARK: - LoginScreen
 
 "LoginScreen.Title" = "Авторизация";
@@ -16,3 +25,8 @@
 // MARK: - TodoListScreen
 
 "TodoListScreen.Title" = "Список задач";
+"TodoListScreen.Section.Completed.text" = "Завершённые";
+"TodoListScreen.Section.Uncompleted.text" = "Незавершённые";
+"TodoListScreen.Section.AllTasks.text" = "Все";
+"TodoListScreen.Section.Important.text" = "Важные";
+"TodoListScreen.Section.Regular.text" = "Обычные";
