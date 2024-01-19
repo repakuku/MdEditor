@@ -36,52 +36,20 @@ final class LoginSceneUITests: XCTestCase {
 		loginScreen
 			.isLoginScreen()
 			.set(login: "invalidUsername")
-			.set(password: "invalidUsername")
+			.set(password: "invalidPassword")
 			.login()
-
-//		let usernameTextField = app.textFields[AccessibilityIdentifier.textFieldLogin.rawValue]
-//		let passwordTextField = app.secureTextFields[AccessibilityIdentifier.textFieldPass.rawValue]
-//		let loginButton = app.buttons[AccessibilityIdentifier.buttonLogin.rawValue]
-//		let alertButton = app.buttons[AccessibilityIdentifier.buttonAlert.rawValue]
-//
-//		usernameTextField.tap()
-//		usernameTextField.typeText("invalidUsername")
-//
-//		passwordTextField.tap()
-//		passwordTextField.typeText("invalidPassword")
-//
-//		loginButton.tap()
-//
-//		let errorMessage = app.alerts.staticTexts["Wrong login or password"]
-//		XCTAssertTrue(errorMessage.exists, "Error message should appear for invalid credentials.")
-//
-//		// Dismiss the alert
-//		alertButton.tap()
-//
-//		XCTAssertTrue(usernameTextField.exists, "Expected username text field on the same screen not found.")
-//		XCTAssertTrue(passwordTextField.exists, "Expected password text field on the same screen not found.")
-//		XCTAssertTrue(loginButton.exists, "Expected login button on the same screen not found.")
+			.invalidAttempt()
 	}
 
-	func test_login_withInvalidCredentials_mustBeSuccess() {
-//
-//		let usernameTextField = app.textFields[AccessibilityIdentifier.textFieldLogin.rawValue]
-//		let passwordTextField = app.secureTextFields[AccessibilityIdentifier.textFieldPass.rawValue]
-//		let loginButton = app.buttons[AccessibilityIdentifier.buttonLogin.rawValue]
-//
-//		usernameTextField.tap()
-//		usernameTextField.typeText("Admin")
-//
-//		passwordTextField.tap()
-//		passwordTextField.typeText("pa$$32!")
-//
-//		loginButton.tap()
-//
-//		let errorMessage = app.alerts.staticTexts["Wrong login or password"]
-//		XCTAssertFalse(errorMessage.exists, "Error message should not appear for valid credentials.")
-//
-//		let tableView = app.tables[AccessibilityIdentifier.tableView.rawValue]
-//
-//		XCTAssertTrue(tableView.exists, "Expected table view on the next screen not found.")
+	func test_login_withValidCredentials_mustBeSuccess() {
+
+		let loginScreen = LoginScreenObject(app: app)
+
+		loginScreen
+			.isLoginScreen()
+			.set(login: "Admin")
+			.set(password: "pa$$32!")
+			.login()
+			.validAttempt()
 	}
 }

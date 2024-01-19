@@ -16,6 +16,12 @@ final class LoginScreenObject: BaseScreenObject {
 	private lazy var textFieldPass = app.secureTextFields[AccessibilityIdentifier.textFieldPass.rawValue]
 	private lazy var loginButton = app.buttons[AccessibilityIdentifier.buttonLogin.rawValue]
 
+	private lazy var alert = app.alerts.firstMatch
+	private lazy var alertButton = alert.buttons.firstMatch
+
+	private lazy var navigationBar = app.navigationBars.firstMatch
+	private lazy var navigationBarTitle = navigationBar.staticTexts.firstMatch
+
 	// MARK: - ScreenObject Methods
 
 	@discardableResult
@@ -49,6 +55,22 @@ final class LoginScreenObject: BaseScreenObject {
 	func login() -> Self {
 		assert(loginButton, [.exists])
 		loginButton.tap()
+
+		return self
+	}
+
+	@discardableResult
+	func invalidAttempt() -> Self {
+		assert(alert, [.exists])
+		alertButton.tap()
+		assert(navigationBarTitle, [.contains("Authorization")])
+
+		return self
+	}
+
+	@discardableResult
+	func validAttempt() -> Self {
+		assert(navigationBarTitle, [.contains("ToDoList")])
 
 		return self
 	}
