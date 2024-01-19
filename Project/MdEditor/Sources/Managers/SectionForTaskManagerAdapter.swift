@@ -36,15 +36,15 @@ enum Section {
 	var title: String {
 		switch self {
 		case .completed:
-			return L10n.TodoListScreen.Section.completed
+			return L10n.TodoListScreen.Section.Completed.text
 		case .uncompleted:
-			return L10n.TodoListScreen.Section.uncompleted
+			return L10n.TodoListScreen.Section.Uncompleted.text
 		case .allTasks:
-			return L10n.TodoListScreen.Section.allTasks
+			return L10n.TodoListScreen.Section.AllTasks.text
 		case .important:
-			return L10n.TodoListScreen.Section.important
+			return L10n.TodoListScreen.Section.Important.text
 		case .regular:
-			return L10n.TodoListScreen.Section.regular
+			return L10n.TodoListScreen.Section.Regular.text
 		}
 	}
 }

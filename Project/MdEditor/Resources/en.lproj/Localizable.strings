@@ -6,6 +6,15 @@
   Copyright © 2024 repakuku. All rights reserved.
 */
 
+// MARK: - Error
+
+"Error.WrongLoginOrPassword.text" = "Wrong login or password";
+
+// MARK: -  Common strings
+
+"Ok.text" = "Ok";
+"Error.text" = "Error";
+
 // MARK: - LoginScreen
 
 "LoginScreen.Title" = "Authorization";
@@ -16,8 +25,8 @@
 // MARK: - TodoListScreen
 
 "TodoListScreen.Title" = "ToDoList";
-"TodoListScreen.Section.Completed" = "Completed";
-"TodoListScreen.Section.Uncompleted" = "Uncompleted";
-"TodoListScreen.Section.AllTasks" = "All";
-"TodoListScreen.Section.Important" = "Important";
-"TodoListScreen.Section.Regular" = "Regular";
+"TodoListScreen.Section.Completed.text" = "Completed";
+"TodoListScreen.Section.Uncompleted.text" = "Uncompleted";
+"TodoListScreen.Section.AllTasks.text" = "All";
+"TodoListScreen.Section.Important.text" = "Important";
+"TodoListScreen.Section.Regular.text" = "Regular";

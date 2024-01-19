@@ -8,7 +8,12 @@
 
 // MARK: - Error
 
-"WrongPassword" = 
+"Error.WrongLoginOrPassword.text" = "Неверный логин или пароль";
+
+// MARK: -  Common strings
+
+"Ok.text" = "Ок";
+"Error.text" = "Ошибка";
 
 // MARK: - LoginScreen
 
@@ -20,8 +25,8 @@
 // MARK: - TodoListScreen
 
 "TodoListScreen.Title" = "Список задач";
-"TodoListScreen.Section.Completed" = "Завершённые";
-"TodoListScreen.Section.Uncompleted" = "Незавершённые";
-"TodoListScreen.Section.AllTasks" = "Все";
-"TodoListScreen.Section.Important" = "Важные";
-"TodoListScreen.Section.Regular" = "Обычные";
+"TodoListScreen.Section.Completed.text" = "Завершённые";
+"TodoListScreen.Section.Uncompleted.text" = "Незавершённые";
+"TodoListScreen.Section.AllTasks.text" = "Все";
+"TodoListScreen.Section.Important.text" = "Важные";
+"TodoListScreen.Section.Regular.text" = "Обычные";
