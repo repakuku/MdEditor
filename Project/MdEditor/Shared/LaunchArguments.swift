@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  LaunchArguments.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 1/16/24.
@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum LaunchArguments: String {
+	case enableTesting = "-enableTesting"
+}

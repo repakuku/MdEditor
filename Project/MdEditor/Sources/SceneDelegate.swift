@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TaskManagerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let windowScene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: windowScene)
 
-		appCoordinator = AppCoordinator(window: window)
+		let repository = TaskRepositoryStub()
+		let orderedTaskManager = OrderedTaskManager(taskManager: TaskManager())
+		orderedTaskManager.addTasks(tasks: repository.getTasks())
+
+		appCoordinator = AppCoordinator(window: window, taskManager: orderedTaskManager)
 		appCoordinator.start()
 
 		self.window = window

@@ -56,7 +56,7 @@ let target = Target(
 	bundleId: ProjectSettings.bundleId,
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .extendingDefault(with: infoPlistExtension),
-	sources: ["\(ProjectSettings.projectName)/Sources/**"],
+	sources: ["\(ProjectSettings.projectName)/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
 	resources: ["\(ProjectSettings.projectName)/Resources/**"],
 	scripts: scripts,
 	dependencies: [
