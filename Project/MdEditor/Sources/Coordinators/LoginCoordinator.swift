@@ -14,7 +14,7 @@ protocol ILoginCoordinator: ICoordinator {
 }
 
 final class LoginCoordinator: ILoginCoordinator {
-	
+
 	// MARK: - Dependencies
 
 	var navigationController: UINavigationController
@@ -22,7 +22,7 @@ final class LoginCoordinator: ILoginCoordinator {
 	// MARK: - Internal properties
 
 	var finishFlow: (() -> Void)?
-	
+
 	// MARK: - Initialization
 
 	init(navigationController: UINavigationController) {

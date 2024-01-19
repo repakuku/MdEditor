@@ -9,10 +9,10 @@
 import XCTest
 
 final class SomeTestCase: XCTestCase {
-	
+
 	private let app = XCUIApplication()
-	
-	override func setUp() {
+
+	override class func setUp() {
 		let app = XCUIApplication()
 
 		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
@@ -26,13 +26,13 @@ final class SomeTestCase: XCTestCase {
 		let usernameTextField = app.textFields[AccessibilityIdentifier.textFieldLogin.rawValue]
 		let passwordTextField = app.secureTextFields[AccessibilityIdentifier.textFieldPass.rawValue]
 		let loginButton = app.buttons[AccessibilityIdentifier.buttonLogin.rawValue]
-		
+
 		usernameTextField.tap()
 		usernameTextField.typeText("invalidUsername")
-		
+
 		passwordTextField.tap()
 		passwordTextField.typeText("invalidPassword")
-		
+
 		loginButton.tap()
 
 		// TODO: It doesn't work

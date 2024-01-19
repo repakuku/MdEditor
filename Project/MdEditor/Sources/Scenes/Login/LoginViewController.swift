@@ -80,7 +80,7 @@ private extension LoginViewController {
 		textField.accessibilityIdentifier = accessibilityIndentifier
 
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		
+
 		textField.font = UIFont.preferredFont(forTextStyle: .body)
 		textField.adjustsFontForContentSizeCategory = true
 
@@ -98,7 +98,7 @@ private extension LoginViewController {
 		button.accessibilityIdentifier = accessibilityIndentifier
 
 		button.translatesAutoresizingMaskIntoConstraints = false
-		
+
 		button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
 		button.titleLabel?.adjustsFontForContentSizeCategory = true
 
