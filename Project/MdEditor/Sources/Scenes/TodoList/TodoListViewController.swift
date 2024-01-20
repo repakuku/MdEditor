@@ -88,7 +88,7 @@ private extension TodoListViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.hidesBackButton = true
 
-		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 	}
 
 	func getTaskForIndex(_ indexPath: IndexPath) -> TodoListModel.ViewModel.Task {
