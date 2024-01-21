@@ -12,7 +12,7 @@ enum AccessibilityIdentifier {
 	case buttonLogin
 
 	case section(index: Int)
-	case cell(section: Int, index: Int)
+	case cell(section: Int, row: Int)
 
 	var description: String {
 		switch self {
@@ -24,7 +24,7 @@ enum AccessibilityIdentifier {
 			"buttonLogin"
 		case .section(index: let index):
 			"section-\(index)"
-		case .cell(section: let section, index: let index):
+		case .cell(section: let section, row: let index):
 			"cell-\(section)-\(index)"
 		}
 	}

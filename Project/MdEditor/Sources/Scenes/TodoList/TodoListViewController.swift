@@ -73,6 +73,12 @@ extension TodoListViewController {
 		let task = getTaskForIndex(indexPath)
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 		configureCell(cell, with: task)
+
+		cell.accessibilityIdentifier = AccessibilityIdentifier.cell(
+			section: indexPath.section,
+			row: indexPath.row
+		).description
+
 		return cell
 	}
 
