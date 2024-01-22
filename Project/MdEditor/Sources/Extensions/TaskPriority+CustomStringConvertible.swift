@@ -13,11 +13,11 @@ extension ImportantTask.TaskPriority: CustomStringConvertible {
 	public var description: String {
 		switch self {
 		case .high:
-			return "!!!"
+			return L10n.TodoList.TaskPriority.high
 		case .medium:
-			return "!!"
+			return L10n.TodoList.TaskPriority.medium
 		case .low:
-			return "!"
+			return L10n.TodoList.TaskPriority.low
 		}
 	}
 }

@@ -66,6 +66,7 @@ extension TodoListViewController {
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		let section = viewModel.tasksBySections[section]
+
 		return section.tasks.count
 	}
 
@@ -93,7 +94,7 @@ private extension TodoListViewController {
 
 	private func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = L10n.TodoListScreen.title
+		title = L10n.TodoList.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.hidesBackButton = true
 
