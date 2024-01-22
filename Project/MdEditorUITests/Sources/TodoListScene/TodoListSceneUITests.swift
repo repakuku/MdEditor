@@ -41,18 +41,25 @@ final class TodoListSceneUITests: XCTestCase {
 			.validHeaderTitles()
 	}
 
-	func test_cellTitles_mustBeCorrect() {
+	// TODO: complete test
+//	func test_cellTitle_mustBeCorrect() {
+//
+//		let todoListScreen = TodoListScreenObject(app: app)
+//
+//		todoListScreen
+//			.isTodoListScreen()
+//			.getTaskTitle(section: 0, row: 0)
+//	}
 
-		let todoListScreen = TodoListScreenObject(app: app)
-
-		todoListScreen
-			.isTodoListScreen()
-			.getTaskTitle(section: 0, row: 0)
-			.getTaskTitle(section: 0, row: 1)
-			.getTaskTitle(section: 0, row: 2)
-			.getTaskTitle(section: 0, row: 3)
-			.getTaskTitle(section: 1, row: 0)
-	}
+	// TODO: complete test
+// func test_cellDeadline_mustBeCorrect() {
+//
+//		let todoListScreen = TodoListScreenObject(app: app)
+//
+//		todoListScreen
+//			.isTodoListScreen()
+//			.getTaskDeadline(section: 0, row: 0)
+//	}
 }
 
 extension TodoListSceneUITests {

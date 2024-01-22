@@ -31,7 +31,7 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func validHeaderTitles() -> Self {
-		
+
 		let otherElements = tableView.otherElements.allElementsBoundByIndex
 		let sections = otherElements.filter { $0.identifier.contains("section") }
 
