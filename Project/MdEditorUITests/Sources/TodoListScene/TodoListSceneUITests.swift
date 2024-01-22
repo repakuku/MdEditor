@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import TaskManagerPackage
 
 final class TodoListSceneUITests: XCTestCase {
 
@@ -23,13 +24,7 @@ final class TodoListSceneUITests: XCTestCase {
 		super.setUp()
 		app.launch()
 
-		let loginScreen = LoginScreenObject(app: app)
-
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
+		login()
 	}
 
 	override func tearDown() {
@@ -44,5 +39,30 @@ final class TodoListSceneUITests: XCTestCase {
 		todoListScreen
 			.isTodoListScreen()
 			.validHeaderTitles()
+	}
+
+	func test_cellTitles_mustBeCorrect() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getTaskTitle(section: 0, row: 0)
+			.getTaskTitle(section: 0, row: 1)
+			.getTaskTitle(section: 0, row: 2)
+			.getTaskTitle(section: 0, row: 3)
+			.getTaskTitle(section: 1, row: 0)
+	}
+}
+
+extension TodoListSceneUITests {
+	private func login() {
+		let loginScreen = LoginScreenObject(app: app)
+
+		loginScreen
+			.isLoginScreen()
+			.set(login: "Admin")
+			.set(password: "pa$$32!")
+			.login()
 	}
 }

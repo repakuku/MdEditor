@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import TaskManagerPackage
 
 final class TodoListScreenObject: BaseScreenObject {
 
@@ -30,7 +31,7 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func validHeaderTitles() -> Self {
-
+		
 		let otherElements = tableView.otherElements.allElementsBoundByIndex
 		let sections = otherElements.filter { $0.identifier.contains("section") }
 
@@ -39,5 +40,33 @@ final class TodoListScreenObject: BaseScreenObject {
 		assert(completedSection, [.exists])
 
 		return self
+	}
+
+	@discardableResult
+	func getTaskTitle(section: Int, row: Int) -> Self {
+		let cell = tableView.cells["cell-\(section)-\(row)"]
+		let title = cell.staticTexts[cellTitles[section][row]]
+
+		assert(cell, [.exists])
+		assert(title, [.exists])
+
+		return self
+	}
+}
+
+extension TodoListScreenObject {
+
+	private var cellTitles: [[String]] {
+		[
+			[
+				"!!! Do homework",
+				"!! Go shopping",
+				"! Write new tasks",
+				"Solve 3 algorithms"
+			],
+			[
+				"Do Workout"
+			]
+		]
 	}
 }
