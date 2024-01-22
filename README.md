@@ -44,21 +44,3 @@ cd ./MdEditorRepository/Project
 tuist generate
 ```
 Now you’re ready to use MdEditor with all its powerful features! If you encounter any issues during installation, please refer to the documentation for troubleshooting.
-
-
-
-
-Integrated Task Management
-
-	•	Task Manager Integration: MdEditor integrates with TaskManagerPackage, offering an in-built task management tool to keep track of your writing milestones and code-related tasks.
-	•	Prioritization and Organization: Organize tasks based on priority, ensuring that critical tasks are always at the forefront.
-	•	Seamless Workflow: The combination of Markdown editing and task management in a single application enhances productivity and focus.
-
-Requirements
-
-	•	Runtime Environment: Xcode 14.2 or higher.
-	•	Additional Dependencies: Uses Tuist for efficient project generation and SwiftGen for resource and localization management.
-
-Installation
-
-	1.	Clone the Repository
