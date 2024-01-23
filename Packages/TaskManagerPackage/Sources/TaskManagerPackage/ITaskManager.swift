@@ -27,7 +27,7 @@ public protocol ITaskManager {
 	/// - Parameter tasks: Массив заданий.
 	func addTasks(tasks: [Task])
 
-	/// Удаление задания из списка. При вызове метода будут удалены все варианты этого задания по идентичности Task.
+	/// Удаление задания из списка.
 	/// - Parameter task: Задание, которое необходимо удалить.
 	func removeTask(task: Task)
 }
