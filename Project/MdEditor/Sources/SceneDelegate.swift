@@ -21,13 +21,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let windowScene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: windowScene)
 
-		let repository = TaskRepositoryStub()
-		let orderedTaskManager = OrderedTaskManager(taskManager: TaskManager())
-		orderedTaskManager.addTasks(tasks: repository.getTasks())
-
-		appCoordinator = AppCoordinator(window: window, taskManager: orderedTaskManager)
+		appCoordinator = AppCoordinator(window: window, taskManager: buildTaskManager())
 		appCoordinator.start()
 
 		self.window = window
+	}
+
+	private func buildTaskManager() -> ITaskManager {
+		let repository = TaskRepositoryStub()
+		let orderedTaskManager = OrderedTaskManager(taskManager: TaskManager())
+		orderedTaskManager.addTasks(tasks: repository.getTasks())
+		return orderedTaskManager
 	}
 }
