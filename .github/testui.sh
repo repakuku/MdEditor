@@ -1,5 +1,6 @@
 cd ./Project
 
+xcodebuild clean -quiet
 xcodebuild test-without-building \
     -workspace 'MdEditor.xcworkspace' \
     -scheme 'MdEditorUITests' \

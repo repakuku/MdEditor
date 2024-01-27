@@ -15,8 +15,8 @@ jobs:
       - name: Build App
         run: ./.github/build.sh
 
-      - name: Run Ui Tests
-        run: ./.github/testui.sh
-
       - name: Run Unit Tests
         run: ./.github/test.sh
+
+      - name: Run UI Tests
+        run: ./.github/testui.sh
