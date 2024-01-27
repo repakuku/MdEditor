@@ -1,4 +1,4 @@
-name: MdEditor
+name: MdEditorUItests
 
 on:
   pull_request:
