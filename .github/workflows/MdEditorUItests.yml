@@ -5,15 +5,12 @@ on:
     branches: [ "dev" ]
 
 jobs: 
-  build-and-test:
-    name: Build and Test
+  test:
+    name: UI Test
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build App
-        run: ./.github/build.sh
-
-      - name: Run Unit Tests
-        run: ./.github/test.sh
+      - name: Run UI Tests
+        run: ./.github/testui.sh
