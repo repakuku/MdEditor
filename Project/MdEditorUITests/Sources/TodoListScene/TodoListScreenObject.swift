@@ -23,7 +23,7 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func isTodoListScreen() -> Self {
-		assert(navigationBarTitle, [.contains("test ci")])
+		assert(navigationBarTitle, [.contains("Tasks")])
 
 		return self
 	}
