@@ -70,7 +70,7 @@ final class LoginScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func validAttempt() -> Self {
-		assert(navigationBarTitle, [.contains("ToDoList")])
+		assert(navigationBarTitle, [.contains("Tasks")])
 
 		return self
 	}
