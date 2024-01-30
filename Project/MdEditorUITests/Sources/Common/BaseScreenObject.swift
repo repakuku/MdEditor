@@ -40,4 +40,12 @@ class BaseScreenObject {
 
 		return self
 	}
+
+	@discardableResult
+	func tap(_ element: XCUIElement, timeout: TimeInterval = BaseScreenObject.defaultTimeout) -> Self {
+		assert(element, [.isHittable], timeout: timeout)
+		element.tap()
+
+		return self
+	}
 }

@@ -41,25 +41,44 @@ final class TodoListSceneUITests: XCTestCase {
 			.validHeaderTitles()
 	}
 
-	// TODO: complete test
-//	func test_cellTitle_mustBeCorrect() {
-//
-//		let todoListScreen = TodoListScreenObject(app: app)
-//
-//		todoListScreen
-//			.isTodoListScreen()
-//			.getTaskTitle(section: 0, row: 0)
-//	}
+	func test_uncomplitedTaskInfo_mustBeCorrect() {
 
-	// TODO: complete test
-// func test_cellDeadline_mustBeCorrect() {
-//
-//		let todoListScreen = TodoListScreenObject(app: app)
-//
-//		todoListScreen
-//			.isTodoListScreen()
-//			.getTaskDeadline(section: 0, row: 0)
-//	}
+		let todoListScreen = TodoListScreenObject(app: app)
+		let indexPath = IndexPath(row: 0, section: 0)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: indexPath)
+			.validTaskTitle("!!! Do homework")
+			.validTaskDeadline()
+	}
+
+	func test_complitedTaskInfo_mustBeCorrect() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+		let indexPath = IndexPath(row: 0, section: 1)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: indexPath)
+			.validTaskTitle("Do workout")
+			.validTaskStatus()
+	}
+
+	func test_tapTask_statusShouldBeChanged() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+		let uncomplitedIndexPath = IndexPath(row: 0, section: 0)
+		let complitedIndexPath = IndexPath(row: 0, section: 1)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: uncomplitedIndexPath)
+			.validTaskTitle("!!! Do homework")
+			.tapCell()
+			.getCell(indexPath: complitedIndexPath)
+			.validTaskTitle("!!! Do homework")
+	}
 }
 
 extension TodoListSceneUITests {
