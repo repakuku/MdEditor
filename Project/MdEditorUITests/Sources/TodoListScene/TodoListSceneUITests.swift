@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import TaskManagerPackage
 
 final class TodoListSceneUITests: XCTestCase {
 
@@ -23,13 +24,7 @@ final class TodoListSceneUITests: XCTestCase {
 		super.setUp()
 		app.launch()
 
-		let loginScreen = LoginScreenObject(app: app)
-
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
+		login()
 	}
 
 	override func tearDown() {
@@ -44,5 +39,56 @@ final class TodoListSceneUITests: XCTestCase {
 		todoListScreen
 			.isTodoListScreen()
 			.validHeaderTitles()
+	}
+
+	func test_uncomplitedTaskInfo_mustBeCorrect() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+		let indexPath = IndexPath(row: 0, section: 0)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: indexPath)
+			.validTaskTitle("!!! Do homework")
+			.validTaskDeadline()
+	}
+
+	func test_complitedTaskInfo_mustBeCorrect() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+		let indexPath = IndexPath(row: 0, section: 1)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: indexPath)
+			.validTaskTitle("Do workout")
+			.validTaskStatus()
+	}
+
+	func test_tapTask_statusShouldBeChanged() {
+
+		let todoListScreen = TodoListScreenObject(app: app)
+		let uncomplitedIndexPath = IndexPath(row: 0, section: 0)
+		let complitedIndexPath = IndexPath(row: 0, section: 1)
+
+		todoListScreen
+			.isTodoListScreen()
+			.getCell(indexPath: uncomplitedIndexPath)
+			.validTaskTitle("!!! Do homework")
+			.tapCell()
+			.getCell(indexPath: complitedIndexPath)
+			.validTaskTitle("!!! Do homework")
+	}
+}
+
+extension TodoListSceneUITests {
+	private func login() {
+		let loginScreen = LoginScreenObject(app: app)
+
+		loginScreen
+			.isLoginScreen()
+			.set(login: "Admin")
+			.set(password: "pa$$32!")
+			.login()
 	}
 }
