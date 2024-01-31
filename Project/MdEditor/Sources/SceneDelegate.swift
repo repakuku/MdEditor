@@ -11,6 +11,9 @@ import TaskManagerPackage
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
+
+	private let repository = TaskRepositoryStub()
+	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var appCoordinator: ICoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
@@ -20,17 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	) {
 		guard let windowScene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: windowScene)
+		
+		taskManager = OrderedTaskManager(taskManager: TaskManager())
+		taskManager.addTasks(tasks: repository.getTasks())
 
-		appCoordinator = AppCoordinator(window: window, taskManager: buildTaskManager())
+		appCoordinator = AppCoordinator(window: window, taskManager: taskManager)
 		appCoordinator.start()
 
 		self.window = window
-	}
-
-	private func buildTaskManager() -> ITaskManager {
-		let repository = TaskRepositoryStub()
-		let orderedTaskManager = OrderedTaskManager(taskManager: TaskManager())
-		orderedTaskManager.addTasks(tasks: repository.getTasks())
-		return orderedTaskManager
 	}
 }
