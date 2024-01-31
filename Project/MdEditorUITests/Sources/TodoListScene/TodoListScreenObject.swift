@@ -20,7 +20,7 @@ final class TodoListScreenObject: BaseScreenObject {
 	private lazy var uncompletedSection = tableView.otherElements.staticTexts["Uncompleted"]
 	private lazy var completedSection = tableView.otherElements.staticTexts["Completed"]
 
-	private var cell: XCUIElement! 
+	private var cell: XCUIElement! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	// MARK: - ScreenObject Methods
 
