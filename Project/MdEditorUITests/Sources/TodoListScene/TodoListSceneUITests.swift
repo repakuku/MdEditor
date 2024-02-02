@@ -13,13 +13,6 @@ final class TodoListSceneUITests: XCTestCase {
 
 	private let app = XCUIApplication()
 
-	override class func setUp() {
-		let app = XCUIApplication()
-
-		app.launchArguments = [LaunchArguments.enableTesting.rawValue]
-		app.launchArguments = ["-AppleLanguages", "(en)"]
-	}
-
 	override func setUp() {
 		super.setUp()
 		app.launch()
