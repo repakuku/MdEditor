@@ -46,8 +46,8 @@ let target = Target(
 	bundleId: ProjectSettings.bundleId,
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .extendingDefault(with: infoPlistExtension),
-	sources: ["\(ProjectSettings.projectName)/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
-	resources: ["\(ProjectSettings.projectName)/Resources/**"],
+	sources: ["Sources/**", "Shared/**"],
+	resources: ["Resources/**"],
 	scripts: scripts,
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
@@ -67,7 +67,7 @@ let testTarget = Target(
 	bundleId: "\(ProjectSettings.bundleId)Tests",
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .none,
-	sources: ["\(ProjectSettings.projectName)Tests/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
+	sources: ["Tests/**", "Shared/**"],
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
@@ -86,8 +86,8 @@ let uiTestTarget = Target(
 	bundleId: "\(ProjectSettings.bundleId)UITests",
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .none,
-	sources: ["\(ProjectSettings.projectName)UITests/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
-	resources: ["\(ProjectSettings.projectName)/Resources/**"],
+	sources: ["UITests/**", "Shared/**"],
+	resources: ["Resources/**"],
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],

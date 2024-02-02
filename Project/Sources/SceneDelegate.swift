@@ -12,9 +12,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
 
-	private let repository = TaskRepositoryStub()
+	private var repository = TaskRepositoryStub()
 	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var appCoordinator: ICoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
+
+	private var appCoordinator: AppCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
 		_ scene: UIScene,
@@ -28,8 +29,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		taskManager.addTasks(tasks: repository.getTasks())
 
 		appCoordinator = AppCoordinator(window: window, taskManager: taskManager)
-		appCoordinator.start()
 
+#if DEBUG
+		let parameters = LaunchArguments.parameters()
+		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
+			UIView.setAnimationsEnabled(false)
+		}
+		appCoordinator.testStart(parameters: parameters)
+#else
+		appCoordinator.start()
+#endif
 		self.window = window
 	}
 }
