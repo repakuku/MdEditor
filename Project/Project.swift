@@ -87,6 +87,7 @@ let uiTestTarget = Target(
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .none,
 	sources: ["\(ProjectSettings.projectName)UITests/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
+	resources: ["\(ProjectSettings.projectName)/Resources/**"],
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],

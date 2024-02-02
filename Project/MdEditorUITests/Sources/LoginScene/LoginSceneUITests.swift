@@ -28,8 +28,8 @@ final class LoginSceneUITests: XCTestCase {
 
 		loginScreen
 			.isLoginScreen()
-			.set(login: "invalidUsername")
-			.set(password: "invalidPassword")
+			.set(login: LoginCredentials.invalid.login)
+			.set(password: LoginCredentials.invalid.password)
 			.login()
 			.invalidAttempt()
 	}
@@ -40,9 +40,14 @@ final class LoginSceneUITests: XCTestCase {
 
 		loginScreen
 			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
+			.set(login: LoginCredentials.valid.login)
+			.set(password: LoginCredentials.valid.password)
 			.login()
 			.validAttempt()
 	}
+}
+
+private enum LoginCredentials {
+	static let valid: (login: String, password: String) = ("Admin", "pa$$32!")
+	static let invalid: (login: String, password: String) = ("invalidUsername", "invalidPassword")
 }

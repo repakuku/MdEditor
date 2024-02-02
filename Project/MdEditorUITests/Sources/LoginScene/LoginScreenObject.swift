@@ -63,14 +63,14 @@ final class LoginScreenObject: BaseScreenObject {
 	func invalidAttempt() -> Self {
 		assert(alert, [.exists])
 		alertButton.tap()
-		assert(navigationBarTitle, [.contains("Authorization")])
+		assert(navigationBarTitle, [.contains(L10n.Login.title)])
 
 		return self
 	}
 
 	@discardableResult
 	func validAttempt() -> Self {
-		assert(navigationBarTitle, [.contains("Tasks")])
+		assert(navigationBarTitle, [.contains(L10n.TodoList.title)])
 
 		return self
 	}
