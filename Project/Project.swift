@@ -35,7 +35,8 @@ private let infoPlistExtension: [String: Plist.Value] = [
 			]
 		]
 	],
-	"UILaunchStoryboardName": "LaunchScreen"
+	"UILaunchStoryboardName": "LaunchScreen",
+	"UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"]
 ]
 
 let target = Target(
@@ -51,7 +52,12 @@ let target = Target(
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
 		.package(product: "DataStructuresPackage")
-	]
+	],
+	settings: .settings(
+		base: [
+			"TARGETED_DEVICE_FAMILY": "1"
+		]
+	)
 )
 
 let testTarget = Target(
@@ -65,7 +71,12 @@ let testTarget = Target(
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
-	settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
+	settings: .settings(
+		base: [
+			"GENERATE_INFOPLIST_FILE": "YES",
+			"TARGETED_DEVICE_FAMILY": "1"
+		]
+	)
 )
 
 let uiTestTarget = Target(
@@ -79,7 +90,12 @@ let uiTestTarget = Target(
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
-	settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
+	settings: .settings(
+		base: [
+			"GENERATE_INFOPLIST_FILE": "YES",
+			"TARGETED_DEVICE_FAMILY": "1"
+		]
+	)
 )
 
 let project = Project(
