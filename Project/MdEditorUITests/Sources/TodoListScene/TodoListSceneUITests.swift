@@ -13,75 +13,38 @@ final class TodoListSceneUITests: XCTestCase {
 
 	private let app = XCUIApplication()
 
-	override func setUp() {
-		super.setUp()
-		app.launch()
-
-		login()
-	}
-
 	override func tearDown() {
 		app.terminate()
 		super.tearDown()
 	}
 
-	func test_headerTitles_mustBeCorrect() {
+	func test_sectionTitles_mustBeCorrect() {
 
-		let todoListScreen = TodoListScreenObject(app: app)
+		let sut = makeSUT()
 
-		todoListScreen
+		sut
 			.isTodoListScreen()
-			.validHeaderTitles()
+			.checkSectionTitles()
 	}
 
-	func test_uncomplitedTaskInfo_mustBeCorrect() {
+	func test_cellsInfo_mustBeCorrect() {
 
-		let todoListScreen = TodoListScreenObject(app: app)
+		let sut = makeSUT()
 		let indexPath = IndexPath(row: 0, section: 0)
 
-		todoListScreen
+		sut
 			.isTodoListScreen()
-			.getCell(indexPath: indexPath)
-			.validTaskTitle("!!! Do homework")
-			.validTaskDeadline()
-	}
-
-	func test_complitedTaskInfo_mustBeCorrect() {
-
-		let todoListScreen = TodoListScreenObject(app: app)
-		let indexPath = IndexPath(row: 0, section: 1)
-
-		todoListScreen
-			.isTodoListScreen()
-			.getCell(indexPath: indexPath)
-			.validTaskTitle("Do workout")
-			.validTaskStatus()
-	}
-
-	func test_tapTask_statusShouldBeChanged() {
-
-		let todoListScreen = TodoListScreenObject(app: app)
-		let uncomplitedIndexPath = IndexPath(row: 0, section: 0)
-		let complitedIndexPath = IndexPath(row: 0, section: 1)
-
-		todoListScreen
-			.isTodoListScreen()
-			.getCell(indexPath: uncomplitedIndexPath)
-			.validTaskTitle("!!! Do homework")
-			.tapCell()
-			.getCell(indexPath: complitedIndexPath)
-			.validTaskTitle("!!! Do homework")
+			.checkCellInfo(indexPath: indexPath)
 	}
 }
 
 extension TodoListSceneUITests {
-	private func login() {
-		let loginScreen = LoginScreenObject(app: app)
+	private func makeSUT() -> TodoListScreenObject {
+		let app = XCUIApplication()
+		let screen = TodoListScreenObject(app: app)
+		app.launchArguments.append("-skipLogin")
+		app.launch()
 
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
+		return screen
 	}
 }

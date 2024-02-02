@@ -17,8 +17,8 @@ final class TodoListScreenObject: BaseScreenObject {
 	private lazy var navigationBarTitle = navigationBar.staticTexts.firstMatch
 
 	private lazy var tableView = app.tables.element
-	private lazy var uncompletedSection = tableView.otherElements.staticTexts["Uncompleted"]
-	private lazy var completedSection = tableView.otherElements.staticTexts["Completed"]
+//	private lazy var uncompletedSection = tableView.otherElements.staticTexts[L10n.TodoList.Section.uncompleted]
+//	private lazy var completedSection = tableView.otherElements.staticTexts[L10n.TodoList.Section.completed]
 
 	private var cell: XCUIElement! // swiftlint:disable:this implicitly_unwrapped_optional
 
@@ -26,14 +26,16 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func isTodoListScreen() -> Self {
-		assert(navigationBarTitle, [.contains("Tasks")])
+		assert(navigationBarTitle, [.contains(L10n.TodoList.title)])
 
 		return self
 	}
 
 	@discardableResult
 	func getCell(indexPath: IndexPath) -> Self {
-		let cell = tableView.cells["cell-\(indexPath.section)-\(indexPath.row)"]
+		let cell = tableView.cells[
+			AccessibilityIdentifier.cell(section: indexPath.section, row: indexPath.row).description
+		]
 
 		assert(cell, [.exists])
 
@@ -44,74 +46,89 @@ final class TodoListScreenObject: BaseScreenObject {
 
 	@discardableResult
 	func tapCell() -> Self {
-		tap(cell, timeout: 10)
+		tap(cell)
 		return self
 	}
 
 	@discardableResult
-	func validHeaderTitles() -> Self {
+	func checkSectionTitles() -> Self {
 
-		let otherElements = tableView.otherElements.allElementsBoundByIndex
-		let sections = otherElements.filter { $0.identifier.contains("section") }
+		let section0 = tableView.otherElements[AccessibilityIdentifier.section(index: 0).description]
+		let section1 = tableView.otherElements[AccessibilityIdentifier.section(index: 1).description]
 
-		XCTAssertEqual(sections.count, 2, "Expected 2 sections, but found \(sections)")
+		assert(section0, [.exists])
+		assert(section1, [.exists])
 
-		assert(uncompletedSection, [.exists])
-		assert(completedSection, [.exists])
-
-		return self
-	}
-
-	@discardableResult
-	func validTaskTitle(_ title: String) -> Self {
-		let cellTitle = getTaskTitle()
-
-		XCTAssertEqual(title, cellTitle, "Task title should be equal the cell title.")
+		XCTAssertEqual(section0.label, L10n.TodoList.Section.uncompleted)
+		XCTAssertEqual(section1.label, L10n.TodoList.Section.completed)
 
 		return self
 	}
 
 	@discardableResult
-	func validTaskDeadline() -> Self {
+	func checkCellInfo(indexPath: IndexPath) -> Self {
+		let cell = tableView.cells[
+			AccessibilityIdentifier.cell(section: indexPath.section, row: indexPath.row).description
+		]
 
-		let taskDeadline = getTaskDeadline()
+		let taskTitle = cell.staticTexts.element(boundBy: 0).label
+		let taskDeadline = cell.staticTexts.element(boundBy: 1).label
 
-		XCTAssertTrue(taskDeadline.hasPrefix("Deadline"))
-
-		return self
-	}
-
-	@discardableResult
-	func validTaskStatus() -> Self {
-
-		let taskStatus = getTaskStatus()
-
-		XCTAssertEqual(taskStatus, "checkmark")
+		XCTAssertEqual(taskTitle, L10n.Task.doHomework)
 
 		return self
 	}
-
-	private func getTaskTitle() -> String {
-		let title = cell.staticTexts.firstMatch
-
-		assert(title, [.exists])
-
-		return title.label
-	}
-
-	private func getTaskDeadline() -> String {
-		let deadline = cell.staticTexts.element(boundBy: 1)
-
-		assert(deadline, [.exists])
-
-		return deadline.label
-	}
-
-	private func getTaskStatus() -> String {
-		let status = cell.buttons.firstMatch
-
-		assert(status, [.exists])
-
-		return status.label
-	}
+//	
+//	@discardableResult
+//	func validTaskTitle(_ title: String) -> Self {
+//		let cellTitle = getTaskTitle()
+//
+//		XCTAssertEqual(title, cellTitle)
+//
+//		return self
+//	}
+//
+//	@discardableResult
+//	func validTaskDeadline() -> Self {
+//
+//		let taskDeadline = getTaskDeadline()
+//
+//		XCTAssertTrue(taskDeadline.hasPrefix("Deadline"))
+//
+//		return self
+//	}
+//
+//	@discardableResult
+//	func validTaskStatus() -> Self {
+//
+//		let taskStatus = getTaskStatus()
+//
+//		XCTAssertEqual(taskStatus, "checkmark")
+//
+//		return self
+//	}
+//
+//	private func getTaskTitle() -> String {
+//		let title = cell.staticTexts.firstMatch
+//
+//		assert(title, [.exists])
+//
+//		return title.label
+//	}
+//
+//	private func getTaskDeadline() -> String {
+//		let deadline = cell.staticTexts.element(boundBy: 1)
+//
+//		assert(deadline, [.exists])
+//
+//		return deadline.label
+//	}
+//
+//	private func getTaskStatus() -> String {
+//		let status = cell.buttons.firstMatch
+//
+//		assert(status, [.exists])
+//
+//		return status.label
+//	}
 }

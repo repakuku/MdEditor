@@ -27,6 +27,16 @@ final class AppCoordinator: BaseCoordinator {
 	// MARK: - Internal methods
 
 	override func start() {
+#if DEBUG
+		if CommandLine.arguments.contains("-skipLogin") {
+			runTodoListFlow()
+
+			window?.rootViewController = navigationController
+			window?.makeKeyAndVisible()
+			return
+		}
+#endif
+
 		runLoginFlow()
 	}
 
