@@ -54,9 +54,9 @@ let target = Target(
 		.package(product: "DataStructuresPackage")
 	],
 	settings: .settings(
-		base: [
-			"TARGETED_DEVICE_FAMILY": "1"
-		]
+//		base: [
+//			"TARGETED_DEVICE_FAMILY": "1"
+//		]
 	)
 )
 
@@ -68,14 +68,14 @@ let testTarget = Target(
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .none,
 	sources: ["Tests/**", "Shared/**"],
-	scripts: scripts,
+//	scripts: scripts,
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
 	settings: .settings(
 		base: [
 			"GENERATE_INFOPLIST_FILE": "YES",
-			"TARGETED_DEVICE_FAMILY": "1"
+//			"TARGETED_DEVICE_FAMILY": "1"
 		]
 	)
 )
@@ -89,14 +89,14 @@ let uiTestTarget = Target(
 	infoPlist: .none,
 	sources: ["UITests/**", "Shared/**"],
 	resources: ["Resources/**"],
-	scripts: scripts,
+//	scripts: scripts,
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
 	settings: .settings(
 		base: [
 			"GENERATE_INFOPLIST_FILE": "YES",
-			"TARGETED_DEVICE_FAMILY": "1"
+//			"TARGETED_DEVICE_FAMILY": "1"
 		]
 	)
 )
