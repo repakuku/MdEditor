@@ -8,7 +8,6 @@
 import UIKit
 import TaskManagerPackage
 
-// TODO: Translate documentation
 final class TodoListAssembler {
 
 	// MARK: - Dependencies

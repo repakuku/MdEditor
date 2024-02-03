@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: Translate documentation
 /// LoginModel является NameSpace для отделения ViewData различных экранов друг отдруга
 enum LoginModel {
 	struct Request {

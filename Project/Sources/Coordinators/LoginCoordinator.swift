@@ -7,7 +7,6 @@
 
 import UIKit
 
-// TODO: Add documentation
 protocol ILoginCoordinator: ICoordinator {
 
 	/// Метод для завершении сценария

@@ -7,7 +7,6 @@
 
 import UIKit
 
-// TODO: Translate documentation
 /// Протокол главного экрана приложения.
 protocol ITodoListViewController: AnyObject {
 
@@ -16,7 +15,6 @@ protocol ITodoListViewController: AnyObject {
 	func render(viewModel: TodoListModel.ViewModel)
 }
 
-// TODO: Translate documentation
 /// Главный экран приложения.
 final class TodoListViewController: UITableViewController {
 

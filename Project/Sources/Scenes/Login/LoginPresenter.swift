@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: Translate documentation
 protocol ILoginPresenter {
 
 	/// Отображение экрана со авторизации.
@@ -17,7 +16,6 @@ protocol ILoginPresenter {
 
 typealias LoginResultClosure = (Result<Void, LoginError>) -> Void
 
-// TODO: Translate documentation
 final class LoginPresenter: ILoginPresenter {
 
 	// MARK: - Dependencies

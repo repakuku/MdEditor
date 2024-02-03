@@ -8,7 +8,6 @@
 import XCTest
 @testable import MdEditor
 
-// TODO: Add documentation
 final class UIColorHexTests: XCTestCase {
 
 	func test_init_withValidParameters_shouldBeInitSuccess() {
@@ -20,7 +19,6 @@ final class UIColorHexTests: XCTestCase {
 
 		let sut = UIColor(red: red, green: green, blue: blue, alpha: alpha)
 
-		// TODO: Add error message
 		XCTAssertEqual(sut, expectedColor, "")
 	}
 
@@ -30,7 +28,6 @@ final class UIColorHexTests: XCTestCase {
 
 		let sut = UIColor(hex: color)
 
-		// TODO: Add error message
 		XCTAssertNotEqual(sut, expectedColor, "")
 	}
 
@@ -40,7 +37,6 @@ final class UIColorHexTests: XCTestCase {
 
 		let sut = UIColor(hex: color)
 
-		// TODO: Add error message
 		XCTAssertEqual(sut, expectedColor, "")
 	}
 
@@ -50,7 +46,6 @@ final class UIColorHexTests: XCTestCase {
 
 		let sut = UIColor(hex: color)
 
-		// TODO: Add error message
 		XCTAssertEqual(sut, expectedColor, "")
 	}
 
@@ -60,7 +55,6 @@ final class UIColorHexTests: XCTestCase {
 
 		let sut = UIColor(hex: color)
 
-		// TODO: Add error message
 		XCTAssertEqual(sut, expectedColor, "")
 	}
 
@@ -71,7 +65,6 @@ final class UIColorHexTests: XCTestCase {
 		let sut = UIColor(hex: color)
 
 		XCTAssertNotNil(sut)
-		// TODO: Add error message
 		XCTAssertEqual(sut, expectedColor, "")
 	}
 }

@@ -9,7 +9,6 @@ import UIKit
 
 protocol ILoginViewController: AnyObject {}
 
-// TODO: Add documentation
 final class LoginViewController: UIViewController {
 
 	// MARK: - Dependencies

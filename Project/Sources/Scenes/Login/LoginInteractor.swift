@@ -7,12 +7,10 @@
 
 import Foundation
 
-// TODO: Translate documentation
 protocol ILoginInteractor {
 	func login(request: LoginModel.Request)
 }
 
-// TODO: Translate documentation
 final class LoginInteractor: ILoginInteractor {
 
 	// MARK: - Dependencies

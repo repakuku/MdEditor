@@ -10,7 +10,7 @@ import XCTest
 import TaskManagerPackage
 
 final class TodoListSceneUITests: XCTestCase {
-	
+
 	private let app = XCUIApplication()
 	private lazy var screen = TodoListScreenObject(app: app)
 

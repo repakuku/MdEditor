@@ -6,7 +6,6 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
-// TODO: Add documentation
 protocol ITestCoordinator: AnyObject {
 	func testStart(parameters: [LaunchArguments: Bool])
 }

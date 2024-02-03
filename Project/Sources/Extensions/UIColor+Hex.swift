@@ -8,7 +8,6 @@
 
 import UIKit
 
-// TODO: Add documentation
 extension UIColor {
 	convenience init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8 = 255) {
 		self.init(

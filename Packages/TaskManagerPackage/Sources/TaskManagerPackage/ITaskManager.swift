@@ -5,7 +5,6 @@
 //  Created by Alexey Turulin on 11/22/23.
 //
 
-// TODO: Translate documentation
 /// Протокол для TaskManager
 public protocol ITaskManager {
 	/// Список всех заданий.

@@ -8,7 +8,6 @@
 import Foundation
 import TaskManagerPackage
 
-// TODO: Translate documentation
 enum TodoListModel {
 
 	enum Request {

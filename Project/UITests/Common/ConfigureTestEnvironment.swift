@@ -6,12 +6,9 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
-// TODO: Add documentation
 enum ConfigureTestEnvironment {
 
 	static let lang = ["-AppLanguages", "(en)"]
-	// TODO: Delete this
-//	static let skipLogin = ["-skipLogin"]
 
 	enum InvalidCredentials {
 		static let  login = "pa$$32!"

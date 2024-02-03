@@ -7,14 +7,12 @@
 
 import Foundation
 
-// TODO: Add documentation
 extension DoublyLinkedList.Node: CustomStringConvertible {
 	public var description: String {
 		"\(value)"
 	}
 }
 
-// TODO: Add documentation
 extension DoublyLinkedList: CustomStringConvertible {
 	public var description: String {
 		var values = [String]()

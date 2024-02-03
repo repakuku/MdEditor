@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// TODO: Add documentation
 extension UIViewController {
 	struct Preview: UIViewControllerRepresentable {
 		let viewController: UIViewController

@@ -8,7 +8,6 @@
 import Foundation
 import TaskManagerPackage
 
-// TODO: Translate documentation
 /// Репозиторий для получения заданий.
 protocol ITaskRepository {
 

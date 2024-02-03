@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: Add documentation
 public struct DoublyLinkedList<T: Equatable> {
 
 	final class Node<N> {

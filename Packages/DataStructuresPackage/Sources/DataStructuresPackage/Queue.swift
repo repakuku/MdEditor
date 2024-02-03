@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: Add documentation
 public struct Queue<T: Equatable> {
 
 	private var elements = DoublyLinkedList<T>()
