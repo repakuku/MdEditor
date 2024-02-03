@@ -33,11 +33,11 @@ enum AccessibilityIdentifier {
 		var description: String {
 			switch self {
 			case .table:
-				"todoListScene.table"
+				return "todoListScene.table"
 			case .section(let index):
-				"todoListScene.section-\(index)"
+				return "todoListScene.section-\(index)"
 			case .cell(section: let section, row: let row):
-				"todoListScene.cell-\(section)-\(row)"
+				return "todoListScene.cell-\(section)-\(row)"
 			}
 		}
 	}
