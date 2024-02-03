@@ -8,6 +8,7 @@
 import Foundation
 import TaskManagerPackage
 
+// TODO: Translate documentation
 /// Протокол адаптера, позволяющего использовать TaskManager для предоставления заданий по секциям.
 protocol ISectionForTaskManagerAdapter {
 

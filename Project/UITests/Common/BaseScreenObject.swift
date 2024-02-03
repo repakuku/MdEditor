@@ -8,6 +8,7 @@
 
 import XCTest
 
+// TODO: Add documentation
 class BaseScreenObject {
 
 	// MARK: - Dependencies

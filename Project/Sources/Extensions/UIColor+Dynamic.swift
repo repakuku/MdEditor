@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: Add documentation
 extension UIColor {
 	static func color(light: UIColor, dark: UIColor, highContrastLight: UIColor, highContrastDark: UIColor) -> UIColor {
 		if #available(iOS 13, *) {

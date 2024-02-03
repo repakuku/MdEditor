@@ -6,6 +6,7 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
+// TODO: Add documentation
 enum LaunchArguments: String {
 	case enableTesting = "-enableTesting"
 	case skipLogin = "-skipLogin"

@@ -10,7 +10,7 @@ import XCTest
 import TaskManagerPackage
 
 final class TodoListSceneUITests: XCTestCase {
-
+	
 	private let app = XCUIApplication()
 	private lazy var screen = TodoListScreenObject(app: app)
 
@@ -22,16 +22,14 @@ final class TodoListSceneUITests: XCTestCase {
 		app.launch()
 	}
 
-	// TODO: Change func name
-	func test_sections_mustBeValid() {
+	func test_sectionTitles_mustBeValidTitle() {
 		screen
 			.isTodoListScreen()
 			.checkSectionTitle(index: 0, title: L10n.TodoList.Section.uncompleted)
 			.checkSectionTitle(index: 1, title: L10n.TodoList.Section.completed)
 	}
 
-	// TODO: Change func name
-	func test_task_mustBeValid() {
+	func test_taskCountAndTitles_mustBeValidCountAndTitles() {
 		screen
 			.isTodoListScreen()
 			.checkCountOfSelectedItems(1)
@@ -43,13 +41,12 @@ final class TodoListSceneUITests: XCTestCase {
 			.checkCellTitle(section: 1, row: 0, title: L10n.Task.doWorkout)
 	}
 
-	// TODO: Change func name
-	func test_doTask_mustBeValid() {
+	func test_doTaskCompleted_mustBeCompleted() {
 		screen
 			.isTodoListScreen()
 			.tapOnCell(section: 0, row: 0)
-			.checkCountOfSelectedItems(2)
-			.checkCountOfNotSelectedItems(3)
+			.checkCountOfSelectedItems(1)
+			.checkCountOfNotSelectedItems(4)
 			.checkCellTitle(section: 0, row: 0, title: L10n.Task.goShopping)
 			.checkCellTitle(section: 0, row: 1, title: L10n.Task.writeNewTasks)
 			.checkCellTitle(section: 0, row: 2, title: L10n.Task.solve3Algorithms)
@@ -57,8 +54,7 @@ final class TodoListSceneUITests: XCTestCase {
 			.checkCellTitle(section: 1, row: 1, title: L10n.Task.doWorkout)
 	}
 
-	// TODO: Change func name
-	func test_undoTask_mustBeValid() {
+	func test_undoTaskCompleted_mustBeUncompleted() {
 		screen
 			.isTodoListScreen()
 			.tapOnCell(section: 1, row: 0)

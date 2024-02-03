@@ -8,6 +8,7 @@
 import Foundation
 import TaskManagerPackage
 
+// TODO: Translate documentation
 protocol ITodoListPresenter {
 
 	/// Отображение экрана со списком заданий.
@@ -17,6 +18,7 @@ protocol ITodoListPresenter {
 
 typealias EmptyClosure = () -> Void
 
+// TODO: Translate documentation
 final class TodoListPresenter: ITodoListPresenter {
 
 	// MARK: - Dependencies

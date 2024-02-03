@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: Translate documentation
 /// Протокол главного экрана приложения.
 protocol ITodoListViewController: AnyObject {
 
@@ -15,6 +16,7 @@ protocol ITodoListViewController: AnyObject {
 	func render(viewModel: TodoListModel.ViewModel)
 }
 
+// TODO: Translate documentation
 /// Главный экран приложения.
 final class TodoListViewController: UITableViewController {
 
@@ -58,8 +60,8 @@ extension TodoListViewController {
 	}
 
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		let header = tableView.headerView(forSection: section)
-		header?.accessibilityIdentifier = AccessibilityIdentifier.TodoListScene.section(section).description
+		let sectionView = tableView.headerView(forSection: section)
+		sectionView?.accessibilityIdentifier = AccessibilityIdentifier.TodoListScene.section(section).description
 
 		return viewModel.tasksBySections[section].title
 	}

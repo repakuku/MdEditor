@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Translate documentation
 /// Задание, для ведения списка дел.
 public class Task {
 

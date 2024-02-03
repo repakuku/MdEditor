@@ -5,6 +5,7 @@
 //  Created by Alexey Turulin on 11/22/23.
 //
 
+// TODO: Translate documentation
 /// Менеджер списка заданий.
 public final class TaskManager {
 	private var taskList = [Task]()

@@ -8,6 +8,7 @@
 
 import Foundation
 
+// TODO: Add documentation
 enum Predicate {
 	case contains(String)
 	case doesNotContain(String)

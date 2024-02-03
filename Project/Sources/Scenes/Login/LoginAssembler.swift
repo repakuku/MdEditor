@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: Translate documentation
 final class LoginAssembler {
 
 	/// Сборка модуля авторизации

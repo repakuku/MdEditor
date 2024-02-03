@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Translate documentation
 protocol ITodoListInteractor {
 
 	/// Событие на предоставление информации для списка заданий.
@@ -17,6 +18,7 @@ protocol ITodoListInteractor {
 	func didTaskSelected(request: TodoListModel.Request.TaskSelected)
 }
 
+// TODO: Translate documentation
 final class TodoListInteractor: ITodoListInteractor {
 
 	// MARK: - Dependencies

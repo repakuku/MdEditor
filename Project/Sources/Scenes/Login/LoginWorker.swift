@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Translate documentation
 protocol ILoginWorker {
 
 	/// Авторизация пользователя.
@@ -17,10 +18,12 @@ protocol ILoginWorker {
 	func login(login: String, password: String) -> Result<Void, LoginError>
 }
 
+// TODO: Add documentation
 enum LoginError: Error {
 	case wrongLoginOrPassword
 }
 
+// TODO: Translate documentation
 final class LoginWorker: ILoginWorker {
 
 	// MARK: - Private properties

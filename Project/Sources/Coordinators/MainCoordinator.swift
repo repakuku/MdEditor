@@ -8,6 +8,7 @@
 import UIKit
 import TaskManagerPackage
 
+// TODO: Add documentation
 final class MainCoordinator: ICoordinator {
 
 	// MARK: - Dependencies

@@ -6,6 +6,7 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
+// TODO: Add documentation
 enum AccessibilityIdentifier {
 
 	enum LoginScene: CustomStringConvertible {
@@ -41,7 +42,4 @@ enum AccessibilityIdentifier {
 			}
 		}
 	}
-}
-
-extension AccessibilityIdentifier {
 }

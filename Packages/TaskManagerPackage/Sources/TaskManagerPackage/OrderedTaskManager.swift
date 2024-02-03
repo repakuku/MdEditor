@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Translate documentation
 /// Предоставляет список заданий, отсортированных по приоритету.
 public final class OrderedTaskManager: ITaskManager {
 
