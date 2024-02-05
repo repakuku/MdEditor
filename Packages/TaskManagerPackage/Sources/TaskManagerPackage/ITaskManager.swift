@@ -27,22 +27,9 @@ public protocol ITaskManager {
 	/// - Parameter tasks: Массив заданий.
 	func addTasks(tasks: [Task])
 
-	/// Удаление задания из списка. При вызове метода будут удалены все варианты этого задания по идентичности Task.
+	/// Удаление задания из списка.
 	/// - Parameter task: Задание, которое необходимо удалить.
 	func removeTask(task: Task)
 }
 
 extension TaskManager: ITaskManager { }
-
-extension ImportantTask.TaskPriority: CustomStringConvertible {
-	public var description: String {
-		switch self {
-		case .high:
-			return "!!!"
-		case .medium:
-			return "!!"
-		case .low:
-			return "!"
-		}
-	}
-}
