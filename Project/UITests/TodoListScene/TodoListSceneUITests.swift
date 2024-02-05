@@ -45,8 +45,8 @@ final class TodoListSceneUITests: XCTestCase {
 		screen
 			.isTodoListScreen()
 			.tapOnCell(section: 0, row: 0)
-			.checkCountOfSelectedItems(1)
-			.checkCountOfNotSelectedItems(4)
+			.checkCountOfSelectedItems(2)
+			.checkCountOfNotSelectedItems(3)
 			.checkCellTitle(section: 0, row: 0, title: L10n.Task.goShopping)
 			.checkCellTitle(section: 0, row: 1, title: L10n.Task.writeNewTasks)
 			.checkCellTitle(section: 0, row: 2, title: L10n.Task.solve3Algorithms)
@@ -58,8 +58,8 @@ final class TodoListSceneUITests: XCTestCase {
 		screen
 			.isTodoListScreen()
 			.tapOnCell(section: 1, row: 0)
-			.checkCountOfSelectedItems(2)
-			.checkCountOfNotSelectedItems(3)
+			.checkCountOfSelectedItems(0)
+			.checkCountOfNotSelectedItems(5)
 			.checkCellTitle(section: 0, row: 0, title: L10n.Task.doHomework)
 			.checkCellTitle(section: 0, row: 1, title: L10n.Task.goShopping)
 			.checkCellTitle(section: 0, row: 2, title: L10n.Task.writeNewTasks)
