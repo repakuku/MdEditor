@@ -1,14 +1,9 @@
 cd ./Project
-# curl -Ls https: install.tuist.io | bash
-# tuist install 3.36.2
 
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# brew install mise
-
-curl https://mise.run | sh
-mise activate
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install mise
 mise install tuist@3.36.2
-tuist fetch
+mise exec -- tuist fetch
 tuist generate
 
 xcodebuild clean -quiet
