@@ -2,8 +2,10 @@ cd ./Project
 # curl -Ls https: install.tuist.io | bash
 # tuist install 3.36.2
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install mise
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# brew install mise
+
+curl https://mise.run | sh
 mise activate
 mise install tuist@3.36.2
 tuist fetch
