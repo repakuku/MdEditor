@@ -4,8 +4,7 @@ cd ./Project
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install mise
-mise install tuist
-
+mise install tuist@3.36.2
 tuist fetch
 tuist generate
 
