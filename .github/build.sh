@@ -4,7 +4,7 @@ cd ./Project
 brew install mise
 mise install tuist@3.36.2
 mise exec -- tuist fetch
-tuist generate
+mise exec -- tuist generate
 
 xcodebuild clean -quiet
 xcodebuild build-for-testing \
