@@ -92,7 +92,7 @@ extension TodoListViewController {
 
 private extension TodoListViewController {
 
-	private func setupUI() {
+	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
 		title = L10n.TodoList.title
 		navigationController?.navigationBar.prefersLargeTitles = true

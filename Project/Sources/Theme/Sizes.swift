@@ -35,5 +35,10 @@ enum Sizes {
 		static let width: CGFloat = 80
 		static let height: CGFloat = 30
 	}
+
+	enum CollectionView {
+		static let height: CGFloat = 200
+		static let cellSize = CGSize(width: 108, height: 168)
+	}
 }
 // swiftlint:enable type_name

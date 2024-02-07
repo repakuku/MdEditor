@@ -22,6 +22,10 @@
 "Login.passwordPlaceholder" = "Password";
 "Login.buttonLogin" = "Login";
 
+// MARK: - MainScreen
+
+"Main.title" = "MdEditor";
+
 // MARK: - TodoListScreen
 
 "TodoList.title" = "Tasks";

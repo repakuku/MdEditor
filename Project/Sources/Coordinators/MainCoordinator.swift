@@ -1,36 +1,36 @@
 //
-//  TodoListCoordinator.swift
+//  StartCoordinator.swift
 //  MdEditor
 //
-//  Created by Alexey Turulin on 1/14/24.
+//  Created by Alexey Turulin on 2/6/24.
+//  Copyright © 2024 repakuku. All rights reserved.
 //
 
 import UIKit
-import TaskManagerPackage
 
 final class MainCoordinator: ICoordinator {
 
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let taskManager: ITaskManager
+	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, taskManager: ITaskManager) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer) {
 		self.navigationController = navigationController
-		self.taskManager = taskManager
+		self.fileExplorer = fileExplorer
 	}
 
 	// MARK: - Internal methods
 
 	func start() {
-		showTodoListScene()
+		showStartScene()
 	}
 
-	private func showTodoListScene() {
-		let assembler = TodoListAssembler(taskManager: taskManager)
-		let viewController = assembler.assembly()
+	func showStartScene() {
+		let assembler = MainAssembler()
+		let viewController = assembler.assembly(fileExplorer: fileExplorer)
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }

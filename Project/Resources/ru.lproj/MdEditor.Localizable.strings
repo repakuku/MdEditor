@@ -22,6 +22,10 @@
 "Login.passwordPlaceholder" = "Пароль";
 "Login.buttonLogin" = "Войти";
 
+// MARK: - MainScreen
+
+"Main.title" = "MdEditor";
+
 // MARK: - TodoList strings
 
 "TodoList.title" = "Задачи";

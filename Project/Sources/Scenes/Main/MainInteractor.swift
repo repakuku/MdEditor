@@ -1,5 +1,5 @@
 //
-//  StartInteractor.swift
+//  MainInteractor.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,19 +8,19 @@
 
 import Foundation
 
-protocol IStartInteractor {
+protocol IMainInteractor {
 	func fetchData()
 }
 
-final class StartInteractor: IStartInteractor {
+final class MainInteractor: IMainInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: IStartPresenter?
+	private var presenter: IMainPresenter?
 
 	// MARK: - Initialization
 
-	init(presenter: IStartPresenter? = nil) {
+	init(presenter: IMainPresenter? = nil) {
 		self.presenter = presenter
 	}
 

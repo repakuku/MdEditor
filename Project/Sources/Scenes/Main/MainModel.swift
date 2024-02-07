@@ -1,5 +1,5 @@
 //
-//  StartModel.swift
+//  MainModel.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,11 +8,8 @@
 
 import Foundation
 
-struct File {
-}
-
-enum StartModel {
+enum MainModel {
 	struct ViewModel {
-		let files: [File]
+		let files: [IFile]
 	}
 }
