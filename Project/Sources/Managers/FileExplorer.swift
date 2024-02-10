@@ -9,38 +9,40 @@
 import Foundation
 
 protocol IFile {
-	var name: String { get set }
+	var url: URL { get set }
 }
 
 struct File: IFile {
-	var name = ""
+	var url: URL
 }
 
 protocol IFileExplorer {
-	func getFiles() -> [IFile]
+	func getRecentFiles() -> [IFile]
 }
 
 final class FileExplorer: IFileExplorer {
 
-	private var files: [IFile]
+	// MARK: - Dependencies
 
-	init(files: [IFile] = []) {
-		self.files = files
+	private let fileManager: FileManager
+
+	// MARK: - Private Properties
+
+	private var files: [IFile] = []
+	private var recentFiles: [IFile] = []
+
+	// MARK: - Initialization
+
+	init(fileManager: FileManager) {
+		self.fileManager = fileManager
 	}
 
-	func getFiles() -> [IFile] {
-		files
-	}
-}
+	// MARK: - Public Methods
 
-final class FileExplorerStub: IFileExplorer {
-	func getFiles() -> [IFile] {
-		[
-			File(name: "File1"),
-			File(name: "File2"),
-			File(name: "File3"),
-			File(name: "File4"),
-			File(name: "File5")
-		]
+	func getRecentFiles() -> [IFile] {
+		return recentFiles
 	}
+
+	// MARK: - Private Methods
+
 }

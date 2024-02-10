@@ -40,5 +40,9 @@ enum Sizes {
 		static let height: CGFloat = 200
 		static let cellSize = CGSize(width: 108, height: 168)
 	}
+
+	enum Button {
+		static let imageReservation: CGFloat = 30
+	}
 }
 // swiftlint:enable type_name

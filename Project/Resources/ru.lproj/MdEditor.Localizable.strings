@@ -25,6 +25,9 @@
 // MARK: - MainScreen
 
 "Main.title" = "MdEditor";
+"Main.buttonNew" = "Новый";
+"Main.buttonOpen" = "Открыть";
+"Main.buttonAbout" = "О приложении";
 
 // MARK: - TodoList strings
 

@@ -20,12 +20,21 @@ final class MainViewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel = MainModel.ViewModel(files: [])
+	private var viewModel = MainModel.ViewModel(recentFiles: [])
 
 	private lazy var collectionView: UICollectionView = makeCollectionView()
-	private lazy var buttonNew: UIButton = makeButton()
-	private lazy var buttonOpen: UIButton = makeButton()
-	private lazy var buttonAbout: UIButton = makeButton()
+	private lazy var buttonNew: UIButton = makeButton(
+		withTitle: L10n.Main.buttonNew,
+		andImage: Asset.Icons.doc.image
+	)
+	private lazy var buttonOpen: UIButton = makeButton(
+		withTitle: L10n.Main.buttonOpen,
+		andImage: Asset.Icons.folder.image
+	)
+	private lazy var buttonAbout: UIButton = makeButton(
+		withTitle: L10n.Main.buttonAbout,
+		andImage: Asset.Icons.infoBubble.image
+	)
 
 	private var constraints = [NSLayoutConstraint]()
 
@@ -90,8 +99,15 @@ private extension MainViewController {
 		return collectionView
 	}
 
-	func makeButton() -> UIButton {
+	func makeButton(withTitle title: String, andImage image: UIImage) -> UIButton {
 		let button = UIButton()
+
+		button.configuration = .plain()
+		button.configuration?.title = title
+		button.configuration?.image = image.withTintColor(Theme.mainColor)
+		button.configuration?.imageReservation = Sizes.Button.imageReservation
+		button.configuration?.imagePadding = Sizes.Padding.half
+		button.configuration?.baseForegroundColor = Theme.mainColor
 
 		button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -124,7 +140,19 @@ private extension MainViewController {
 			collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 			collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-			collectionView.heightAnchor.constraint(equalToConstant: Sizes.CollectionView.height)
+			collectionView.heightAnchor.constraint(equalToConstant: Sizes.CollectionView.height),
+
+			buttonNew.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Sizes.Padding.normal),
+			buttonNew.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+			buttonNew.heightAnchor.constraint(equalToConstant: Sizes.M.height),
+
+			buttonOpen.topAnchor.constraint(equalTo: buttonNew.bottomAnchor, constant: Sizes.Padding.normal),
+			buttonOpen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+			buttonOpen.heightAnchor.constraint(equalToConstant: Sizes.M.height),
+
+			buttonAbout.topAnchor.constraint(equalTo: buttonOpen.bottomAnchor, constant: Sizes.Padding.normal),
+			buttonAbout.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+			buttonAbout.heightAnchor.constraint(equalToConstant: Sizes.M.height)
 		]
 
 		NSLayoutConstraint.activate(newConstraints)
@@ -137,7 +165,8 @@ private extension MainViewController {
 
 extension MainViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		viewModel.files.count
+//		viewModel.files.count
+		5
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

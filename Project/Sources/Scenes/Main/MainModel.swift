@@ -10,6 +10,6 @@ import Foundation
 
 enum MainModel {
 	struct ViewModel {
-		let files: [IFile]
+		let recentFiles: [IFile]
 	}
 }

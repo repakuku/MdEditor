@@ -25,6 +25,9 @@
 // MARK: - MainScreen
 
 "Main.title" = "MdEditor";
+"Main.buttonNew" = "New";
+"Main.buttonOpen" = "Open";
+"Main.buttonAbout" = "About";
 
 // MARK: - TodoListScreen
 

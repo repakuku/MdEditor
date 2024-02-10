@@ -29,7 +29,8 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Public Methods
 
 	func present() {
-		let viewModel = MainModel.ViewModel(files: fileExplorer.getFiles())
+		let recentFiles = fileExplorer.getRecentFiles()
+		let viewModel = MainModel.ViewModel(recentFiles: recentFiles)
 		viewController?.render(viewModel: viewModel)
 	}
 }
