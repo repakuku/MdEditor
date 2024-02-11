@@ -10,6 +10,7 @@ import Foundation
 
 protocol IMainInteractor {
 	func fetchData()
+	func buttonAboutPressed()
 }
 
 final class MainInteractor: IMainInteractor {
@@ -29,5 +30,9 @@ final class MainInteractor: IMainInteractor {
 	func fetchData() {
 		#warning("TODO: fetch data here")
 		presenter?.present()
+	}
+
+	func buttonAboutPressed() {
+		presenter?.presentAboutScreen()
 	}
 }

@@ -15,6 +15,10 @@ final class MainCoordinator: ICoordinator {
 	private let navigationController: UINavigationController
 	private let fileExplorer: FileExplorer
 
+	// MARK: - Internal properties
+
+	var finishFlow: (() -> Void)?
+
 	// MARK: - Initialization
 
 	init(navigationController: UINavigationController, fileExplorer: FileExplorer) {
@@ -30,7 +34,9 @@ final class MainCoordinator: ICoordinator {
 
 	func showStartScene() {
 		let assembler = MainAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer)
+		let viewController = assembler.assembly(fileExplorer: fileExplorer) { [weak self] in
+			self?.finishFlow?()
+		}
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }

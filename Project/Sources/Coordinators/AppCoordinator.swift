@@ -57,6 +57,11 @@ final class AppCoordinator: BaseCoordinator {
 		)
 		addDependency(coordinator)
 
+		coordinator.finishFlow = { [weak self, weak coordinator] in
+			self?.runAboutFlow()
+			coordinator.map { self?.removeDependency($0) }
+		}
+
 		coordinator.start()
 	}
 
@@ -78,7 +83,7 @@ extension AppCoordinator: ITestCoordinator {
 		window?.makeKeyAndVisible()
 
 		if let skipLogin = parameters[LaunchArguments.skipLogin], skipLogin {
-			runAboutFlow()
+			runMainFlow()
 		} else {
 			runLoginFlow()
 		}

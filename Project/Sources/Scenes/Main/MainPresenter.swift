@@ -10,6 +10,7 @@ import Foundation
 
 protocol IMainPresenter {
 	func present()
+	func presentAboutScreen()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -18,12 +19,14 @@ final class MainPresenter: IMainPresenter {
 
 	private weak var viewController: IMainViewController?
 	private let fileExplorer: FileExplorer
+	private let closure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, fileExplorer: FileExplorer) {
+	init(viewController: IMainViewController, fileExplorer: FileExplorer, closure: (() -> Void)?) {
 		self.viewController = viewController
 		self.fileExplorer = fileExplorer
+		self.closure = closure
 	}
 
 	// MARK: - Public Methods
@@ -39,5 +42,9 @@ final class MainPresenter: IMainPresenter {
 
 		let viewModel = MainModel.ViewModel(recentFiles: onlyFiles)
 		viewController?.render(viewModel: viewModel)
+	}
+
+	func presentAboutScreen() {
+		closure?()
 	}
 }
