@@ -81,10 +81,7 @@ private extension MainViewController {
 		)
 		layout.scrollDirection = .horizontal
 
-		let collectionView = UICollectionView(
-			frame: view.frame,
-			collectionViewLayout: layout
-		)
+		let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
 
 		collectionView.dataSource = self
 		collectionView.delegate = self
@@ -128,6 +125,21 @@ private extension MainViewController {
 		view.addSubview(buttonOpen)
 		view.addSubview(buttonAbout)
 	}
+
+	func configureCell(_ cell: UICollectionViewCell, with file: MainModel.ViewModel.RecentFile) {
+		let label = UILabel()
+
+		label.text = file.name
+		label.font = UIFont.systemFont(ofSize: Sizes.CollectionView.fontSize)
+		label.textAlignment = .center
+		label.frame.origin = CGPoint(x: .zero, y: cell.bounds.height + Sizes.Padding.half)
+		label.frame.size = CGSize(width: cell.bounds.width, height: Sizes.CollectionView.labelHeight)
+
+		cell.addSubview(label)
+
+		cell.backgroundColor = Theme.accentColor
+		cell.layer.cornerRadius = Sizes.cornerRadius
+	}
 }
 
 // MARK: - Layout UI
@@ -165,13 +177,13 @@ private extension MainViewController {
 
 extension MainViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//		viewModel.files.count
-		5
+		viewModel.recentFiles.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-		cell.backgroundColor = Theme.accentColor
+		let file = viewModel.recentFiles[indexPath.row]
+		configureCell(cell, with: file)
 		return cell
 	}
 }

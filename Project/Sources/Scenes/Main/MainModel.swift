@@ -10,6 +10,10 @@ import Foundation
 
 enum MainModel {
 	struct ViewModel {
-		let recentFiles: [IFile]
+		let recentFiles: [RecentFile]
+
+		struct RecentFile {
+			let name: String
+		}
 	}
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 final class MainAssembler {
-	func assembly(fileExplorer: IFileExplorer) -> MainViewController {
+	func assembly(fileExplorer: FileExplorer) -> MainViewController {
 		let viewController = MainViewController()
 		let presenter = MainPresenter(viewController: viewController, fileExplorer: fileExplorer)
 		let interactor = MainInteractor(presenter: presenter)

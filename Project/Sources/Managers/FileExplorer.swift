@@ -8,19 +8,33 @@
 
 import Foundation
 
-protocol IFile {
-	var url: URL { get set }
+// enum Path {
+//	case notes
+//
+//	var description: String {
+//		switch self {
+//		case .notes:
+//			return "/Notes"
+//		}
+//	}
+// }
+
+struct File {
+
+	enum FileType {
+		case file
+		case folder
+	}
+
+	var name = ""
+	var path = ""
+	var ext = ""
+	var type: FileType
+	var size: UInt64 = 0
+	var creationDate = Date()
 }
 
-struct File: IFile {
-	var url: URL
-}
-
-protocol IFileExplorer {
-	func getRecentFiles() -> [IFile]
-}
-
-final class FileExplorer: IFileExplorer {
+final class FileExplorer {
 
 	// MARK: - Dependencies
 
@@ -28,8 +42,7 @@ final class FileExplorer: IFileExplorer {
 
 	// MARK: - Private Properties
 
-	private var files: [IFile] = []
-	private var recentFiles: [IFile] = []
+	private var files: [File] = []
 
 	// MARK: - Initialization
 
@@ -39,10 +52,62 @@ final class FileExplorer: IFileExplorer {
 
 	// MARK: - Public Methods
 
-	func getRecentFiles() -> [IFile] {
-		return recentFiles
+	func getFiles(from path: String) -> [File] {
+		scan(path: path)
+		return files
 	}
 
-	// MARK: - Private Methods
+	func getRecentFiles() -> [File] {
+		[]
+	}
 
+	// MARK: - Private methods
+
+	private func scan(path: String) {
+		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
+		files.removeAll()
+
+		var onlyFiles = [File]()
+		var onlyFolders = [File]()
+
+		do {
+			let items = try fileManager.contentsOfDirectory(atPath: fullPath)
+
+			for item in items {
+				if let file = getFile(withName: item, atPath: path) {
+					switch file.type {
+					case .file:
+						onlyFiles.append(file)
+					case .folder:
+						onlyFolders.append(file)
+					}
+				}
+			}
+		} catch {
+		}
+
+		files.append(contentsOf: onlyFolders)
+		files.append(contentsOf: onlyFiles)
+	}
+
+	private func getFile(withName name: String, atPath path: String) -> File? {
+		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
+
+		do {
+			let attributes = try fileManager.attributesOfItem(atPath: fullPath + "/" + name)
+
+			var file = File(type: .file)
+			file.name = name
+			file.path = path
+
+			if attributes[FileAttributeKey.type] as? FileAttributeType == FileAttributeType.typeDirectory {
+				file.type = .folder
+			}
+
+			return file
+		} catch {
+		}
+
+		return nil
+	}
 }

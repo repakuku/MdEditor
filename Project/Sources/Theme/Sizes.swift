@@ -38,7 +38,10 @@ enum Sizes {
 
 	enum CollectionView {
 		static let height: CGFloat = 200
-		static let cellSize = CGSize(width: 108, height: 168)
+		static let cellSize = CGSize(width: 100, height: 150)
+
+		static let fontSize: CGFloat = 10
+		static let labelHeight: CGFloat = 15
 	}
 
 	enum Button {

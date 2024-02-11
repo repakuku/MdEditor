@@ -15,11 +15,11 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
-	private let fileExplorer: IFileExplorer
+	private let fileExplorer: FileExplorer
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: IFileExplorer) {
+	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: FileExplorer) {
 		self.window = window
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
