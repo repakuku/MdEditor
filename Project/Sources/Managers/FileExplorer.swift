@@ -8,17 +8,6 @@
 
 import Foundation
 
-// enum Path {
-//	case notes
-//
-//	var description: String {
-//		switch self {
-//		case .notes:
-//			return "/Notes"
-//		}
-//	}
-// }
-
 struct File {
 
 	enum FileType {
@@ -47,7 +36,13 @@ struct File {
 	}
 }
 
-final class FileExplorer {
+protocol IFileExplorer {
+	init(fileManager: FileManager)
+	func getFiles(from path: String) -> [File]
+	func getFile(withName name: String, atPath path: String) -> File?
+}
+
+final class FileExplorer: IFileExplorer {
 
 	// MARK: - Dependencies
 
@@ -70,13 +65,9 @@ final class FileExplorer {
 		return files
 	}
 
-	func getRecentFiles() -> [File] {
-		[]
-	}
-
 	// MARK: - Private methods
 
-	private func scan(path: String) {
+	func scan(path: String) {
 		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
 		files.removeAll()
 

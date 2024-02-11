@@ -10,7 +10,7 @@ import UIKit
 
 final class AboutAssembler {
 	func assembly(
-		fileExplorer: FileExplorer,
+		fileExplorer: IFileExplorer,
 		converter: IMarkdownToHTMLConverter,
 		backClosure: (() -> Void)?
 	) -> AboutViewController {

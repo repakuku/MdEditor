@@ -13,7 +13,7 @@ final class AboutCoordinator: ICoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let fileExplorer: FileExplorer
+	private let fileExplorer: IFileExplorer
 	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Internal properties
@@ -22,7 +22,7 @@ final class AboutCoordinator: ICoordinator {
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, fileExplorer: FileExplorer, converter: IMarkdownToHTMLConverter) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
 		self.converter = converter

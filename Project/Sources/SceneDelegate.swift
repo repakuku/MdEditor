@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	private var repository = TaskRepositoryStub()
 	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var fileExplorer: FileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var fileExplorer: IFileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var fileManager: FileManager! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var converter: IMarkdownToHTMLConverter! // swiftlint:disable:this implicitly_unwrapped_optional
 

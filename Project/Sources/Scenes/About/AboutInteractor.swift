@@ -18,11 +18,11 @@ final class AboutInteractor: IAboutInteractor {
 	// MARK: - Dependencies
 
 	private var presenter: IAboutPresenter?
-	private var fileExplorer: FileExplorer
+	private var fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(presenter: IAboutPresenter, fileExplorer: FileExplorer) {
+	init(presenter: IAboutPresenter, fileExplorer: IFileExplorer) {
 		self.presenter = presenter
 		self.fileExplorer = fileExplorer
 	}

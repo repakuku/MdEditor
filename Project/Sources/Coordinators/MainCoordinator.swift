@@ -13,7 +13,7 @@ final class MainCoordinator: ICoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let fileExplorer: FileExplorer
+	private let fileExplorer: IFileExplorer
 
 	// MARK: - Internal properties
 
@@ -21,7 +21,7 @@ final class MainCoordinator: ICoordinator {
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, fileExplorer: FileExplorer) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
 	}

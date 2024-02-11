@@ -18,12 +18,12 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController?
-	private let fileExplorer: FileExplorer
+	private let fileExplorer: IFileExplorer
 	private let closure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, fileExplorer: FileExplorer, closure: (() -> Void)?) {
+	init(viewController: IMainViewController, fileExplorer: IFileExplorer, closure: (() -> Void)?) {
 		self.viewController = viewController
 		self.fileExplorer = fileExplorer
 		self.closure = closure
@@ -32,7 +32,7 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Public Methods
 
 	func present() {
-		let recentFiles = fileExplorer.getRecentFiles()
+		let recentFiles = fileExplorer.getFiles(from: "/Notes")
 		var onlyFiles = [MainModel.ViewModel.RecentFile]()
 
 		for file in recentFiles {

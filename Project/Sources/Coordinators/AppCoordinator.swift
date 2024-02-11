@@ -15,12 +15,12 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
-	private let fileExplorer: FileExplorer
+	private let fileExplorer: IFileExplorer
 	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: FileExplorer, converter: IMarkdownToHTMLConverter) {
+	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
 		self.window = window
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
@@ -57,7 +57,7 @@ final class AppCoordinator: BaseCoordinator {
 		)
 		addDependency(coordinator)
 
-		coordinator.finishFlow = { [weak self, weak coordinator] in
+		coordinator.finishFlow = { [weak self] in
 			self?.runAboutFlow()
 		}
 
