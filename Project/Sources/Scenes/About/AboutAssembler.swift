@@ -15,10 +15,9 @@ final class AboutAssembler {
 		backClosure: (() -> Void)?
 	) -> AboutViewController {
 		let viewController = AboutViewController()
-		let worker: IAboutWorker = AboutWorker(converter: converter)
 		let presenter: IAboutPresenter = AboutPresenter(
 			viewController: viewController,
-			worker: worker,
+			worker: converter,
 			backClosure: backClosure
 		)
 		let interactor: IAboutInteractor = AboutInteractor(presenter: presenter, fileExplorer: fileExplorer)

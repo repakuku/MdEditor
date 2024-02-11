@@ -18,12 +18,12 @@ final class AboutPresenter: IAboutPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: AboutViewController?
-	private var worker: IAboutWorker
+	private var worker: IMarkdownToHTMLConverter
 	private var backClosure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: AboutViewController, worker: IAboutWorker, backClosure: (() -> Void)?) {
+	init(viewController: AboutViewController, worker: IMarkdownToHTMLConverter, backClosure: (() -> Void)?) {
 		self.viewController = viewController
 		self.worker = worker
 		self.backClosure = backClosure
