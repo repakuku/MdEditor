@@ -17,8 +17,8 @@ final class MainInteractor: IMainInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: IMainPresenter?
-	private var fileExplorer: IFileExplorer?
+	private let presenter: IMainPresenter
+	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
@@ -32,14 +32,13 @@ final class MainInteractor: IMainInteractor {
 	func fetchData() {
 		var response = MainModel.Response(files: [])
 
-		if let files = fileExplorer?.getFiles(from: "/Notes") {
-			response.files = files
-		}
+		let files = fileExplorer.getFiles(from: "/Notes")
+		response.files = files
 
-		presenter?.present(response: response)
+		presenter.present(response: response)
 	}
 
 	func buttonAboutPressed() {
-		presenter?.presentAboutScreen()
+		presenter.presentAboutScreen()
 	}
 }

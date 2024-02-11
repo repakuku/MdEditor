@@ -15,8 +15,8 @@ final class LoginInteractor: ILoginInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: ILoginPresenter?
-	private var worker: ILoginWorker
+	private let presenter: ILoginPresenter
+	private let worker: ILoginWorker
 
 	// MARK: - Initialization
 
@@ -31,6 +31,6 @@ final class LoginInteractor: ILoginInteractor {
 		let result = worker.login(login: request.login, password: request.password)
 		let responce = LoginModel.Response(result: result)
 
-		presenter?.present(responce: responce)
+		presenter.present(responce: responce)
 	}
 }

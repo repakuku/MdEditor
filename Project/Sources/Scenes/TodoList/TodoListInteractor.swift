@@ -21,8 +21,8 @@ final class TodoListInteractor: ITodoListInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: ITodoListPresenter
-	private var sectionManager: ISectionForTaskManagerAdapter
+	private let presenter: ITodoListPresenter
+	private let sectionManager: ISectionForTaskManagerAdapter
 
 	// MARK: - Initialization
 

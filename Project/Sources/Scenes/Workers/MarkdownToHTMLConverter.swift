@@ -46,7 +46,10 @@ extension MarkdownToHTMLConverter {
 		<html>
 			<head>
 				<style>
-					body {font-size: 350%;color:#\(textColor);background-color:#\(backgroundColor);}
+					body {
+						font-size: 350%;color:#\(textColor);
+						background-color:#\(backgroundColor);
+					}
 				</style>
 			</head>
 			<body>

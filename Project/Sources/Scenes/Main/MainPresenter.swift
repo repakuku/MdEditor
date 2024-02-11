@@ -30,10 +30,10 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Public Methods
 
 	func present(response: MainModel.Response) {
-		var onlyFiles = [MainModel.ViewModel.RecentFile]()
+		var onlyFiles = [MainModel.ViewModel.File]()
 
 		for file in response.files {
-			let file = MainModel.ViewModel.RecentFile(name: file.name)
+			let file = MainModel.ViewModel.File(name: file.name)
 			onlyFiles.append(file)
 		}
 

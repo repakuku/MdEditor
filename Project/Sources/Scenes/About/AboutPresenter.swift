@@ -17,9 +17,9 @@ final class AboutPresenter: IAboutPresenter {
 
 	// MARK: - Dependencies
 
-	private weak var viewController: AboutViewController?
-	private var worker: IMarkdownToHTMLConverter
-	private var backClosure: (() -> Void)?
+	private weak var viewController: IAboutViewController?
+	private let worker: IMarkdownToHTMLConverter
+	private let backClosure: (() -> Void)?
 
 	// MARK: - Initialization
 

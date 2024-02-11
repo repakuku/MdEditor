@@ -33,8 +33,8 @@ final class MainCoordinator: ICoordinator {
 	}
 
 	func showStartScene() {
-		let assembler = MainAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer) { [weak self] in
+		let assembler = MainAssembler(fileExplorer: fileExplorer)
+		let viewController = assembler.assembly { [weak self] in
 			self?.finishFlow?()
 		}
 		navigationController.pushViewController(viewController, animated: true)

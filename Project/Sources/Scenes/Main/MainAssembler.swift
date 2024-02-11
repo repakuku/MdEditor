@@ -9,7 +9,20 @@
 import UIKit
 
 final class MainAssembler {
-	func assembly(fileExplorer: IFileExplorer, closure: (() -> Void)?) -> MainViewController {
+
+	// MARK: - Dependencies
+
+	private let fileExplorer: IFileExplorer
+
+	// MARK: - Initializers
+
+	init(fileExplorer: IFileExplorer) {
+		self.fileExplorer = fileExplorer
+	}
+
+	// MARK: - Public methods
+
+	func assembly(closure: (() -> Void)?) -> MainViewController {
 		let viewController = MainViewController()
 		let presenter = MainPresenter(
 			viewController: viewController,

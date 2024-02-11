@@ -17,8 +17,8 @@ final class AboutInteractor: IAboutInteractor {
 
 	// MARK: - Dependencies
 
-	private var presenter: IAboutPresenter?
-	private var fileExplorer: IFileExplorer
+	private let presenter: IAboutPresenter
+	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
@@ -37,10 +37,10 @@ final class AboutInteractor: IAboutInteractor {
 			response.text = text
 		}
 
-		presenter?.present(response: response)
+		presenter.present(response: response)
 	}
 
 	func backButtonPressed() {
-		presenter?.presentMainScreen()
+		presenter.presentMainScreen()
 	}
 }

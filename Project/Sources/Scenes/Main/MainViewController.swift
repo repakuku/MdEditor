@@ -144,7 +144,7 @@ private extension MainViewController {
 		view.addSubview(buttonAbout)
 	}
 
-	func configureCell(_ cell: UICollectionViewCell, with file: MainModel.ViewModel.RecentFile) {
+	func configureCell(_ cell: UICollectionViewCell, with file: MainModel.ViewModel.File) {
 		let label = UILabel()
 
 		label.text = file.name

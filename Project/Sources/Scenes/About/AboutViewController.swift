@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-protocol IAboutViewController {
+protocol IAboutViewController: AnyObject {
 	func render(viewModel: AboutModel.ViewModel)
 }
 

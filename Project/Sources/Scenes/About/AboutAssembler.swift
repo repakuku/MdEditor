@@ -9,11 +9,22 @@
 import UIKit
 
 final class AboutAssembler {
-	func assembly(
-		fileExplorer: IFileExplorer,
-		converter: IMarkdownToHTMLConverter,
-		backClosure: (() -> Void)?
-	) -> AboutViewController {
+
+	// MARK: - Dependencies
+
+	private let fileExplorer: IFileExplorer
+	private let converter: IMarkdownToHTMLConverter
+
+	// MARK: - Initializers
+
+	init(fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
+		self.fileExplorer = fileExplorer
+		self.converter = converter
+	}
+
+	// MARK: - Public methods
+
+	func assembly(backClosure: (() -> Void)?) -> AboutViewController {
 		let viewController = AboutViewController()
 		let presenter: IAboutPresenter = AboutPresenter(
 			viewController: viewController,
