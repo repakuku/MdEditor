@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IMainPresenter {
-	func present()
+	func present(response: MainModel.Response)
 	func presentAboutScreen()
 }
 
@@ -18,24 +18,21 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController?
-	private let fileExplorer: IFileExplorer
 	private let closure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, fileExplorer: IFileExplorer, closure: (() -> Void)?) {
+	init(viewController: IMainViewController, closure: (() -> Void)?) {
 		self.viewController = viewController
-		self.fileExplorer = fileExplorer
 		self.closure = closure
 	}
 
 	// MARK: - Public Methods
 
-	func present() {
-		let recentFiles = fileExplorer.getFiles(from: "/Notes")
+	func present(response: MainModel.Response) {
 		var onlyFiles = [MainModel.ViewModel.RecentFile]()
 
-		for file in recentFiles {
+		for file in response.files {
 			let file = MainModel.ViewModel.RecentFile(name: file.name)
 			onlyFiles.append(file)
 		}

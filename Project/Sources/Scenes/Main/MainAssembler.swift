@@ -13,10 +13,9 @@ final class MainAssembler {
 		let viewController = MainViewController()
 		let presenter = MainPresenter(
 			viewController: viewController,
-			fileExplorer: fileExplorer,
 			closure: closure
 		)
-		let interactor = MainInteractor(presenter: presenter)
+		let interactor = MainInteractor(presenter: presenter, fileExplorer: fileExplorer)
 		viewController.interactor = interactor
 
 		return viewController
