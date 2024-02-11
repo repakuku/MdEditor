@@ -29,6 +29,10 @@
 "Main.buttonOpen" = "Open";
 "Main.buttonAbout" = "About";
 
+// MARK: - AboutScreen
+
+"About.title" = "About";
+
 // MARK: - TodoListScreen
 
 "TodoList.title" = "Tasks";

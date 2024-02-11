@@ -13,7 +13,7 @@ protocol IAboutViewController {
 	func render(viewModel: AboutModel.ViewModel)
 }
 
-final class AboutViewController: UIViewController, WKNavigationDelegate {
+final class AboutViewController: UIViewController {
 	// MARK: - Dependencies
 
 	var interactor: IAboutInteractor?
@@ -36,9 +36,12 @@ final class AboutViewController: UIViewController, WKNavigationDelegate {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		webView.navigationDelegate = self
+		setupUI()
+		interactor?.fetchData()
+	}
 
-		view = webView
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		webView.underPageBackgroundColor = Theme.backgroundColor
 		interactor?.fetchData()
 	}
 }
@@ -48,6 +51,17 @@ final class AboutViewController: UIViewController, WKNavigationDelegate {
 extension AboutViewController: IAboutViewController {
 	func render(viewModel: AboutModel.ViewModel) {
 		webView.loadHTMLString(viewModel.html, baseURL: nil)
-		webView.allowsBackForwardNavigationGestures = false
+	}
+}
+
+// MARK: - Setup UI
+
+private extension AboutViewController {
+	func setupUI() {
+		webView.underPageBackgroundColor = Theme.backgroundColor
+
+		view = webView
+		title = L10n.About.title
+		navigationController?.navigationBar.prefersLargeTitles = true
 	}
 }

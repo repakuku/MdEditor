@@ -101,10 +101,10 @@ private extension MainViewController {
 
 		button.configuration = .plain()
 		button.configuration?.title = title
-		button.configuration?.image = image.withTintColor(Theme.mainColor)
+		button.configuration?.image = image.withTintColor(Theme.black)
 		button.configuration?.imageReservation = Sizes.Button.imageReservation
 		button.configuration?.imagePadding = Sizes.Padding.half
-		button.configuration?.baseForegroundColor = Theme.mainColor
+		button.configuration?.baseForegroundColor = Theme.black
 
 		button.translatesAutoresizingMaskIntoConstraints = false
 

@@ -14,7 +14,9 @@ protocol IMarkdownToHTMLConverter {
 
 final class MarkdownToHTMLConverter: IMarkdownToHTMLConverter {
 
-//	private var flag = false
+	// MARK: - Private properties
+
+	private var isStartCode = false
 
 	// MARK: - Public methods
 
@@ -27,7 +29,7 @@ final class MarkdownToHTMLConverter: IMarkdownToHTMLConverter {
 			html.append(parseHeader(text: line))
 			html.append(parseBlockquote(text: line))
 			html.append(parseParagraph(text: line))
-//			html.append(parseCode(text: line))
+			html.append(parseCodeBlock(text: line))
 		}
 
 		return makeHTML(html.compactMap { $0 }.joined())
@@ -36,7 +38,23 @@ final class MarkdownToHTMLConverter: IMarkdownToHTMLConverter {
 
 extension MarkdownToHTMLConverter {
 	func makeHTML(_ text: String) -> String {
-		"<!DOCTYPE html><html><head><style> body {font-size: 350%;} </style></head><body>\(text)</body></html>"
+		let backgroundColor = Theme.backgroundColor.toHex()! // swiftlint:disable:this force_unwrapping
+		let textColor = Theme.black.toHex()! // swiftlint:disable:this force_unwrapping
+
+		let html = """
+		<!DOCTYPE html>
+		<html>
+			<head>
+				<style>
+					body {font-size: 350%;color:#\(textColor);background-color:#\(backgroundColor);}
+				</style>
+			</head>
+			<body>
+				\(text)
+			</body>
+		</html>
+		"""
+		return html
 	}
 
 	func parseHeader(text: String) -> String? {
@@ -90,22 +108,23 @@ extension MarkdownToHTMLConverter {
 		return nil
 	}
 
-//	func parseCode(text: String) -> String {
-//
-//		let pattern = #"^`{3}"#
-//
-//		var result = text
-//
-//		result = text.replacingOccurrences(
-//			of: pattern,
-//			with: flag ? "<code>" : "</code>",
-//			options: .regularExpression
-//		)
-//
-//		flag.toggle()
-//
-//		return result
-//	}
+	func parseCodeBlock(text: String) -> String? {
+
+		let pattern = #"^`{3}"#
+		let range = NSRange(text.startIndex..., in: text)
+		let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+
+		if regex?.firstMatch(in: text, range: range) != nil {
+			isStartCode.toggle()
+			if isStartCode {
+				return "<code>"
+			} else {
+				return "</code>"
+			}
+		}
+
+		return nil
+	}
 
 	func parseText(_ text: String) -> String {
 		let boldItalicPattern = #"\*\*\*(.+?)\*\*\*"#
@@ -137,7 +156,7 @@ extension MarkdownToHTMLConverter {
 
 	func parseParagraph(text: String) -> String? {
 
-		let pattern = #"^([^#>].*)"#
+		let pattern = #"^([^#>`].*)"#
 		let range = NSRange(text.startIndex..., in: text)
 		let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 
