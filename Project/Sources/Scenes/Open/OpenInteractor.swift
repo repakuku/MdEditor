@@ -10,6 +10,7 @@ import Foundation
 
 protocol IOpenInteractor {
 	func fetchData()
+	func backButtonPressed()
 }
 
  final class OpenInteractor: IOpenInteractor {
@@ -29,5 +30,9 @@ protocol IOpenInteractor {
 	 func fetchData() {
 		 let response = OpenModel.Response(files: [])
 		 presenter.present(response: response)
+	 }
+
+	 func backButtonPressed() {
+		 presenter.presentMainScreen()
 	 }
  }

@@ -57,8 +57,8 @@ final class AppCoordinator: BaseCoordinator {
 		)
 		addDependency(coordinator)
 
-		coordinator.finishFlow = { [weak self] in
-			self?.runAboutFlow()
+		coordinator.finishFlow = { [weak self] index in
+			index == 0 ? self?.runAboutFlow() : self?.runOpenFlow()
 		}
 
 		coordinator.start()
@@ -69,6 +69,19 @@ final class AppCoordinator: BaseCoordinator {
 			navigationController: navigationController,
 			fileExplorer: fileExplorer,
 			converter: converter
+		)
+		addDependency(coordinator)
+
+		coordinator.finishFlow = { [weak self, weak coordinator] in
+			coordinator.map { self?.removeDependency($0) }
+		}
+
+		coordinator.start()
+	}
+
+	func runOpenFlow() {
+		let coordinator = OpenCoordinator(
+			navigationController: navigationController
 		)
 		addDependency(coordinator)
 

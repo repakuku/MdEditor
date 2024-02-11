@@ -9,9 +9,12 @@
 import UIKit
 
 final class OpenAssembler {
-	func assemble() -> OpenViewController {
+	func assemble(backClosure: (() -> Void)?) -> OpenViewController {
 		let viewController = OpenViewController()
-		let presenter: IOpenPresenter = OpenPresenter(viewController: viewController)
+		let presenter: IOpenPresenter = OpenPresenter(
+			viewController: viewController,
+			backClosure: backClosure
+		)
 		let interactor: IOpenInteractor = OpenInteractor(presenter: presenter)
 		viewController.interactor = interactor
 

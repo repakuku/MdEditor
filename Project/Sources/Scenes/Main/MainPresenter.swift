@@ -11,6 +11,7 @@ import Foundation
 protocol IMainPresenter {
 	func present(response: MainModel.Response)
 	func presentAboutScreen()
+	func presentOpenScreen()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -18,11 +19,11 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController?
-	private let closure: (() -> Void)?
+	private let closure: ((Int) -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, closure: (() -> Void)?) {
+	init(viewController: IMainViewController, closure: ((Int) -> Void)?) {
 		self.viewController = viewController
 		self.closure = closure
 	}
@@ -42,6 +43,10 @@ final class MainPresenter: IMainPresenter {
 	}
 
 	func presentAboutScreen() {
-		closure?()
+		closure?(0)
+	}
+
+	func presentOpenScreen() {
+		closure?(1)
 	}
 }

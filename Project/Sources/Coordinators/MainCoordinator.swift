@@ -17,7 +17,7 @@ final class MainCoordinator: ICoordinator {
 
 	// MARK: - Internal properties
 
-	var finishFlow: (() -> Void)?
+	var finishFlow: ((Int) -> Void)?
 
 	// MARK: - Initialization
 
@@ -29,13 +29,13 @@ final class MainCoordinator: ICoordinator {
 	// MARK: - Internal methods
 
 	func start() {
-		showStartScene()
+		showMainScene()
 	}
 
-	func showStartScene() {
+	func showMainScene() {
 		let assembler = MainAssembler(fileExplorer: fileExplorer)
-		let viewController = assembler.assembly { [weak self] in
-			self?.finishFlow?()
+		let viewController = assembler.assembly { [weak self] index in
+			self?.finishFlow?(index)
 		}
 		navigationController.pushViewController(viewController, animated: true)
 	}

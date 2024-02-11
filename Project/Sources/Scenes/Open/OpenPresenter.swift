@@ -10,6 +10,7 @@ import Foundation
 
 protocol IOpenPresenter {
 	func present(response: OpenModel.Response)
+	func presentMainScreen()
 }
 
 final class OpenPresenter: IOpenPresenter {
@@ -17,11 +18,13 @@ final class OpenPresenter: IOpenPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: OpenViewController?
+	private let backClosure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: OpenViewController) {
+	init(viewController: OpenViewController, backClosure: (() -> Void)?) {
 		self.viewController = viewController
+		self.backClosure = backClosure
 	}
 
 	// MARK: - Public Methods
@@ -29,5 +32,9 @@ final class OpenPresenter: IOpenPresenter {
 	func present(response: OpenModel.Response) {
 		let viewModel = OpenModel.ViewModel(files: [])
 		viewController?.render(viewModel: viewModel)
+	}
+
+	func presentMainScreen() {
+		backClosure?()
 	}
 }

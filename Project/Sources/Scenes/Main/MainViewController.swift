@@ -29,12 +29,13 @@ final class MainViewController: UIViewController {
 	)
 	private lazy var buttonOpen: UIButton = makeButton(
 		withTitle: L10n.Main.buttonOpen,
-		andImage: Asset.Icons.folder.image
+		andImage: Asset.Icons.folder.image,
+		action: #selector(showOpenScreen)
 	)
 	private lazy var buttonAbout: UIButton = makeButton(
 		withTitle: L10n.Main.buttonAbout,
 		andImage: Asset.Icons.infoBubble.image,
-		action: #selector(showAbout)
+		action: #selector(showAboutScreen)
 	)
 
 	private var constraints = [NSLayoutConstraint]()
@@ -71,8 +72,13 @@ final class MainViewController: UIViewController {
 
 private extension MainViewController {
 	@objc
-	func showAbout() {
+	func showAboutScreen() {
 		interactor?.buttonAboutPressed()
+	}
+
+	@objc
+	func showOpenScreen() {
+		interactor?.buttonOpenPressed()
 	}
 }
 

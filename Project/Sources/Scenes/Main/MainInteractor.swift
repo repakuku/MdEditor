@@ -11,6 +11,7 @@ import Foundation
 protocol IMainInteractor {
 	func fetchData()
 	func buttonAboutPressed()
+	func buttonOpenPressed()
 }
 
 final class MainInteractor: IMainInteractor {
@@ -40,5 +41,9 @@ final class MainInteractor: IMainInteractor {
 
 	func buttonAboutPressed() {
 		presenter.presentAboutScreen()
+	}
+
+	func buttonOpenPressed() {
+		presenter.presentOpenScreen()
 	}
 }
