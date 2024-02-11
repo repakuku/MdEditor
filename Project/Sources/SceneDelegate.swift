@@ -14,6 +14,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	private var repository = TaskRepositoryStub()
 	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var fileExplorer: FileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var fileManager: FileManager! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	private var appCoordinator: AppCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
@@ -27,8 +29,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		taskManager = OrderedTaskManager(taskManager: TaskManager())
 		taskManager.addTasks(tasks: repository.getTasks())
+		fileManager = FileManager.default
 
-		appCoordinator = AppCoordinator(window: window, taskManager: taskManager)
+		fileExplorer = FileExplorer(fileManager: fileManager)
+
+		appCoordinator = AppCoordinator(
+			window: window,
+			taskManager: taskManager,
+			fileExplorer: fileExplorer
+		)
 
 #if DEBUG
 		let parameters = LaunchArguments.parameters()
