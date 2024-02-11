@@ -10,6 +10,7 @@ import Foundation
 
 protocol IAboutPresenter {
 	func present(response: AboutModel.Response)
+	func presentMainScreen()
 }
 
 final class AboutPresenter: IAboutPresenter {
@@ -18,12 +19,14 @@ final class AboutPresenter: IAboutPresenter {
 
 	private weak var viewController: AboutViewController?
 	private var worker: IAboutWorker
+	private var backClosure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: AboutViewController, worker: IAboutWorker) {
+	init(viewController: AboutViewController, worker: IAboutWorker, backClosure: (() -> Void)?) {
 		self.viewController = viewController
 		self.worker = worker
+		self.backClosure = backClosure
 	}
 
 	// MARK: - Public Methods
@@ -33,5 +36,9 @@ final class AboutPresenter: IAboutPresenter {
 		let viewModel = AboutModel.ViewModel(html: html)
 
 		viewController?.render(viewModel: viewModel)
+	}
+
+	func presentMainScreen() {
+		backClosure?()
 	}
 }

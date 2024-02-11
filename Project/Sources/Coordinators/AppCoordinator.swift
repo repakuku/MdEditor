@@ -59,7 +59,6 @@ final class AppCoordinator: BaseCoordinator {
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in
 			self?.runAboutFlow()
-			coordinator.map { self?.removeDependency($0) }
 		}
 
 		coordinator.start()
@@ -72,6 +71,10 @@ final class AppCoordinator: BaseCoordinator {
 			converter: converter
 		)
 		addDependency(coordinator)
+
+		coordinator.finishFlow = { [weak self, weak coordinator] in
+			coordinator.map { self?.removeDependency($0) }
+		}
 
 		coordinator.start()
 	}

@@ -10,6 +10,7 @@ import Foundation
 
 protocol IAboutInteractor {
 	func fetchData()
+	func backButtonPressed()
 }
 
 final class AboutInteractor: IAboutInteractor {
@@ -37,5 +38,9 @@ final class AboutInteractor: IAboutInteractor {
 		}
 
 		presenter?.present(response: response)
+	}
+
+	func backButtonPressed() {
+		presenter?.presentMainScreen()
 	}
 }

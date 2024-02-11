@@ -9,10 +9,18 @@
 import UIKit
 
 final class AboutAssembler {
-	func assembly(fileExplorer: FileExplorer, converter: IMarkdownToHTMLConverter) -> AboutViewController {
+	func assembly(
+		fileExplorer: FileExplorer,
+		converter: IMarkdownToHTMLConverter,
+		backClosure: (() -> Void)?
+	) -> AboutViewController {
 		let viewController = AboutViewController()
 		let worker: IAboutWorker = AboutWorker(converter: converter)
-		let presenter: IAboutPresenter = AboutPresenter(viewController: viewController, worker: worker)
+		let presenter: IAboutPresenter = AboutPresenter(
+			viewController: viewController,
+			worker: worker,
+			backClosure: backClosure
+		)
 		let interactor: IAboutInteractor = AboutInteractor(presenter: presenter, fileExplorer: fileExplorer)
 
 		viewController.interactor = interactor

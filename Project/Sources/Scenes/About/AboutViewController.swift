@@ -40,6 +40,14 @@ final class AboutViewController: UIViewController {
 		interactor?.fetchData()
 	}
 
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+
+		if self.isMovingFromParent {
+			interactor?.backButtonPressed()
+		}
+	}
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		webView.underPageBackgroundColor = Theme.backgroundColor
 		interactor?.fetchData()
@@ -58,6 +66,8 @@ extension AboutViewController: IAboutViewController {
 
 private extension AboutViewController {
 	func setupUI() {
+		navigationController?.navigationBar.tintColor = Theme.black
+
 		webView.underPageBackgroundColor = Theme.backgroundColor
 
 		view = webView

@@ -16,6 +16,10 @@ final class AboutCoordinator: ICoordinator {
 	private let fileExplorer: FileExplorer
 	private let converter: IMarkdownToHTMLConverter
 
+	// MARK: - Internal properties
+
+	var finishFlow: (() -> Void)?
+
 	// MARK: - Initialization
 
 	init(navigationController: UINavigationController, fileExplorer: FileExplorer, converter: IMarkdownToHTMLConverter) {
@@ -32,7 +36,9 @@ final class AboutCoordinator: ICoordinator {
 
 	func showAboutScene() {
 		let assembler = AboutAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer, converter: converter)
+		let viewController = assembler.assembly(fileExplorer: fileExplorer, converter: converter) { [weak self] in
+			self?.finishFlow?()
+		}
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }
