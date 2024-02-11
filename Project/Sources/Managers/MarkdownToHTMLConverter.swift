@@ -14,6 +14,8 @@ protocol IMarkdownToHTMLConverter {
 
 final class MarkdownToHTMLConverter: IMarkdownToHTMLConverter {
 
+//	private var flag = false
+
 	// MARK: - Public methods
 
 	func convert(_ text: String) -> String {
@@ -22,10 +24,10 @@ final class MarkdownToHTMLConverter: IMarkdownToHTMLConverter {
 		var html = [String?]()
 
 		lines.forEach { line in
-			html.append(parseText(line))
-//			html.append(parseHeader(text: line))
-//			html.append(parseBlockquote(text: line))
-//			html.append(parseParagraph(text: line))
+			html.append(parseHeader(text: line))
+			html.append(parseBlockquote(text: line))
+			html.append(parseParagraph(text: line))
+//			html.append(parseCode(text: line))
 		}
 
 		return makeHTML(html.compactMap { $0 }.joined())
@@ -37,29 +39,72 @@ extension MarkdownToHTMLConverter {
 		"<!DOCTYPE html><html><head><style> body {font-size: 350%;} </style></head><body>\(text)</body></html>"
 	}
 
-//	func parseHeader(text: String) -> String? {
-//		let regex = /^(?<headerLevel>#{1,6})\s+(?<headerText>.+)/
-//		
-//		if let match = text.wholeMatch(of: regex) {
-//			let headerLevel = String(match.headerLevel).count
-//			let headerText = parseText(String(match.headerText))
-//			return "<h\(headerLevel)>\(headerText)</h\(headerLevel)>"
-//		}
-//		
-//		return nil
-//	}
+	func parseHeader(text: String) -> String? {
 
-//	func parseBlockquote(text: String) -> String? {
-//		let regex = /^>\s+(.+)/
-//		
-//		if let match = text.wholeMatch(of: regex) {
-//			// match.output - результат совпадения
-//			// 1 - номер группы
-//			let blockquoteText = parseText(String(match.output.1))
-//			return "<blockquote><p>\(blockquoteText)</p></blockquote>"
-//		}
-//		
-//		return nil
+		let pattern = #"^(?<headerLevel>#{1,6})\s+(?<headerText>.+)"#
+		let range = NSRange(text.startIndex..., in: text)
+		let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+
+		var headerLevel: Int?
+		var headerText: String?
+
+		if let match = regex?.firstMatch(in: text, range: range) {
+			if let headerLevelRange = Range(
+				match.range(withName: "headerLevel"),
+				in: text
+			) {
+				headerLevel = String(text[headerLevelRange]).count
+			}
+
+			if let headerTextRange = Range(
+				match.range(withName: "headerText"),
+				in: text
+			) {
+				headerText = String(text[headerTextRange])
+			}
+		}
+
+		if let headerLevel, let headerText {
+			return "<h\(headerLevel)>\(headerText)</h\(headerLevel)>"
+		}
+
+		return nil
+	}
+
+	func parseBlockquote(text: String) -> String? {
+
+		let pattern = #"^>\s+(.+)"#
+		let range = NSRange(text.startIndex..., in: text)
+		let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+
+		if let match = regex?.firstMatch(in: text, range: range) {
+			if let range = Range(
+				match.range(at: 1),
+				in: text
+			) {
+				let blockquoteText = parseText(String(text[range]))
+				return "<blockquote><p>\(blockquoteText)</p></blockquote>"
+			}
+		}
+
+		return nil
+	}
+
+//	func parseCode(text: String) -> String {
+//
+//		let pattern = #"^`{3}"#
+//
+//		var result = text
+//
+//		result = text.replacingOccurrences(
+//			of: pattern,
+//			with: flag ? "<code>" : "</code>",
+//			options: .regularExpression
+//		)
+//
+//		flag.toggle()
+//
+//		return result
 //	}
 
 	func parseText(_ text: String) -> String {
@@ -90,14 +135,21 @@ extension MarkdownToHTMLConverter {
 		return result
 	}
 
-//	func parseParagraph(text: String) -> String? {
-//		let regex = /^([^#>].*)/
-//		
-//		if let match = text.wholeMatch(of: regex) {
-//			let paragraphText = parseText(String(match.output.1))
-//			return "<p>\(paragraphText)</p>"
-//		}
-//		
-//		return nil
-//	}
+	func parseParagraph(text: String) -> String? {
+
+		let pattern = #"^([^#>].*)"#
+		let range = NSRange(text.startIndex..., in: text)
+		let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+
+		if let match = regex?.firstMatch(in: text, range: range) {
+			if let range = Range(
+				match.range(at: 1), in: text
+			) {
+				let paragraphText = parseText(String(text[range]))
+				return "<p>\(paragraphText)</p>"
+			}
+		}
+
+		return nil
+	}
 }
