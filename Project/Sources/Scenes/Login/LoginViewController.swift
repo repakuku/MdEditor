@@ -115,7 +115,6 @@ private extension LoginViewController {
 		title = L10n.Login.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 
-		// Кастомная конфигурация наших полей
 		textFieldLogin.placeholder = L10n.Login.loginPlaceholder
 		textFieldPass.placeholder = L10n.Login.passwordPlaceholder
 		textFieldPass.isSecureTextEntry = true

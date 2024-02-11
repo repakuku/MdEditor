@@ -22,6 +22,17 @@
 "Login.passwordPlaceholder" = "Пароль";
 "Login.buttonLogin" = "Войти";
 
+// MARK: - MainScreen
+
+"Main.title" = "MdEditor";
+"Main.buttonNew" = "Новый";
+"Main.buttonOpen" = "Открыть";
+"Main.buttonAbout" = "О приложении";
+
+// MARK: - AboutScreen
+
+"About.title" = "About";
+
 // MARK: - TodoList strings
 
 "TodoList.title" = "Задачи";

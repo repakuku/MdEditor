@@ -22,6 +22,17 @@
 "Login.passwordPlaceholder" = "Password";
 "Login.buttonLogin" = "Login";
 
+// MARK: - MainScreen
+
+"Main.title" = "MdEditor";
+"Main.buttonNew" = "New";
+"Main.buttonOpen" = "Open";
+"Main.buttonAbout" = "About";
+
+// MARK: - AboutScreen
+
+"About.title" = "About";
+
 // MARK: - TodoListScreen
 
 "TodoList.title" = "Tasks";
