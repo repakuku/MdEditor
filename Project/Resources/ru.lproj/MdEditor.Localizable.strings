@@ -29,6 +29,10 @@
 "Main.buttonOpen" = "Открыть";
 "Main.buttonAbout" = "О приложении";
 
+// MARK: - AboutScreen
+
+"About.title" = "About";
+
 // MARK: - TodoList strings
 
 "TodoList.title" = "Задачи";

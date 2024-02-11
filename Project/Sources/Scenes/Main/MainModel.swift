@@ -9,6 +9,10 @@
 import Foundation
 
 enum MainModel {
+	struct Response {
+		var files: [File]
+	}
+
 	struct ViewModel {
 		let recentFiles: [RecentFile]
 

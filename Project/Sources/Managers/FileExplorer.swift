@@ -8,17 +8,6 @@
 
 import Foundation
 
-// enum Path {
-//	case notes
-//
-//	var description: String {
-//		switch self {
-//		case .notes:
-//			return "/Notes"
-//		}
-//	}
-// }
-
 struct File {
 
 	enum FileType {
@@ -32,9 +21,28 @@ struct File {
 	var type: FileType
 	var size: UInt64 = 0
 	var creationDate = Date()
+
+	func loadFileBody() -> String {
+		var text = ""
+		let fullPath = Bundle.main.resourcePath! + "\(path)/\(name)" // swiftlint:disable:this force_unwrapping
+
+		do {
+			text = try String(contentsOfFile: fullPath, encoding: .utf8)
+		} catch {
+			print("Failed to read text from \(name)") // swiftlint:disable:this print_using
+		}
+
+		return text
+	}
 }
 
-final class FileExplorer {
+protocol IFileExplorer {
+	init(fileManager: FileManager)
+	func getFiles(from path: String) -> [File]
+	func getFile(withName name: String, atPath path: String) -> File?
+}
+
+final class FileExplorer: IFileExplorer {
 
 	// MARK: - Dependencies
 
@@ -57,13 +65,9 @@ final class FileExplorer {
 		return files
 	}
 
-	func getRecentFiles() -> [File] {
-		[]
-	}
-
 	// MARK: - Private methods
 
-	private func scan(path: String) {
+	func scan(path: String) {
 		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
 		files.removeAll()
 
@@ -90,7 +94,7 @@ final class FileExplorer {
 		files.append(contentsOf: onlyFiles)
 	}
 
-	private func getFile(withName name: String, atPath path: String) -> File? {
+	func getFile(withName name: String, atPath path: String) -> File? {
 		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
 
 		do {

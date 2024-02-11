@@ -15,15 +15,17 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
-	private let fileExplorer: FileExplorer
+	private let fileExplorer: IFileExplorer
+	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: FileExplorer) {
+	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
 		self.window = window
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
 		self.fileExplorer = fileExplorer
+		self.converter = converter
 	}
 
 	// MARK: - Internal methods
@@ -54,6 +56,25 @@ final class AppCoordinator: BaseCoordinator {
 			fileExplorer: fileExplorer
 		)
 		addDependency(coordinator)
+
+		coordinator.finishFlow = { [weak self] in
+			self?.runAboutFlow()
+		}
+
+		coordinator.start()
+	}
+
+	func runAboutFlow() {
+		let coordinator = AboutCoordinator(
+			navigationController: navigationController,
+			fileExplorer: fileExplorer,
+			converter: converter
+		)
+		addDependency(coordinator)
+
+		coordinator.finishFlow = { [weak self, weak coordinator] in
+			coordinator.map { self?.removeDependency($0) }
+		}
 
 		coordinator.start()
 	}

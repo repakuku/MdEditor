@@ -1,19 +1,20 @@
 //
-//  StartCoordinator.swift
+//  AboutCoordinator.swift
 //  MdEditor
 //
-//  Created by Alexey Turulin on 2/6/24.
+//  Created by Alexey Turulin on 2/10/24.
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
 import UIKit
 
-final class MainCoordinator: ICoordinator {
+final class AboutCoordinator: ICoordinator {
 
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
+	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Internal properties
 
@@ -21,20 +22,21 @@ final class MainCoordinator: ICoordinator {
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, fileExplorer: IFileExplorer) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
+		self.converter = converter
 	}
 
 	// MARK: - Internal methods
 
 	func start() {
-		showStartScene()
+		showAboutScene()
 	}
 
-	func showStartScene() {
-		let assembler = MainAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer) { [weak self] in
+	func showAboutScene() {
+		let assembler = AboutAssembler()
+		let viewController = assembler.assembly(fileExplorer: fileExplorer, converter: converter) { [weak self] in
 			self?.finishFlow?()
 		}
 		navigationController.pushViewController(viewController, animated: true)

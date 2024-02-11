@@ -33,7 +33,8 @@ final class MainViewController: UIViewController {
 	)
 	private lazy var buttonAbout: UIButton = makeButton(
 		withTitle: L10n.Main.buttonAbout,
-		andImage: Asset.Icons.infoBubble.image
+		andImage: Asset.Icons.infoBubble.image,
+		action: #selector(showAbout)
 	)
 
 	private var constraints = [NSLayoutConstraint]()
@@ -63,6 +64,15 @@ final class MainViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		interactor?.fetchData()
+	}
+}
+
+// MARK: - Actions
+
+private extension MainViewController {
+	@objc
+	func showAbout() {
+		interactor?.buttonAboutPressed()
 	}
 }
 
@@ -96,20 +106,28 @@ private extension MainViewController {
 		return collectionView
 	}
 
-	func makeButton(withTitle title: String, andImage image: UIImage) -> UIButton {
+	func makeButton(withTitle title: String, andImage image: UIImage, action: Selector? = nil) -> UIButton {
 		let button = UIButton()
 
 		button.configuration = .plain()
 		button.configuration?.title = title
-		button.configuration?.image = image.withTintColor(Theme.mainColor)
+		button.configuration?.image = image.withTintColor(Theme.black)
 		button.configuration?.imageReservation = Sizes.Button.imageReservation
 		button.configuration?.imagePadding = Sizes.Padding.half
-		button.configuration?.baseForegroundColor = Theme.mainColor
+		button.configuration?.baseForegroundColor = Theme.black
 
 		button.translatesAutoresizingMaskIntoConstraints = false
 
 		button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
 		button.titleLabel?.adjustsFontForContentSizeCategory = true
+
+		if let action {
+			button.addTarget(
+				self,
+				action: action,
+				for: .touchUpInside
+			)
+		}
 
 		return button
 	}
