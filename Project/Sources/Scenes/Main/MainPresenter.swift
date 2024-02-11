@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum NextScreen {
+	case open
+	case about
+}
+
 protocol IMainPresenter {
 	func present(response: MainModel.Response)
 	func presentAboutScreen()
@@ -19,11 +24,11 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController?
-	private let closure: ((Int) -> Void)?
+	private let closure: ((NextScreen) -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, closure: ((Int) -> Void)?) {
+	init(viewController: IMainViewController, closure: ((NextScreen) -> Void)?) {
 		self.viewController = viewController
 		self.closure = closure
 	}
@@ -43,10 +48,10 @@ final class MainPresenter: IMainPresenter {
 	}
 
 	func presentAboutScreen() {
-		closure?(0)
+		closure?(.about)
 	}
 
 	func presentOpenScreen() {
-		closure?(1)
+		closure?(.open)
 	}
 }

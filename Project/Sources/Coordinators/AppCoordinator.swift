@@ -57,8 +57,13 @@ final class AppCoordinator: BaseCoordinator {
 		)
 		addDependency(coordinator)
 
-		coordinator.finishFlow = { [weak self] index in
-			index == 0 ? self?.runAboutFlow() : self?.runOpenFlow()
+		coordinator.finishFlow = { [weak self] nextSCreen in
+			switch nextSCreen {
+			case .about:
+				self?.runAboutFlow()
+			case .open:
+				self?.runOpenFlow()
+			}
 		}
 
 		coordinator.start()

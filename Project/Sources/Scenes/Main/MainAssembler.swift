@@ -22,7 +22,7 @@ final class MainAssembler {
 
 	// MARK: - Public methods
 
-	func assembly(closure: ((Int) -> Void)?) -> MainViewController {
+	func assembly(closure: ((NextScreen) -> Void)?) -> MainViewController {
 		let viewController = MainViewController()
 		let presenter = MainPresenter(
 			viewController: viewController,
