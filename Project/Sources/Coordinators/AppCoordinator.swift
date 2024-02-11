@@ -16,14 +16,16 @@ final class AppCoordinator: BaseCoordinator {
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
 	private let fileExplorer: FileExplorer
+	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: FileExplorer) {
+	init(window: UIWindow?, taskManager: ITaskManager, fileExplorer: FileExplorer, converter: IMarkdownToHTMLConverter) {
 		self.window = window
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
 		self.fileExplorer = fileExplorer
+		self.converter = converter
 	}
 
 	// MARK: - Internal methods
@@ -57,6 +59,17 @@ final class AppCoordinator: BaseCoordinator {
 
 		coordinator.start()
 	}
+
+	func runAboutFlow() {
+		let coordinator = AboutCoordinator(
+			navigationController: navigationController,
+			fileExplorer: fileExplorer,
+			converter: converter
+		)
+		addDependency(coordinator)
+
+		coordinator.start()
+	}
 }
 
 extension AppCoordinator: ITestCoordinator {
@@ -65,7 +78,7 @@ extension AppCoordinator: ITestCoordinator {
 		window?.makeKeyAndVisible()
 
 		if let skipLogin = parameters[LaunchArguments.skipLogin], skipLogin {
-			runMainFlow()
+			runAboutFlow()
 		} else {
 			runLoginFlow()
 		}

@@ -32,6 +32,19 @@ struct File {
 	var type: FileType
 	var size: UInt64 = 0
 	var creationDate = Date()
+
+	func loadFileBody() -> String {
+		var text = ""
+		let fullPath = Bundle.main.resourcePath! + "\(path)/\(name)"
+
+		do {
+			text = try String(contentsOfFile: fullPath, encoding: .utf8)
+		} catch {
+			print("Failed to read text from \(name)")
+		}
+
+		return text
+	}
 }
 
 final class FileExplorer {
@@ -90,7 +103,7 @@ final class FileExplorer {
 		files.append(contentsOf: onlyFiles)
 	}
 
-	private func getFile(withName name: String, atPath path: String) -> File? {
+	func getFile(withName name: String, atPath path: String) -> File? {
 		let fullPath = Bundle.main.resourcePath! + "\(path)" // swiftlint:disable:this force_unwrapping
 
 		do {

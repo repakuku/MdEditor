@@ -27,6 +27,7 @@ final class MainInteractor: IMainInteractor {
 	// MARK: - Public Methods
 
 	func fetchData() {
+		#warning("TODO: fetch data here")
 		presenter?.present()
 	}
 }
