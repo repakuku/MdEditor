@@ -35,8 +35,8 @@ final class AboutCoordinator: ICoordinator {
 	}
 
 	func showAboutScene() {
-		let assembler = AboutAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer, converter: converter) { [weak self] in
+		let assembler = AboutAssembler(fileExplorer: fileExplorer, converter: converter)
+		let viewController = assembler.assembly { [weak self] in
 			self?.finishFlow?()
 		}
 		navigationController.pushViewController(viewController, animated: true)

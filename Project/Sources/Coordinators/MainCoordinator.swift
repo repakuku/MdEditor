@@ -17,7 +17,7 @@ final class MainCoordinator: ICoordinator {
 
 	// MARK: - Internal properties
 
-	var finishFlow: (() -> Void)?
+	var finishFlow: ((NextScreen) -> Void)?
 
 	// MARK: - Initialization
 
@@ -29,13 +29,13 @@ final class MainCoordinator: ICoordinator {
 	// MARK: - Internal methods
 
 	func start() {
-		showStartScene()
+		showMainScene()
 	}
 
-	func showStartScene() {
-		let assembler = MainAssembler()
-		let viewController = assembler.assembly(fileExplorer: fileExplorer) { [weak self] in
-			self?.finishFlow?()
+	func showMainScene() {
+		let assembler = MainAssembler(fileExplorer: fileExplorer)
+		let viewController = assembler.assembly { [weak self] nextScreen in
+			self?.finishFlow?(nextScreen)
 		}
 		navigationController.pushViewController(viewController, animated: true)
 	}

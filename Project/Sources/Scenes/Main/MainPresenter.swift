@@ -8,9 +8,15 @@
 
 import Foundation
 
+enum NextScreen {
+	case open
+	case about
+}
+
 protocol IMainPresenter {
 	func present(response: MainModel.Response)
 	func presentAboutScreen()
+	func presentOpenScreen()
 }
 
 final class MainPresenter: IMainPresenter {
@@ -18,11 +24,11 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainViewController?
-	private let closure: (() -> Void)?
+	private let closure: ((NextScreen) -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainViewController, closure: (() -> Void)?) {
+	init(viewController: IMainViewController, closure: ((NextScreen) -> Void)?) {
 		self.viewController = viewController
 		self.closure = closure
 	}
@@ -30,10 +36,10 @@ final class MainPresenter: IMainPresenter {
 	// MARK: - Public Methods
 
 	func present(response: MainModel.Response) {
-		var onlyFiles = [MainModel.ViewModel.RecentFile]()
+		var onlyFiles = [MainModel.ViewModel.File]()
 
 		for file in response.files {
-			let file = MainModel.ViewModel.RecentFile(name: file.name)
+			let file = MainModel.ViewModel.File(name: file.name)
 			onlyFiles.append(file)
 		}
 
@@ -42,6 +48,10 @@ final class MainPresenter: IMainPresenter {
 	}
 
 	func presentAboutScreen() {
-		closure?()
+		closure?(.about)
+	}
+
+	func presentOpenScreen() {
+		closure?(.open)
 	}
 }
