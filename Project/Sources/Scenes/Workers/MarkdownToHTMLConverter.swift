@@ -132,7 +132,7 @@ extension MarkdownToHTMLConverter {
 	func parseText(_ text: String) -> String {
 		let boldItalicPattern = #"\*\*\*(.+?)\*\*\*"#
 		let boldPattern = #"\*\*(.+?)\*\*"#
-		let italicPattern =  #"\*(.+?)\*"#
+		let italicPattern = #"\*(.+?)\*"#
 
 		var result = text
 
