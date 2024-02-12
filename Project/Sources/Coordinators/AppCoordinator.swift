@@ -86,7 +86,8 @@ final class AppCoordinator: BaseCoordinator {
 
 	func runOpenFlow() {
 		let coordinator = OpenCoordinator(
-			navigationController: navigationController
+			navigationController: navigationController,
+			fileExplorer: fileExplorer
 		)
 		addDependency(coordinator)
 
