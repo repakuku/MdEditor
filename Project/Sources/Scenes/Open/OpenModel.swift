@@ -10,15 +10,23 @@ import Foundation
 
 enum OpenModel {
 
+	enum Request {
+		struct FileSelected {
+			let fileName: String
+		}
+	}
+
 	struct Response {
 		let files: [File]
 	}
 
 	struct ViewModel {
-		let files: [File]
+		var files: [File]
 
 		struct File {
-			let name: String
+			var name = ""
+			var description = ""
+			var image = ""
 		}
 	}
 }

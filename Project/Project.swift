@@ -151,4 +151,3 @@ let project = Project(
 	],
 	resourceSynthesizers: [.strings(), .assets()]
 )
-// .files(extensions: ["md"])

@@ -39,12 +39,6 @@ final class OpenViewController: UITableViewController {
 		setupUI()
 		interactor?.fetchData()
 	}
-
-	// MARK: - Public Methods
-
-	// MARK: - Delegate Implementation
-
-	// MARK: - Private Methods
 }
 
 // MARK: - UITableView
@@ -59,6 +53,12 @@ extension OpenViewController {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 		configureCell(cell, with: file)
 		return cell
+	}
+
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let file = viewModel.files[indexPath.row]
+		tableView.deselectRow(at: indexPath, animated: true)
+		interactor?.didFileSelected(request: OpenModel.Request.FileSelected(fileName: file.name))
 	}
 }
 
@@ -82,5 +82,11 @@ private extension OpenViewController {
 	}
 
 	func configureCell(_ cell: UITableViewCell, with file: OpenModel.ViewModel.File) {
+		var content = cell.defaultContentConfiguration()
+		content.text = file.name
+		content.secondaryText = file.description
+		content.image = UIImage(systemName: file.image)
+		cell.contentConfiguration = content
+		cell.backgroundColor = Theme.backgroundColor
 	}
 }

@@ -1,12 +1,12 @@
 //
-//  StartCoordinator.swift
-//  MdEditor
+//  TodoListCoordinator.swift
+//  MdEdit
 //
-//  Created by Alexey Turulin on 2/6/24.
-//  Copyright © 2024 repakuku. All rights reserved.
+//  Created by ioskendev on 12.01.2024.
 //
 
 import UIKit
+import TaskManagerPackage
 
 final class MainCoordinator: ICoordinator {
 
