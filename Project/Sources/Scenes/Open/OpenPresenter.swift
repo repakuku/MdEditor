@@ -44,7 +44,7 @@ final class OpenPresenter: IOpenPresenter {
 	}
 
 	// MARK: - Private dependencies
-	
+
 	private func mapFile(_ file: File) -> OpenModel.ViewModel.File {
 
 		var viewModelFile = OpenModel.ViewModel.File()
