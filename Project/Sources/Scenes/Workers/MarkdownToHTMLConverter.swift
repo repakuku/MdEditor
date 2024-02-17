@@ -168,7 +168,7 @@ extension MarkdownToHTMLConverter {
 				match.range(at: 1), in: text
 			) {
 				let paragraphText = parseText(String(text[range]))
-				return "<p>\(paragraphText)</p>"
+				return "<p>\(paragraphText)</p>!!!!!"
 			}
 		}
 
