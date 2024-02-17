@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  MainMenuViewController.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,19 +8,19 @@
 
 import UIKit
 
-protocol IMainViewController: AnyObject {
-	func render(viewModel: MainModel.ViewModel)
+protocol IMainMenuViewController: AnyObject {
+	func render(viewModel: MainMenuModel.ViewModel)
 }
 
-final class MainViewController: UIViewController {
+final class MainMenuViewController: UIViewController {
 
 	// MARK: - Dependencies
 
-	var interactor: IMainInteractor?
+	var interactor: IMainMenuInteractor?
 
 	// MARK: - Private Properties
 
-	private var viewModel = MainModel.ViewModel(recentFiles: [])
+	private var viewModel = MainMenuModel.ViewModel(recentFiles: [])
 
 	private lazy var collectionView: UICollectionView = makeCollectionView()
 	private lazy var buttonNew: UIButton = makeButton(
@@ -70,7 +70,7 @@ final class MainViewController: UIViewController {
 
 // MARK: - Actions
 
-private extension MainViewController {
+private extension MainMenuViewController {
 	@objc
 	func showAboutScreen() {
 		interactor?.buttonAboutPressed()
@@ -84,7 +84,7 @@ private extension MainViewController {
 
 // MARK: - UI Setup
 
-private extension MainViewController {
+private extension MainMenuViewController {
 
 	func makeCollectionView() -> UICollectionView {
 		let layout = UICollectionViewFlowLayout()
@@ -150,7 +150,7 @@ private extension MainViewController {
 		view.addSubview(buttonAbout)
 	}
 
-	func configureCell(_ cell: UICollectionViewCell, with file: MainModel.ViewModel.File) {
+	func configureCell(_ cell: UICollectionViewCell, with file: MainMenuModel.ViewModel.File) {
 		let label = UILabel()
 
 		label.text = file.name
@@ -168,7 +168,7 @@ private extension MainViewController {
 
 // MARK: - Layout UI
 
-private extension MainViewController {
+private extension MainMenuViewController {
 	func layout() {
 		NSLayoutConstraint.deactivate(constraints)
 
@@ -199,7 +199,7 @@ private extension MainViewController {
 
 // MARK: - UICollectionViewDataSource
 
-extension MainViewController: UICollectionViewDataSource {
+extension MainMenuViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		viewModel.recentFiles.count
 	}
@@ -214,12 +214,12 @@ extension MainViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension MainViewController: UICollectionViewDelegate {
+extension MainMenuViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension MainViewController: UICollectionViewDelegateFlowLayout {
+extension MainMenuViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(
 		_ collectionView: UICollectionView,
 		layout collectionViewLayout: UICollectionViewLayout,
@@ -231,8 +231,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - IStartViewController
 
-extension MainViewController: IMainViewController {
-	func render(viewModel: MainModel.ViewModel) {
+extension MainMenuViewController: IMainMenuViewController {
+	func render(viewModel: MainMenuModel.ViewModel) {
 		self.viewModel = viewModel
 		collectionView.reloadData()
 	}

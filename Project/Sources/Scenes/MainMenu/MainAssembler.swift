@@ -1,5 +1,5 @@
 //
-//  MainAssembler.swift
+//  MainMenuAssembler.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class MainAssembler {
+final class MainMenuAssembler {
 
 	// MARK: - Dependencies
 
@@ -22,13 +22,13 @@ final class MainAssembler {
 
 	// MARK: - Public methods
 
-	func assembly(closure: ((NextScreen) -> Void)?) -> MainViewController {
-		let viewController = MainViewController()
-		let presenter = MainPresenter(
+	func assembly(closure: ((NextScreen) -> Void)?) -> MainMenuViewController {
+		let viewController = MainMenuViewController()
+		let presenter = MainMenuPresenter(
 			viewController: viewController,
 			closure: closure
 		)
-		let interactor = MainInteractor(presenter: presenter, fileExplorer: fileExplorer)
+		let interactor = MainMenuInteractor(presenter: presenter, fileExplorer: fileExplorer)
 		viewController.interactor = interactor
 
 		return viewController

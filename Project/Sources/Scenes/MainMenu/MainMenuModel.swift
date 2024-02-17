@@ -1,5 +1,5 @@
 //
-//  MainModel.swift
+//  MainMenuModel.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MainModel {
+enum MainMenuModel {
 	struct Response {
 		var files: [File]
 	}

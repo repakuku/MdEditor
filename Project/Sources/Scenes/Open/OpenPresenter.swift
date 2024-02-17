@@ -48,9 +48,9 @@ final class OpenPresenter: IOpenPresenter {
 	private func mapFile(_ file: File) -> OpenModel.ViewModel.File {
 
 		var viewModelFile = OpenModel.ViewModel.File()
-		viewModelFile.name = file.name
-		viewModelFile.description = file.getFormattedAttributes()
-		viewModelFile.image = file.getImage()
+//		viewModelFile.name = file.name
+//		viewModelFile.description = file.getFormattedAttributes()
+//		viewModelFile.image = file.getImage()
 
 		return viewModelFile
 	}

@@ -33,7 +33,7 @@ final class MainCoordinator: ICoordinator {
 	}
 
 	func showMainScene() {
-		let assembler = MainAssembler(fileExplorer: fileExplorer)
+		let assembler = MainMenuAssembler(fileExplorer: fileExplorer)
 		let viewController = assembler.assembly { [weak self] nextScreen in
 			self?.finishFlow?(nextScreen)
 		}

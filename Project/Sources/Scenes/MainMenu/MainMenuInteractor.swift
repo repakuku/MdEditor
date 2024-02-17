@@ -1,5 +1,5 @@
 //
-//  MainInteractor.swift
+//  MainMenuInteractor.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/5/24.
@@ -8,22 +8,22 @@
 
 import Foundation
 
-protocol IMainInteractor {
+protocol IMainMenuInteractor {
 	func fetchData()
 	func buttonAboutPressed()
 	func buttonOpenPressed()
 }
 
-final class MainInteractor: IMainInteractor {
+final class MainMenuInteractor: IMainMenuInteractor {
 
 	// MARK: - Dependencies
 
-	private let presenter: IMainPresenter
+	private let presenter: IMainMenuPresenter
 	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(presenter: IMainPresenter, fileExplorer: IFileExplorer) {
+	init(presenter: IMainMenuPresenter, fileExplorer: IFileExplorer) {
 		self.presenter = presenter
 		self.fileExplorer = fileExplorer
 	}
@@ -31,10 +31,10 @@ final class MainInteractor: IMainInteractor {
 	// MARK: - Public Methods
 
 	func fetchData() {
-		var response = MainModel.Response(files: [])
+		var response = MainMenuModel.Response(files: [])
 
-		let files = fileExplorer.getFiles(from: BundleFiles.notes.path)
-		response.files = files
+//		let files = fileExplorer.getFiles(from: BundleFiles.notes.path)
+//		response.files = files
 
 		presenter.present(response: response)
 	}

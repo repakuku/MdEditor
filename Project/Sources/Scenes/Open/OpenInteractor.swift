@@ -31,8 +31,8 @@ protocol IOpenInteractor {
 	// MARK: - Public Methods
 
 	 func fetchData() {
-		 let files = fileExplorer.getFiles(from: BundleFiles.notes.path)
-		 let response = OpenModel.Response(files: files)
+//		 let files = fileExplorer.getFiles(from: BundleFiles.notes.path)
+		 let response = OpenModel.Response(files: [])
 		 presenter.present(response: response)
 	 }
 
@@ -41,12 +41,12 @@ protocol IOpenInteractor {
 	 }
 
 	 func didFileSelected(request: OpenModel.Request.FileSelected) {
-		 let file = fileExplorer.getFile(withName: request.fileName, atPath: BundleFiles.notes.path)
-		 if file?.type == .folder {
-			 let path = BundleFiles.notes.path + "/" + request.fileName
-			 let files = fileExplorer.getFiles(from: path)
-			 let response = OpenModel.Response(files: files)
-			 presenter.present(response: response)
-		 }
+//		 let file = fileExplorer.getFile(withName: request.fileName, atPath: BundleFiles.notes.path)
+//		 if file?.type == .folder {
+//			 let path = BundleFiles.notes.path + "/" + request.fileName
+//			 let files = fileExplorer.getFiles(from: path)
+//			 let response = OpenModel.Response(files: files)
+//			 presenter.present(response: response)
+//		 }
 	 }
  }
