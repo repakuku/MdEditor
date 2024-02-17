@@ -58,3 +58,6 @@
 "Task.writeNewTasks" = "Написать новые задачи";
 "Task.solve3Algorithms" = "Решить 3 алгоритма";
 "Task.goShopping" = "Пойти за покупками";
+
+// MARK: - Other
+"aboutFileName" = "about_ru";

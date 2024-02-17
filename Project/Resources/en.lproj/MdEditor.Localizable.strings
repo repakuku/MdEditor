@@ -58,3 +58,6 @@
 "Task.writeNewTasks" = "Write new tasks";
 "Task.solve3Algorithms" = "Solve 3 algorithms";
 "Task.goShopping" = "Go shopping";
+
+// MARK: - Other
+"aboutFileName" = "about_en";
