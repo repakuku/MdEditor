@@ -29,10 +29,6 @@
 "Main.buttonOpen" = "Open";
 "Main.buttonAbout" = "About";
 
-// MARK: - OpenScreen
-
-"Open.title" = "Examples";
-
 // MARK: - AboutScreen
 
 "About.title" = "About";

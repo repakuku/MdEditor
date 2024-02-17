@@ -29,10 +29,6 @@
 "Main.buttonOpen" = "Открыть";
 "Main.buttonAbout" = "О приложении";
 
-// MARK: - OpenScreen
-
-"Open.title" = "Примеры";
-
 // MARK: - AboutScreen
 
 "About.title" = "About";

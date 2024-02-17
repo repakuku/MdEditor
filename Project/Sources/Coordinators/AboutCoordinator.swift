@@ -14,7 +14,6 @@ final class AboutCoordinator: ICoordinator {
 
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
-	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Internal properties
 
@@ -22,10 +21,9 @@ final class AboutCoordinator: ICoordinator {
 
 	// MARK: - Initialization
 
-	init(navigationController: UINavigationController, fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
+	init(navigationController: UINavigationController, fileExplorer: IFileExplorer) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
-		self.converter = converter
 	}
 
 	// MARK: - Internal methods
@@ -35,7 +33,7 @@ final class AboutCoordinator: ICoordinator {
 	}
 
 	func showAboutScene() {
-		let assembler = AboutAssembler(fileExplorer: fileExplorer, converter: converter)
+		let assembler = AboutAssembler(fileExplorer: fileExplorer)
 		let viewController = assembler.assembly { [weak self] in
 			self?.finishFlow?()
 		}

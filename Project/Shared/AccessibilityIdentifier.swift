@@ -25,6 +25,17 @@ enum AccessibilityIdentifier {
 		}
 	}
 
+	enum FileManagerScene: CustomStringConvertible {
+		case menu
+
+		var description: String {
+			switch self {
+			case .menu:
+				return "fileManagerScene.menu"
+			}
+		}
+	}
+
 	enum TodoListScene: CustomStringConvertible {
 		case table
 		case section(Int)

@@ -22,7 +22,7 @@ final class MainMenuAssembler {
 
 	// MARK: - Public methods
 
-	func assembly(closure: ((NextScreen) -> Void)?) -> MainMenuViewController {
+	func assembly(closure: ((Screen) -> Void)?) -> MainMenuViewController {
 		let viewController = MainMenuViewController()
 		let presenter = MainMenuPresenter(
 			viewController: viewController,

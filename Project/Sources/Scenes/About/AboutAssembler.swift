@@ -13,13 +13,11 @@ final class AboutAssembler {
 	// MARK: - Dependencies
 
 	private let fileExplorer: IFileExplorer
-	private let converter: IMarkdownToHTMLConverter
 
 	// MARK: - Initializers
 
-	init(fileExplorer: IFileExplorer, converter: IMarkdownToHTMLConverter) {
+	init(fileExplorer: IFileExplorer) {
 		self.fileExplorer = fileExplorer
-		self.converter = converter
 	}
 
 	// MARK: - Public methods
@@ -28,7 +26,6 @@ final class AboutAssembler {
 		let viewController = AboutViewController()
 		let presenter: IAboutPresenter = AboutPresenter(
 			viewController: viewController,
-			worker: converter,
 			backClosure: backClosure
 		)
 		let interactor: IAboutInteractor = AboutInteractor(presenter: presenter, fileExplorer: fileExplorer)

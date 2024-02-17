@@ -16,6 +16,7 @@ enum Sizes {
 	static let topInset: CGFloat = 180.0
 
 	enum Padding {
+		static let micro: CGFloat = 4
 		static let half: CGFloat = 8
 		static let normal: CGFloat = 16
 		static let double: CGFloat = 32
@@ -25,6 +26,7 @@ enum Sizes {
 		static let width: CGFloat = 200
 		static let height: CGFloat = 50
 		static let widthMultiplier: CGFloat = 0.9
+		static let icon: CGFloat = 10
 	}
 
 	enum M {

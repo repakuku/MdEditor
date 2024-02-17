@@ -8,15 +8,16 @@
 
 import Foundation
 
-enum NextScreen {
-	case open
+enum Screen {
+	case main
+	case fileManager(files: [File])
 	case about
 }
 
 protocol IMainMenuPresenter {
 	func present(response: MainMenuModel.Response)
 	func presentAboutScreen()
-	func presentOpenScreen()
+	func presentFileManagerScreen(response: MainMenuModel.Response)
 }
 
 final class MainMenuPresenter: IMainMenuPresenter {
@@ -24,11 +25,11 @@ final class MainMenuPresenter: IMainMenuPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainMenuViewController?
-	private let closure: ((NextScreen) -> Void)?
+	private let closure: ((Screen) -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainMenuViewController, closure: ((NextScreen) -> Void)?) {
+	init(viewController: IMainMenuViewController, closure: ((Screen) -> Void)?) {
 		self.viewController = viewController
 		self.closure = closure
 	}
@@ -36,22 +37,11 @@ final class MainMenuPresenter: IMainMenuPresenter {
 	// MARK: - Public Methods
 
 	func present(response: MainMenuModel.Response) {
-		var onlyFiles = [MainMenuModel.ViewModel.File]()
-
-		for file in response.files {
-			let file = MainMenuModel.ViewModel.File(name: file.name)
-			onlyFiles.append(file)
-		}
-
-		let viewModel = MainMenuModel.ViewModel(recentFiles: onlyFiles)
-		viewController?.render(viewModel: viewModel)
 	}
 
 	func presentAboutScreen() {
-		closure?(.about)
 	}
 
-	func presentOpenScreen() {
-		closure?(.open)
+	func presentFileManagerScreen(response: MainMenuModel.Response) {
 	}
 }

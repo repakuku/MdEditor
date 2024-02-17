@@ -31,19 +31,11 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	// MARK: - Public Methods
 
 	func fetchData() {
-		var response = MainMenuModel.Response(files: [])
-
-//		let files = fileExplorer.getFiles(from: BundleFiles.notes.path)
-//		response.files = files
-
-		presenter.present(response: response)
 	}
 
 	func buttonAboutPressed() {
-		presenter.presentAboutScreen()
 	}
 
 	func buttonOpenPressed() {
-		presenter.presentOpenScreen()
 	}
 }

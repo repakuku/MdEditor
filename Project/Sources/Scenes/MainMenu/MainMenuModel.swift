@@ -9,15 +9,35 @@
 import Foundation
 
 enum MainMenuModel {
+
+	enum MenuIdentifier {
+		case openFIle
+		case newFile
+		case showAbout
+	}
+
+	enum Request {
+		case menuItemSelected(indexPath: IndexPath)
+		case recentFileSelected(indexPath: IndexPath)
+	}
+
 	struct Response {
-		var files: [File]
+		var recentFiles: [RecentFile]
+		var menu: [MenuIdentifier]
 	}
 
 	struct ViewModel {
-		let recentFiles: [File]
+		let recentFiles: [RecentFile]
+		let menu: [MenuItem]
 
-		struct File {
-			let name: String
+		struct MenuItem {
+			let title: String
+			let item: MenuIdentifier
+		}
+
+		struct RecentFile {
+			let previewText: String
+			let fileNmae: String
 		}
 	}
 }

@@ -20,7 +20,7 @@ final class MainMenuViewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel = MainMenuModel.ViewModel(recentFiles: [])
+	private var viewModel: MainMenuModel.ViewModel!
 
 	private lazy var collectionView: UICollectionView = makeCollectionView()
 	private lazy var buttonNew: UIButton = makeButton(
@@ -150,10 +150,10 @@ private extension MainMenuViewController {
 		view.addSubview(buttonAbout)
 	}
 
-	func configureCell(_ cell: UICollectionViewCell, with file: MainMenuModel.ViewModel.File) {
+	func configureCell(_ cell: UICollectionViewCell, with file: MainMenuModel.ViewModel.RecentFile) {
 		let label = UILabel()
 
-		label.text = file.name
+		label.text = file.fileNmae
 		label.font = UIFont.systemFont(ofSize: Sizes.CollectionView.fontSize)
 		label.textAlignment = .center
 		label.frame.origin = CGPoint(x: .zero, y: cell.bounds.height + Sizes.Padding.half)

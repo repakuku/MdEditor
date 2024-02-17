@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private var repository = TaskRepositoryStub()
 	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var fileExplorer: IFileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var converter: IMarkdownToHTMLConverter! // swiftlint:disable:this implicitly_unwrapped_optional
-
+	private var delegate: IFileManagerDelegate! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var appCoordinator: AppCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
@@ -29,13 +28,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		taskManager = OrderedTaskManager(taskManager: TaskManager())
 		taskManager.addTasks(tasks: repository.getTasks())
-		converter = MarkdownToHTMLConverter()
+		fileExplorer = FileExplorer()
 
 		appCoordinator = AppCoordinator(
 			window: window,
 			taskManager: taskManager,
 			fileExplorer: fileExplorer,
-			converter: converter
+			delegate: delegate
 		)
 
 #if DEBUG

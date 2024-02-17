@@ -16,10 +16,6 @@ protocol IFileExplorer {
 
 final class FileExplorer: IFileExplorer {
 
-	enum FileExplorerError: Error {
-		case wrongAttribute
-	}
-
 	// MARK: - Dependencies
 
 	private let fileManager = FileManager.default
@@ -31,12 +27,12 @@ final class FileExplorer: IFileExplorer {
 	// MARK: - Public Methods
 
 	func contentOfFolder(at url: URL) -> Result<[File], Error> {
+		var files = [File]()
 
 		do {
-			let fileUrls = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-			var files = [File]()
-			for fileUrl in fileUrls {
-				let file = File.parse(url: fileUrl)
+			let fileNames = try fileManager.contentsOfDirectory(atPath: url.relativePath)
+			for fileName in fileNames {
+				let file = File.parse(url: url.appendingPathComponent("\(fileName)"))
 				switch file {
 				case .success(let file):
 					files.append(file)
@@ -51,10 +47,22 @@ final class FileExplorer: IFileExplorer {
 	}
 
 	func createFolder(at url: URL, withName name: String) -> Result<File, Error> {
-		.failure(FileExplorerError.wrongAttribute)
+		do {
+			let newFolderUrl = url.appendingPathComponent("\(name)")
+			try fileManager.createDirectory(at: newFolderUrl, withIntermediateDirectories: true)
+			return File.parse(url: newFolderUrl)
+		} catch {
+			return .failure(error)
+		}
 	}
 
 	func createNewFile(at url: URL, fileName: String) -> Result<File, Error> {
-		.failure(FileExplorerError.wrongAttribute)
+		do {
+			let newFileUrl = url.appendingPathComponent("\(fileName)")
+			try "".write(to: newFileUrl, atomically: true, encoding: fileEncoding)
+			return File.parse(url: newFileUrl)
+		} catch {
+			return .failure(error)
+		}
 	}
 }

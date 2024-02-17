@@ -32,10 +32,17 @@ final class AboutInteractor: IAboutInteractor {
 	func fetchData() {
 		var response = AboutModel.Response(text: "")
 
-//		if let file = fileExplorer.getFile(withName: BundleFiles.about.name, atPath: BundleFiles.about.path) {
-//			let text = file.loadFileBody()
-//			response.text = text
-//		}
+		let files = fileExplorer.contentOfFolder(at: Bundle.main.bundleURL)
+		switch files {
+		case .success(let files):
+			for file in files {
+				if file.name == (L10n.aboutFileName + "." + file.ext) {
+					response.text = String(data: (file.contentOfFile() ?? Data()), encoding: .utf8) ?? ""
+				}
+			}
+		case .failure:
+			break
+		}
 
 		presenter.present(response: response)
 	}
