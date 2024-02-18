@@ -37,7 +37,7 @@ enum MainMenuModel {
 
 		struct RecentFile {
 			let previewText: String
-			let fileNmae: String
+			let fileName: String
 		}
 	}
 }

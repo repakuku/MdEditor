@@ -11,7 +11,7 @@ import Foundation
 final class RecentFile {
 	let previewText: String
 	let url: URL
-	
+
 	init(previewText: String, url: URL) {
 		self.previewText = previewText
 		self.url = url

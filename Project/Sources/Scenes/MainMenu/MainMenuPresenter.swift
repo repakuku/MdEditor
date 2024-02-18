@@ -28,12 +28,12 @@ final class MainMenuPresenter: IMainMenuPresenter {
 
 	func present(response: MainMenuModel.Response) {
 		let recentFiles = response.recentFiles.map {
-			MainMenuModel.ViewModel.RecentFile(previewText: $0.previewText, fileNmae: $0.url.lastPathComponent)
+			MainMenuModel.ViewModel.RecentFile(previewText: $0.previewText, fileName: $0.url.lastPathComponent)
 		}
 		let menu = response.menu.map {
 			$0
 		}
-		
+
 		let viewModel = MainMenuModel.ViewModel(recentFiles: [], menu: [])
 		viewController?.render(viewModel: viewModel)
 	}

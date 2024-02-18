@@ -17,8 +17,6 @@ final class TextPreviewViewController: UIViewController {
 	var interactor: ITextPreviewInteractor?
 
 	// MARK: - Private Properties
-	
-	
 
 	// MARK: - Initialization
 

@@ -17,7 +17,7 @@ protocol IMainMenuDelegate: AnyObject {
 
 protocol IMainMenuInteractor {
 	func fetchData()
-	func performAction(request: MainMenuModel.MenuIdentifier)
+	func performAction(request: MainMenuModel.Request)
 }
 
 final class MainMenuInteractor: IMainMenuInteractor {
@@ -41,14 +41,12 @@ final class MainMenuInteractor: IMainMenuInteractor {
 		presenter.present(response: response)
 	}
 
-	func performAction(request: MainMenuModel.MenuIdentifier) {
+	func performAction(request: MainMenuModel.Request) {
 		switch request {
-		case .openFIle:
-			delegate?.openFile()
-		case .newFile:
-			delegate?.newFile()
-		case .showAbout:
-			delegate?.showAbout()
+		case .menuItemSelected(let indexPath):
+			break
+		case .recentFileSelected(let indexPath):
+			break
 		}
 	}
 }

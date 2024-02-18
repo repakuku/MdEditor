@@ -32,23 +32,24 @@ enum Sizes {
 	enum M {
 		static let width: CGFloat = 100
 		static let height: CGFloat = 40
+		static let icon: CGFloat = 10
 	}
 
 	enum S {
 		static let width: CGFloat = 80
 		static let height: CGFloat = 30
 	}
-
+	
 	enum CollectionView {
 		static let height: CGFloat = 200
-		static let cellSize = CGSize(width: 100, height: 150)
+		static let width: CGFloat = 100
 
 		static let fontSize: CGFloat = 10
 		static let labelHeight: CGFloat = 15
 	}
-
-	enum Button {
-		static let imageReservation: CGFloat = 30
+	
+	enum TableView {
+		static let fontSize: CGFloat = 16
 	}
 }
 // swiftlint:enable type_name
