@@ -14,7 +14,6 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
-	private let delegate: IFileManagerDelegate
 
 	// MARK: - Internal properties
 
@@ -24,12 +23,10 @@ final class MainCoordinator: BaseCoordinator {
 
 	init(
 		navigationController: UINavigationController,
-		fileExplorer: IFileExplorer,
-		delegate: IFileManagerDelegate
+		fileExplorer: IFileExplorer
 	) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
-		self.delegate = delegate
 	}
 
 	// MARK: - Internal methods
@@ -40,40 +37,66 @@ final class MainCoordinator: BaseCoordinator {
 }
 
 private extension MainCoordinator {
+
 	func showMainMenuScene() {
-		let assembler = MainMenuAssembler(fileExplorer: fileExplorer)
-		let viewController = assembler.assembly { [weak self] nextScreen in
-			self?.finishFlow?(nextScreen)
-		}
+		let assembler = MainMenuAssembler(delegate: self)
+		let viewController = assembler.assembly()
+		viewController.navigationItem.setHidesBackButton(true, animated: true)
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
-	func runAboutFlow() {
-		let coordinator = AboutCoordinator(
+	func showTextPreviewScene(file: File) {
+		let assembler = TextPreviewAssembler(file: file)
+		let viewController = assembler.assembly()
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func runFileManagerFlow() {
+		let coordinator: IFileManagerCoordinator = FileManagerCoordinator(
 			navigationController: navigationController,
 			fileExplorer: fileExplorer
 		)
 		addDependency(coordinator)
 
-		coordinator.finishFlow = { [weak self, weak coordinator] in
-			coordinator.map { self?.removeDependency($0) }
+		coordinator.finishFlow = { [weak self, weak coordinator] file in
+			guard let self = self, let coordinator = coordinator else { return }
+
+			self.removeDependency(coordinator)
+			self.navigationController.popToRootViewController(animated: true)
+
+			if let file = file {
+				self.showTextPreviewScene(file: file)
+			}
 		}
 
 		coordinator.start()
 	}
+}
 
-	func runOpenFlow() {
-		let coordinator = FileManagerCoordinator(
-			navigationController: navigationController,
-			fileExplorer: fileExplorer,
-			delegate: delegate
-		)
-		addDependency(coordinator)
+// MARK: - IMainMenuDelegate
 
-		coordinator.finishFlow = { [weak self, weak coordinator] in
-			coordinator.map { self?.removeDependency($0) }
+extension MainCoordinator: IMainMenuDelegate {
+
+	func showAbout() {
+		let aboutUrl = Bundle.main.url(
+			forResource: L10n.aboutFileName,
+			withExtension: "md"
+		)! // swiftlint:disable:this force_unwrapping
+		switch File.parse(url: aboutUrl) {
+		case .success(let aboutFile):
+			showTextPreviewScene(file: aboutFile)
+		case .failure:
+			break
 		}
-
-		coordinator.start()
 	}
+
+	func openFile() {
+		runFileManagerFlow()
+	}
+
+	func openFile(file: File) {
+		showTextPreviewScene(file: file)
+	}
+
+	func newFile() {}
 }

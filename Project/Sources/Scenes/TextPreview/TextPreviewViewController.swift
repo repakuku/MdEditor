@@ -1,5 +1,5 @@
 //
-//  AboutViewController.swift
+//  TextPreviewViewController.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/10/24.
@@ -7,20 +7,16 @@
 //
 
 import UIKit
-import WebKit
 
-protocol IAboutViewController: AnyObject {
-	func render(viewModel: AboutModel.ViewModel)
+protocol ITextPreviewViewController: AnyObject {
 }
 
-final class AboutViewController: UIViewController {
+final class TextPreviewViewController: UIViewController {
 	// MARK: - Dependencies
 
-	var interactor: IAboutInteractor?
+	var interactor: ITextPreviewInteractor?
 
 	// MARK: - Private Properties
-
-	private let webView = WKWebView()
 
 	// MARK: - Initialization
 
@@ -44,33 +40,23 @@ final class AboutViewController: UIViewController {
 		super.viewWillDisappear(animated)
 
 		if self.isMovingFromParent {
-			interactor?.backButtonPressed()
 		}
 	}
 
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		webView.underPageBackgroundColor = Theme.backgroundColor
-		interactor?.fetchData()
 	}
 }
 
 // MARK: - IAboutViewController
 
-extension AboutViewController: IAboutViewController {
-	func render(viewModel: AboutModel.ViewModel) {
-		webView.loadHTMLString(viewModel.html, baseURL: nil)
-	}
+extension TextPreviewViewController: ITextPreviewViewController {
 }
 
 // MARK: - Setup UI
 
-private extension AboutViewController {
+private extension TextPreviewViewController {
 	func setupUI() {
 		navigationController?.navigationBar.tintColor = Theme.black
-
-		webView.underPageBackgroundColor = Theme.backgroundColor
-
-		view = webView
 		title = L10n.About.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 	}

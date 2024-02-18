@@ -12,23 +12,22 @@ final class MainMenuAssembler {
 
 	// MARK: - Dependencies
 
-	private let fileExplorer: IFileExplorer
+	private let delegate: IMainMenuDelegate
 
 	// MARK: - Initializers
 
-	init(fileExplorer: IFileExplorer) {
-		self.fileExplorer = fileExplorer
+	init(delegate: IMainMenuDelegate) {
+		self.delegate = delegate
 	}
 
 	// MARK: - Public methods
 
-	func assembly(closure: ((Screen) -> Void)?) -> MainMenuViewController {
+	func assembly() -> MainMenuViewController {
 		let viewController = MainMenuViewController()
 		let presenter = MainMenuPresenter(
-			viewController: viewController,
-			closure: closure
+			viewController: viewController
 		)
-		let interactor = MainMenuInteractor(presenter: presenter, fileExplorer: fileExplorer)
+		let interactor = MainMenuInteractor(presenter: presenter)
 		viewController.interactor = interactor
 
 		return viewController

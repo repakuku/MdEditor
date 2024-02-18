@@ -8,45 +8,83 @@
 
 import UIKit
 
-final class FileManagerCoordinator: ICoordinator {
+protocol IFileManagerCoordinator: ICoordinator {
+	var finishFlow: ((File?) -> Void)? { get set }
+}
+
+final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigationControllerDelegate {
 
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
+	private var topViewController: UIViewController?
+
 	private let fileExplorer: IFileExplorer
-	private let delegate: IFileManagerDelegate
 
 	// MARK: - Internal properties
 
-	var finishFlow: (() -> Void)?
+	var finishFlow: ((File?) -> Void)?
 
 	// MARK: - Initialization
 
 	init(
 		navigationController: UINavigationController,
-		fileExplorer: IFileExplorer,
-		delegate: IFileManagerDelegate
+		fileExplorer: IFileExplorer
 	) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
-		self.delegate = delegate
+
+		super.init()
+
+		if let topViewController = navigationController.topViewController {
+			self.topViewController = topViewController
+		}
+
+		navigationController.delegate = self
 	}
 
 	// MARK: - Internal methods
 
 	func start() {
-		showFileManagerScene()
+		showFileManagerScene(file: nil)
 	}
 
-	func showFileManagerScene() {
+	func navigationController(
+		_ navigationController: UINavigationController,
+		didShow viewController: UIViewController,
+		animated: Bool
+	) {
+		if viewController === topViewController {
+			finishFlow?(nil)
+		}
+	}
+
+	// MARK: - Private methods
+
+	private func showFileManagerScene(file: File?) {
 		let assembler = FileManagerAssembler(
 			fileExplorer: fileExplorer,
-			delegate: delegate,
-			file: nil
+			delegate: self,
+			file: file
 		)
 
-		let viewController = assembler.assemble { [weak self] _ in
-		}
+		let viewController = assembler.assembly()
 		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	private func showTextPreviewScene(file: File) {
+		let assembler = TextPreviewAssembler(file: file)
+		let viewController = assembler.assembly()
+		navigationController.pushViewController(viewController, animated: true)
+	}
+}
+
+// MARK: - IFileManagerDelegate
+
+extension FileManagerCoordinator: IFileManagerDelegate {
+	func openFolder(file: File) {
+	}
+
+	func openFile(file: File) {
 	}
 }

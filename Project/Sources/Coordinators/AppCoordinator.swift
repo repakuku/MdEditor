@@ -16,21 +16,18 @@ final class AppCoordinator: BaseCoordinator {
 	private var window: UIWindow?
 	private let taskManager: ITaskManager
 	private let fileExplorer: IFileExplorer
-	private let delegate: IFileManagerDelegate
 
 	// MARK: - Initialization
 
 	init(
 		window: UIWindow?,
 		taskManager: ITaskManager,
-		fileExplorer: IFileExplorer,
-		delegate: IFileManagerDelegate
+		fileExplorer: IFileExplorer
 	) {
 		self.window = window
 		self.taskManager = taskManager
 		self.navigationController = UINavigationController()
 		self.fileExplorer = fileExplorer
-		self.delegate = delegate
 	}
 
 	// MARK: - Internal methods
@@ -59,8 +56,7 @@ final class AppCoordinator: BaseCoordinator {
 	func runMainFlow() {
 		let coordinator = MainCoordinator(
 			navigationController: navigationController,
-			fileExplorer: fileExplorer,
-			delegate: delegate
+			fileExplorer: fileExplorer
 		)
 		addDependency(coordinator)
 		coordinator.start()

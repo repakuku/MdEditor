@@ -1,5 +1,5 @@
 //
-//  AboutModel.swift
+//  TextPreviewModel.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/10/24.
@@ -8,13 +8,5 @@
 
 import Foundation
 
-enum AboutModel {
-
-	struct Response {
-		var text: String
-	}
-
-	struct ViewModel {
-		var html: String
-	}
+enum TextPreviewModel {
 }

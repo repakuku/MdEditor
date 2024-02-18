@@ -25,13 +25,11 @@ final class MainMenuPresenter: IMainMenuPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IMainMenuViewController?
-	private let closure: ((Screen) -> Void)?
 
 	// MARK: - Initialization
 
-	init(viewController: IMainMenuViewController, closure: ((Screen) -> Void)?) {
+	init(viewController: IMainMenuViewController) {
 		self.viewController = viewController
-		self.closure = closure
 	}
 
 	// MARK: - Public Methods

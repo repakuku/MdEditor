@@ -15,7 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private var repository = TaskRepositoryStub()
 	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var fileExplorer: IFileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var delegate: IFileManagerDelegate! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var appCoordinator: AppCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
@@ -33,8 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		appCoordinator = AppCoordinator(
 			window: window,
 			taskManager: taskManager,
-			fileExplorer: fileExplorer,
-			delegate: delegate
+			fileExplorer: fileExplorer
 		)
 
 #if DEBUG

@@ -26,11 +26,10 @@ final class FileManagerAssembler {
 
 	// MARK: - Public methods
 
-	func assemble(backClosure: ((Screen) -> Void)?) -> FileManagerViewController {
+	func assembly() -> FileManagerViewController {
 		let viewController = FileManagerViewController()
 		let presenter = FileManagerPresenter(
-			viewController: viewController,
-			backClosure: backClosure
+			viewController: viewController
 		)
 		let interactor: IFileManagerInteractor = FileManagerInteractor(
 			presenter: presenter,
@@ -39,7 +38,6 @@ final class FileManagerAssembler {
 			file: file
 		)
 		viewController.interactor = interactor
-
 		return viewController
 	}
 }

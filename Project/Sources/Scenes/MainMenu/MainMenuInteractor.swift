@@ -8,10 +8,15 @@
 
 import Foundation
 
+protocol IMainMenuDelegate {
+	func showAbout()
+	func openFile()
+	func openFile(file: File)
+	func newFile()
+}
+
 protocol IMainMenuInteractor {
 	func fetchData()
-	func buttonAboutPressed()
-	func buttonOpenPressed()
 }
 
 final class MainMenuInteractor: IMainMenuInteractor {
@@ -19,23 +24,15 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	// MARK: - Dependencies
 
 	private let presenter: IMainMenuPresenter
-	private let fileExplorer: IFileExplorer
 
 	// MARK: - Initialization
 
-	init(presenter: IMainMenuPresenter, fileExplorer: IFileExplorer) {
+	init(presenter: IMainMenuPresenter) {
 		self.presenter = presenter
-		self.fileExplorer = fileExplorer
 	}
 
 	// MARK: - Public Methods
 
 	func fetchData() {
-	}
-
-	func buttonAboutPressed() {
-	}
-
-	func buttonOpenPressed() {
 	}
 }
