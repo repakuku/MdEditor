@@ -27,8 +27,10 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: TextPreviewModel.Response) {
-		let title = response.fileUrl.lastPathComponent
-		let viewModel = TextPreviewModel.ViewModel(currentTitle: title, text: response.fileContent)
+		let viewModel = TextPreviewModel.ViewModel(
+			currentTitle: response.fileUrl.lastPathComponent,
+			text: response.fileContent
+		)
 		viewController?.render(viewModel: viewModel)
 	}
 }
