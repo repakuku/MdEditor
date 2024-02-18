@@ -8,12 +8,6 @@
 
 import Foundation
 
-enum Screen {
-	case main
-	case fileManager(files: [File])
-	case about
-}
-
 protocol IMainMenuPresenter {
 	func present(response: MainMenuModel.Response)
 	func presentAboutScreen()
@@ -35,6 +29,8 @@ final class MainMenuPresenter: IMainMenuPresenter {
 	// MARK: - Public Methods
 
 	func present(response: MainMenuModel.Response) {
+		let viewModel = MainMenuModel.ViewModel(recentFiles: [], menu: [])
+		viewController?.render(viewModel: viewModel)
 	}
 
 	func presentAboutScreen() {

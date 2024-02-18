@@ -83,8 +83,10 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigat
 
 extension FileManagerCoordinator: IFileManagerDelegate {
 	func openFolder(file: File) {
+		showFileManagerScene(file: file)
 	}
 
 	func openFile(file: File) {
+		showTextPreviewScene(file: file)
 	}
 }

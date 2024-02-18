@@ -44,7 +44,7 @@ final class AppCoordinator: BaseCoordinator {
 		addDependency(coordinator)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in
-			guard let self else { return }
+			guard let self = self else { return }
 			self.runMainFlow()
 			coordinator.map { self.removeDependency($0) }
 			self.navigationController.viewControllers.removeFirst()

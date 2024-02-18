@@ -24,7 +24,7 @@ final class FileManagerViewController: UIViewController {
 		accessibilityIdentifier: AccessibilityIdentifier.FileManagerScene.menu.description
 	)
 
-	private var viewModel: FileManagerModel.ViewModel!
+	private var viewModel: FileManagerModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	// MARK: - Initialization
 

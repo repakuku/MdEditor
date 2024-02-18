@@ -28,7 +28,7 @@ final class FileManagerInteractor: IFileManagerInteractor {
 
 	// MARK: - Private properties
 
-	private var fileList: FileManagerModel.Response!
+	private var fileList: FileManagerModel.Response! // swiftlint:disable:this implicitly_unwrapped_optional
 	private let currentFile: File?
 
 	// MARK: - Initialization

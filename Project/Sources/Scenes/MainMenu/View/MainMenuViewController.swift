@@ -20,7 +20,7 @@ final class MainMenuViewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: MainMenuModel.ViewModel!
+	private var viewModel: MainMenuModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	private lazy var collectionView: UICollectionView = makeCollectionView()
 	private lazy var buttonNew: UIButton = makeButton(
@@ -73,12 +73,12 @@ final class MainMenuViewController: UIViewController {
 private extension MainMenuViewController {
 	@objc
 	func showAboutScreen() {
-		interactor?.buttonAboutPressed()
+		interactor?.performAction(request: .showAbout)
 	}
 
 	@objc
 	func showOpenScreen() {
-		interactor?.buttonOpenPressed()
+		interactor?.performAction(request: .openFIle)
 	}
 }
 

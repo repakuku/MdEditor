@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol IMainMenuDelegate {
+protocol IMainMenuDelegate: AnyObject {
 	func showAbout()
 	func openFile()
 	func openFile(file: File)
@@ -17,6 +17,7 @@ protocol IMainMenuDelegate {
 
 protocol IMainMenuInteractor {
 	func fetchData()
+	func performAction(request: MainMenuModel.MenuIdentifier)
 }
 
 final class MainMenuInteractor: IMainMenuInteractor {
@@ -24,6 +25,7 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	// MARK: - Dependencies
 
 	private let presenter: IMainMenuPresenter
+	private weak var delegate: IMainMenuDelegate?
 
 	// MARK: - Initialization
 
@@ -34,5 +36,10 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	// MARK: - Public Methods
 
 	func fetchData() {
+		let response = MainMenuModel.Response(recentFiles: [], menu: [])
+		presenter.present(response: response)
+	}
+
+	func performAction(request: MainMenuModel.MenuIdentifier) {
 	}
 }

@@ -75,7 +75,7 @@ struct File {
 
 //	func loadFileBody() -> String {
 //		var text = ""
-//		let fullPath = Bundle.main.resourcePath! + "\(path)/\(name)" // swiftlint:disable:this force_unwrapping
+//		let fullPath = Bundle.main.resourcePath! + "\(path)/\(name)"
 //
 //		do {
 //			text = try String(contentsOfFile: fullPath, encoding: .utf8)

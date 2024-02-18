@@ -15,10 +15,6 @@ final class MainCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
 
-	// MARK: - Internal properties
-
-	var finishFlow: ((Screen) -> Void)?
-
 	// MARK: - Initialization
 
 	init(
@@ -52,7 +48,7 @@ private extension MainCoordinator {
 	}
 
 	func runFileManagerFlow() {
-		let coordinator: IFileManagerCoordinator = FileManagerCoordinator(
+		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
 			fileExplorer: fileExplorer
 		)
