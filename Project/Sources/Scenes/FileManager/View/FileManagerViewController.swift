@@ -24,6 +24,9 @@ final class FileManagerViewController: UIViewController {
 		accessibilityIdentifier: AccessibilityIdentifier.FileManagerScene.menu.description
 	)
 
+	private lazy var folderImage = makeFolderImage()
+	private lazy var fileImage = makeFileImage()
+
 	private var viewModel: FileManagerModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	// MARK: - Initialization
@@ -43,55 +46,6 @@ final class FileManagerViewController: UIViewController {
 		interactor?.fetchData()
 		setupUI()
 		layout()
-	}
-}
-
-// MARK: - UITableView
-
-extension FileManagerViewController: UITableViewDelegate, UITableViewDataSource {
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		viewModel.files.count
-	}
-
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(
-			withIdentifier: FileTableViewCell.reusableIdentifier,
-			for: indexPath
-		) as! FileTableViewCell // swiftlint:disable:this force_cast
-
-		let file = viewModel.files[indexPath.row]
-		var fileIcon: UIImage?
-
-		switch file.isFolder {
-		case true:
-			fileIcon = UIImage(systemName: "folder.fill")?.withTintColor(
-				Theme.mainColor,
-				renderingMode: .alwaysOriginal
-			)
-		case false:
-			fileIcon = UIImage(systemName: "doc.fill")?.withTintColor(
-				Theme.mainColor,
-				renderingMode: .alwaysOriginal
-			)
-		}
-
-		cell.configure(title: file.name, subtitle: file.info, icon: fileIcon ?? UIImage())
-
-		return cell
-	}
-
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		interactor?.performAction(request: .fileSelected(indexPath: indexPath))
-	}
-}
-
-// MARK: - IFileManagerViewController
-
-extension FileManagerViewController: IFileManagerViewController {
-	func render(viewModel: FileManagerModel.ViewModel) {
-		self.viewModel = viewModel
-		title = viewModel.currentFolderName
-		tableView.reloadData()
 	}
 }
 
@@ -115,6 +69,20 @@ private extension FileManagerViewController {
 		tableView.dataSource = self
 		return tableView
 	}
+
+	func makeFolderImage() -> UIImage {
+		UIImage(systemName: "folder.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeFileImage() -> UIImage {
+		UIImage(systemName: "doc.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
 }
 
 // MARK: - Layout UI
@@ -129,5 +97,45 @@ private extension FileManagerViewController {
 				tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 			]
 		)
+	}
+}
+
+// MARK: - UITableViewDelegate
+
+extension FileManagerViewController: UITableViewDelegate, UITableViewDataSource {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		viewModel.files.count
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(
+			withIdentifier: FileTableViewCell.reusableIdentifier,
+			for: indexPath
+		) as! FileTableViewCell // swiftlint:disable:this force_cast
+
+		let file = viewModel.files[indexPath.row]
+
+		switch file.isFolder {
+		case true:
+			cell.configure(title: file.name, subtitle: file.info, icon: folderImage)
+		case false:
+			cell.configure(title: file.name, subtitle: file.info, icon: fileImage)
+		}
+
+		return cell
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		interactor?.performAction(request: .fileSelected(indexPath: indexPath))
+	}
+}
+
+// MARK: - IFileManagerViewController
+
+extension FileManagerViewController: IFileManagerViewController {
+	func render(viewModel: FileManagerModel.ViewModel) {
+		self.viewModel = viewModel
+		title = viewModel.currentFolderName
+		tableView.reloadData()
 	}
 }

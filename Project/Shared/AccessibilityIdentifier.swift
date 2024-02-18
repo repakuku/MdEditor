@@ -49,6 +49,17 @@ enum AccessibilityIdentifier {
 		}
 	}
 
+	enum TextPreviewScene: CustomStringConvertible {
+		case textView
+
+		var description: String {
+			switch self {
+			case .textView:
+				return "textPreviewScene.textView"
+			}
+		}
+	}
+
 	enum TodoListScene: CustomStringConvertible {
 		case table
 		case section(Int)

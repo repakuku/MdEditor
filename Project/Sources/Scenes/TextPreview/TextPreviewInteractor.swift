@@ -27,5 +27,7 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 	// MARK: - Public Methods
 
 	func fetchData() {
+//		let response = TextPreviewModel.Response(fileUrl: <#T##URL#>, fileContent: <#T##String#>)
+//		presenter.present(reponse: response)
 	}
 }

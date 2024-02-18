@@ -9,6 +9,7 @@
 import Foundation
 
 protocol ITextPreviewPresenter {
+	func present(reponse: TextPreviewModel.Response)
 }
 
 final class TextPreviewPresenter: ITextPreviewPresenter {
@@ -25,4 +26,6 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 
 	// MARK: - Public Methods
 
+	func present(reponse: TextPreviewModel.Response) {
+	}
 }
