@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ITextPreviewPresenter {
-	func present(reponse: TextPreviewModel.Response)
+	func present(response: TextPreviewModel.Response)
 }
 
 final class TextPreviewPresenter: ITextPreviewPresenter {
@@ -26,6 +26,9 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 
 	// MARK: - Public Methods
 
-	func present(reponse: TextPreviewModel.Response) {
+	func present(response: TextPreviewModel.Response) {
+		let title = response.fileUrl.lastPathComponent
+		let viewModel = TextPreviewModel.ViewModel(currentTitle: title, text: response.fileContent)
+		viewController?.render(viewModel: viewModel)
 	}
 }

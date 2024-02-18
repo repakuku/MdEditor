@@ -18,16 +18,22 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 
 	private let presenter: ITextPreviewPresenter
 
+	// MARK: - Private properties
+
+	private let file: File
+
 	// MARK: - Initialization
 
-	init(presenter: ITextPreviewPresenter) {
+	init(presenter: ITextPreviewPresenter, file: File) {
 		self.presenter = presenter
+		self.file = file
 	}
 
 	// MARK: - Public Methods
 
 	func fetchData() {
-//		let response = TextPreviewModel.Response(fileUrl: <#T##URL#>, fileContent: <#T##String#>)
-//		presenter.present(reponse: response)
+		let content = String(data: file.contentOfFile() ?? Data(), encoding: .utf8) ?? ""
+		let response = TextPreviewModel.Response(fileUrl: file.url, fileContent: content)
+		presenter.present(response: response)
 	}
 }

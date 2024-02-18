@@ -25,7 +25,10 @@ final class TextPreviewAssembler {
 	func assembly() -> TextPreviewViewController {
 		let viewController = TextPreviewViewController()
 		let presenter: ITextPreviewPresenter = TextPreviewPresenter(viewController: viewController)
-		let interactor: ITextPreviewInteractor = TextPreviewInteractor(presenter: presenter)
+		let interactor: ITextPreviewInteractor = TextPreviewInteractor(
+			presenter: presenter,
+			file: file
+		)
 		viewController.interactor = interactor
 
 		return viewController
