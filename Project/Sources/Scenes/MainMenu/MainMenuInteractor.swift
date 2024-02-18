@@ -29,8 +29,9 @@ final class MainMenuInteractor: IMainMenuInteractor {
 
 	// MARK: - Initialization
 
-	init(presenter: IMainMenuPresenter) {
+	init(presenter: IMainMenuPresenter, delegate: IMainMenuDelegate) {
 		self.presenter = presenter
+		self.delegate = delegate
 	}
 
 	// MARK: - Public Methods
@@ -41,5 +42,13 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	}
 
 	func performAction(request: MainMenuModel.MenuIdentifier) {
+		switch request {
+		case .openFIle:
+			delegate?.openFile()
+		case .newFile:
+			delegate?.newFile()
+		case .showAbout:
+			delegate?.showAbout()
+		}
 	}
 }

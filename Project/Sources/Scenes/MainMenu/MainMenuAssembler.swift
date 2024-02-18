@@ -27,7 +27,7 @@ final class MainMenuAssembler {
 		let presenter = MainMenuPresenter(
 			viewController: viewController
 		)
-		let interactor = MainMenuInteractor(presenter: presenter)
+		let interactor = MainMenuInteractor(presenter: presenter, delegate: delegate)
 		viewController.interactor = interactor
 
 		return viewController

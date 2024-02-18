@@ -25,7 +25,8 @@ final class MainMenuViewController: UIViewController {
 	private lazy var collectionView: UICollectionView = makeCollectionView()
 	private lazy var buttonNew: UIButton = makeButton(
 		withTitle: L10n.Main.buttonNew,
-		andImage: Asset.Icons.doc.image
+		andImage: Asset.Icons.doc.image,
+		action: #selector(showNewScreen)
 	)
 	private lazy var buttonOpen: UIButton = makeButton(
 		withTitle: L10n.Main.buttonOpen,
@@ -71,6 +72,11 @@ final class MainMenuViewController: UIViewController {
 // MARK: - Actions
 
 private extension MainMenuViewController {
+	@objc
+	func showNewScreen() {
+		interactor?.performAction(request: .newFile)
+	}
+
 	@objc
 	func showAboutScreen() {
 		interactor?.performAction(request: .showAbout)
