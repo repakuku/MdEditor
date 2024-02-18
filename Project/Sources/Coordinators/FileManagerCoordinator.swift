@@ -64,9 +64,10 @@ private extension FileManagerCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-//		let viewController = TextPreviewAssembler().assembly(file: file)
-//		
-//		navigationController.pushViewController(viewController, animated: true)
+		let assembler = TextPreviewAssembler(file: file)
+		let viewController = assembler.assembly()
+
+		navigationController.pushViewController(viewController, animated: true)
 	}
 }
 
