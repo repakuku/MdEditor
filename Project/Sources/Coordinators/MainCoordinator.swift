@@ -14,15 +14,18 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let fileExplorer: IFileExplorer
+	private let recentFileManager: IRecentFileManager
 
 	// MARK: - Initialization
 
 	init(
 		navigationController: UINavigationController,
-		fileExplorer: IFileExplorer
+		fileExplorer: IFileExplorer,
+		recentFileManager: IRecentFileManager
 	) {
 		self.navigationController = navigationController
 		self.fileExplorer = fileExplorer
+		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Internal methods
@@ -32,12 +35,15 @@ final class MainCoordinator: BaseCoordinator {
 	}
 }
 
+// MARK: - Private methods
+
 private extension MainCoordinator {
 
 	func showMainMenuScene() {
-		let assembler = MainMenuAssembler(delegate: self)
-		let viewController = assembler.assembly()
+		let assembler = MainMenuAssembler(recentFileManager: recentFileManager)
+		let (viewController, interactor) = assembler.assembly()
 		viewController.navigationItem.setHidesBackButton(true, animated: true)
+		interactor.delegate = self
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
@@ -86,7 +92,7 @@ extension MainCoordinator: IMainMenuDelegate {
 		}
 	}
 
-	func openFile() {
+	func openFileExplorer() {
 		runFileManagerFlow()
 	}
 

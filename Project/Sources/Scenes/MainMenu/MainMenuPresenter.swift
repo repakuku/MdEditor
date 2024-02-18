@@ -31,10 +31,23 @@ final class MainMenuPresenter: IMainMenuPresenter {
 			MainMenuModel.ViewModel.RecentFile(previewText: $0.previewText, fileName: $0.url.lastPathComponent)
 		}
 		let menu = response.menu.map {
-			$0
+			MainMenuModel.ViewModel.MenuItem(title: $0.description, item: $0)
 		}
 
-		let viewModel = MainMenuModel.ViewModel(recentFiles: [], menu: [])
+		let viewModel = MainMenuModel.ViewModel(recentFiles: recentFiles, menu: menu)
 		viewController?.render(viewModel: viewModel)
+	}
+}
+
+extension MainMenuModel.MenuIdentifier: CustomStringConvertible {
+	var description: String {
+		switch self {
+		case .openFile:
+			return  L10n.MainMenu.openFile
+		case .newFile:
+			return L10n.MainMenu.newFile
+		case .showAbout:
+			return L10n.MainMenu.about
+		}
 	}
 }

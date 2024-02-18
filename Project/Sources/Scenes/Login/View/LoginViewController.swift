@@ -80,7 +80,7 @@ private extension LoginViewController {
 		textField.textColor = Theme.mainColor
 		textField.layer.borderWidth = Sizes.borderWidth
 		textField.layer.cornerRadius = Sizes.cornerRadius
-		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: Sizes.Padding.half, height: textField.frame.height))
+		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: Sizes.Padding.small, height: textField.frame.height))
 		textField.leftViewMode = .always
 		textField.accessibilityIdentifier = accessibilityIndentifier
 

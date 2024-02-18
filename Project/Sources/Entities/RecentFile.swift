@@ -8,12 +8,8 @@
 
 import Foundation
 
-final class RecentFile {
+struct RecentFile {
 	let previewText: String
 	let url: URL
-
-	init(previewText: String, url: URL) {
-		self.previewText = previewText
-		self.url = url
-	}
+	let createDate: Date
 }

@@ -72,17 +72,4 @@ struct File {
 	func contentOfFile() -> Data? {
 		try? Data(contentsOf: url)
 	}
-
-//	func loadFileBody() -> String {
-//		var text = ""
-//		let fullPath = Bundle.main.resourcePath! + "\(path)/\(name)"
-//
-//		do {
-//			text = try String(contentsOfFile: fullPath, encoding: .utf8)
-//		} catch {
-//			print("Failed to read text from \(name)") // swiftlint:disable:this print_using
-//		}
-//
-//		return text
-//	}
 }

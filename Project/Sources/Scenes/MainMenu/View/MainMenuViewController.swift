@@ -22,6 +22,9 @@ final class MainMenuViewController: UIViewController {
 
 	private var viewModel: MainMenuModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
+	private let coverHeight: CGFloat = 200
+	private let coverWidth: CGFloat = 100
+
 	private lazy var collectionViewRecentFiles = makeCollectionView(
 		accessibilityIdentifier: AccessibilityIdentifier.MainMenuScene.recentFiles.description
 	)
@@ -29,6 +32,10 @@ final class MainMenuViewController: UIViewController {
 	private lazy var tableView = makeTableView(
 		accessibilityIdentifier: AccessibilityIdentifier.MainMenuScene.menu.description
 	)
+
+	private lazy var folderImage = makeFolderImage()
+	private lazy var fileImage = makeFileImage()
+	private lazy var aboutImage = makeAboutImage()
 
 	private var constraints = [NSLayoutConstraint]()
 
@@ -56,13 +63,13 @@ final class MainMenuViewController: UIViewController {
 	}
 }
 
-// MARK: - UI Setup
+// MARK: - Setup UI
 
 private extension MainMenuViewController {
 
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = L10n.Main.title
+		title = L10n.MainMenu.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 
 		view.addSubview(collectionViewRecentFiles)
@@ -80,7 +87,7 @@ private extension MainMenuViewController {
 
 	func makeFlowLayout() -> UICollectionViewFlowLayout {
 		let layout = UICollectionViewFlowLayout()
-		layout.itemSize = CGSize(width: Sizes.CollectionView.width, height: Sizes.CollectionView.height)
+		layout.itemSize = CGSize(width: coverWidth, height: coverHeight)
 		layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: Sizes.Padding.normal)
 		layout.scrollDirection = .horizontal
 		layout.minimumLineSpacing = Sizes.Padding.double
@@ -93,8 +100,6 @@ private extension MainMenuViewController {
 		let layout = makeFlowLayout()
 
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
-		collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
 		collectionView.isPagingEnabled = true
 		collectionView.backgroundColor = Theme.backgroundColor
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,6 +120,27 @@ private extension MainMenuViewController {
 
 		return tableView
 	}
+
+	func makeFolderImage() -> UIImage {
+		UIImage(systemName: "folder.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeFileImage() -> UIImage {
+		UIImage(systemName: "doc.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeAboutImage() -> UIImage {
+		UIImage(systemName: "info.bubble.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
 }
 
 // MARK: - Layout UI
@@ -127,7 +153,7 @@ private extension MainMenuViewController {
 			collectionViewRecentFiles.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			collectionViewRecentFiles.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			collectionViewRecentFiles.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			collectionViewRecentFiles.heightAnchor.constraint(equalToConstant: Sizes.CollectionView.height),
+			collectionViewRecentFiles.heightAnchor.constraint(equalToConstant: coverHeight),
 
 			tableView.topAnchor.constraint(
 				equalTo: collectionViewRecentFiles.bottomAnchor,
@@ -153,12 +179,13 @@ extension MainMenuViewController: UICollectionViewDataSource, UICollectionViewDe
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(
-			withReuseIdentifier: "cell",
+			withReuseIdentifier: RecentFileCollectionViewCell.reusableIdentifier,
 			for: indexPath
 		) as! RecentFileCollectionViewCell // swiftlint:disable:this force_cast
 
 		let recentFile = viewModel.recentFiles[indexPath.row]
 		cell.configure(fileName: recentFile.fileName, previewText: recentFile.previewText)
+
 		return cell
 	}
 
@@ -179,32 +206,20 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			withIdentifier: MainMenuTableViewCell.reusableIdentifier,
 			for: indexPath
 		) as! MainMenuTableViewCell // swiftlint:disable:this force_cast
-		
+
 		let menuItem = viewModel.menu[indexPath.row]
-		var menuImage: UIImage?
-		
 		switch menuItem.item {
-		case .openFIle:
-			menuImage = UIImage(systemName: "folder.fill")?.withTintColor(
-				Theme.mainColor, 
-				renderingMode: .alwaysOriginal
-			)
+		case .openFile:
+			cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
 		case .newFile:
-			menuImage = UIImage(systemName: "doc.fill")?.withTintColor(
-				Theme.mainColor,
-				renderingMode: .alwaysOriginal
-			)
+			cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
 		case .showAbout:
-			menuImage = UIImage(systemName: "info.bubble.fill")?.withTintColor(
-				Theme.mainColor,
-				renderingMode: .alwaysOriginal
-			)
+			cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
 		}
-		cell.configure(menuTitle: menuItem.title, menuImage: menuImage ?? UIImage())
-	
+
 		return cell
 	}
-	
+
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		interactor?.performAction(request: .menuItemSelected(indexPath: indexPath))
 	}

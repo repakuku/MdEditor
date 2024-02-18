@@ -12,24 +12,27 @@ final class MainMenuAssembler {
 
 	// MARK: - Dependencies
 
-	private let delegate: IMainMenuDelegate
+	private let recentFileManager: IRecentFileManager
 
 	// MARK: - Initializers
 
-	init(delegate: IMainMenuDelegate) {
-		self.delegate = delegate
+	init(
+		recentFileManager: IRecentFileManager
+	) {
+		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Public methods
 
-	func assembly() -> MainMenuViewController {
+	func assembly() -> (MainMenuViewController, MainMenuInteractor) {
 		let viewController = MainMenuViewController()
-		let presenter = MainMenuPresenter(
-			viewController: viewController
+		let presenter = MainMenuPresenter(viewController: viewController)
+		let interactor = MainMenuInteractor(
+			presenter: presenter,
+			recentFileManager: recentFileManager
 		)
-		let interactor = MainMenuInteractor(presenter: presenter, delegate: delegate)
 		viewController.interactor = interactor
 
-		return viewController
+		return (viewController, interactor)
 	}
 }

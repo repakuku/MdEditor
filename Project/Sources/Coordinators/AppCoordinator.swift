@@ -13,41 +13,67 @@ final class AppCoordinator: BaseCoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private var window: UIWindow?
 	private let taskManager: ITaskManager
 	private let fileExplorer: IFileExplorer
+	private let recentFileManager: IRecentFileManager
 
 	// MARK: - Initialization
 
 	init(
-		window: UIWindow?,
+		router: UINavigationController,
 		taskManager: ITaskManager,
-		fileExplorer: IFileExplorer
+		fileExplorer: IFileExplorer,
+		recentFileManager: IRecentFileManager
 	) {
-		self.window = window
+		self.navigationController = router
 		self.taskManager = taskManager
-		self.navigationController = UINavigationController()
 		self.fileExplorer = fileExplorer
+		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Internal methods
 
 	override func start() {
-		window?.rootViewController = navigationController
-		window?.makeKeyAndVisible()
-
+#if DEBUG
+		let parameters = LaunchArguments.parameters()
+		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
+			UIView.setAnimationsEnabled(false)
+		}
+		if let skipLogin = parameters[LaunchArguments.skipLogin], skipLogin {
+			runMainFlow()
+		} else {
+			runLoginFlow()
+		}
+#else
 		runLoginFlow()
+#endif
 	}
+}
 
+// MARK: - Private methods
+private extension AppCoordinator {
 	func runLoginFlow() {
 		let coordinator = LoginCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 
 		coordinator.finishFlow = { [weak self, weak coordinator] in
 			guard let self = self else { return }
+
+#if DEBUG
+			let parameters = LaunchArguments.parameters()
+			if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
+				UIView.setAnimationsEnabled(false)
+				self.runTodoListFlow()
+			} else {
+				self.runMainFlow()
+			}
+#else
 			self.runMainFlow()
-			coordinator.map { self.removeDependency($0) }
-			self.navigationController.viewControllers.removeFirst()
+#endif
+
+			if let coordinator = coordinator {
+				self.removeDependency(coordinator)
+			}
 		}
 
 		coordinator.start()
@@ -56,22 +82,16 @@ final class AppCoordinator: BaseCoordinator {
 	func runMainFlow() {
 		let coordinator = MainCoordinator(
 			navigationController: navigationController,
-			fileExplorer: fileExplorer
+			fileExplorer: fileExplorer,
+			recentFileManager: recentFileManager
 		)
 		addDependency(coordinator)
 		coordinator.start()
 	}
-}
 
-extension AppCoordinator: ITestCoordinator {
-	func testStart(parameters: [LaunchArguments: Bool]) {
-		window?.rootViewController = navigationController
-		window?.makeKeyAndVisible()
-
-		if let skipLogin = parameters[LaunchArguments.skipLogin], skipLogin {
-			runMainFlow()
-		} else {
-			runLoginFlow()
-		}
+	func runTodoListFlow() {
+		let coordinator = TodoListCoordinator(navigationController: navigationController)
+		addDependency(coordinator)
+		coordinator.start()
 	}
 }

@@ -36,13 +36,6 @@ final class TextPreviewViewController: UIViewController {
 		interactor?.fetchData()
 	}
 
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-
-		if self.isMovingFromParent {
-		}
-	}
-
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 	}
 }
@@ -56,8 +49,7 @@ extension TextPreviewViewController: ITextPreviewViewController {
 
 private extension TextPreviewViewController {
 	func setupUI() {
-		navigationController?.navigationBar.tintColor = Theme.black
-		title = L10n.About.title
+		navigationController?.navigationBar.tintColor = Theme.mainColor
 		navigationController?.navigationBar.prefersLargeTitles = true
 	}
 }

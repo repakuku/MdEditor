@@ -11,7 +11,7 @@ import Foundation
 enum MainMenuModel {
 
 	enum MenuIdentifier {
-		case openFIle
+		case openFile
 		case newFile
 		case showAbout
 	}

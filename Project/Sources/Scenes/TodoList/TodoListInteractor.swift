@@ -15,6 +15,8 @@ protocol ITodoListInteractor {
 	/// Событие, что задание было выбрано.
 	/// - Parameter request: Запрос, содержащий информацию о выбранном задании.
 	func didTaskSelected(request: TodoListModel.Request.TaskSelected)
+
+	func createTask()
 }
 
 final class TodoListInteractor: ITodoListInteractor {
@@ -23,12 +25,18 @@ final class TodoListInteractor: ITodoListInteractor {
 
 	private let presenter: ITodoListPresenter
 	private let sectionManager: ISectionForTaskManagerAdapter
+	private var createTaskClosure: (() -> Void)?
 
 	// MARK: - Initialization
 
-	init(presenter: ITodoListPresenter, sectionManager: ISectionForTaskManagerAdapter) {
+	init(
+		presenter: ITodoListPresenter,
+		sectionManager: ISectionForTaskManagerAdapter,
+		createTaskClosure: (() -> Void)?
+	) {
 		self.presenter = presenter
 		self.sectionManager = sectionManager
+		self.createTaskClosure = createTaskClosure
 	}
 
 	// MARK: - Public methods
@@ -56,5 +64,9 @@ final class TodoListInteractor: ITodoListInteractor {
 		let task = sectionManager.getTasksForSection(section: section)[request.indexPath.row]
 		task.completed.toggle()
 		fetchData()
+	}
+
+	func createTask() {
+		createTaskClosure?()
 	}
 }

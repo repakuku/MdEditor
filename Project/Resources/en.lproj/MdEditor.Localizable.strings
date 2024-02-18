@@ -12,8 +12,12 @@
 
 // MARK: -  Common strings
 
+"Yes.text" = "Yes";
+"No.text" = "No";
+"Return.text" = "Return";
 "Ok.text" = "Ok";
 "Error.text" = "Error";
+"Message.text" = "Message";
 
 // MARK: - LoginScreen
 
@@ -22,16 +26,12 @@
 "Login.passwordPlaceholder" = "Password";
 "Login.buttonLogin" = "Login";
 
-// MARK: - MainScreen
+// MARK: - MainMenuScreen
 
-"Main.title" = "MdEditor";
-"Main.buttonNew" = "New";
-"Main.buttonOpen" = "Open";
-"Main.buttonAbout" = "About";
-
-// MARK: - AboutScreen
-
-"About.title" = "About";
+"MainMenu.title" = "MD Editor";
+"MainMenu.newFile" = "New File";
+"MainMenu.openFile" = "Open File";
+"MainMenu.about" = "About";
 
 // MARK: - TodoListScreen
 
