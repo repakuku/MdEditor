@@ -44,30 +44,35 @@ private extension MainCoordinator {
 		let (viewController, interactor) = assembler.assembly()
 		viewController.navigationItem.setHidesBackButton(true, animated: true)
 		interactor.delegate = self
+
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
 	func showTextPreviewScene(file: File) {
 		let assembler = TextPreviewAssembler(file: file)
 		let viewController = assembler.assembly()
+
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
 	func runFileManagerFlow() {
+		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
+			topViewController: topViewController,
 			fileExplorer: fileExplorer
 		)
 		addDependency(coordinator)
 
-		coordinator.finishFlow = { [weak self, weak coordinator] file in
-			guard let self = self, let coordinator = coordinator else { return }
-
-			self.removeDependency(coordinator)
-			self.navigationController.popToRootViewController(animated: true)
-
-			if let file = file {
-				self.showTextPreviewScene(file: file)
+		coordinator.finishFlow = { [weak self, weak coordinator] in
+			guard let self = self else { return }
+			if let topViewController = topViewController {
+				self.navigationController.popToViewController(topViewController, animated: true)
+			} else {
+				self.navigationController.popToRootViewController(animated: true)
+			}
+			if let coordinator = coordinator {
+				self.removeDependency(coordinator)
 			}
 		}
 

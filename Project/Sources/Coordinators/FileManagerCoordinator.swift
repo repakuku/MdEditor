@@ -9,10 +9,10 @@
 import UIKit
 
 protocol IFileManagerCoordinator: ICoordinator {
-	var finishFlow: ((File?) -> Void)? { get set }
+	var finishFlow: (() -> Void)? { get set }
 }
 
-final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigationControllerDelegate {
+final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 
 	// MARK: - Dependencies
 
@@ -23,20 +23,20 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigat
 
 	// MARK: - Internal properties
 
-	var finishFlow: ((File?) -> Void)?
+	var finishFlow: (() -> Void)?
 
 	// MARK: - Initialization
 
 	init(
 		navigationController: UINavigationController,
+		topViewController: UIViewController?,
 		fileExplorer: IFileExplorer
 	) {
 		self.navigationController = navigationController
+		self.topViewController = topViewController
 		self.fileExplorer = fileExplorer
 
 		super.init()
-
-		self.topViewController = navigationController.topViewController
 
 		navigationController.delegate = self
 	}
@@ -46,6 +46,33 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigat
 	func start() {
 		showFileManagerScene(file: nil)
 	}
+}
+
+// MARK: - Private methods
+
+private extension FileManagerCoordinator {
+
+	func showFileManagerScene(file: File?) {
+		let assembler = FileManagerAssembler(
+			fileExplorer: fileExplorer,
+			file: file
+		)
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showTextPreviewScene(file: File) {
+//		let viewController = TextPreviewAssembler().assembly(file: file)
+//		
+//		navigationController.pushViewController(viewController, animated: true)
+	}
+}
+
+// MARK: - UINavigationControllerDelegate
+
+extension FileManagerCoordinator: UINavigationControllerDelegate {
 
 	func navigationController(
 		_ navigationController: UINavigationController,
@@ -53,27 +80,8 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigat
 		animated: Bool
 	) {
 		if viewController === topViewController {
-			finishFlow?(nil)
+			finishFlow?()
 		}
-	}
-
-	// MARK: - Private methods
-
-	private func showFileManagerScene(file: File?) {
-		let assembler = FileManagerAssembler(
-			fileExplorer: fileExplorer,
-			delegate: self,
-			file: file
-		)
-
-		let viewController = assembler.assembly()
-		navigationController.pushViewController(viewController, animated: true)
-	}
-
-	private func showTextPreviewScene(file: File) {
-		let assembler = TextPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
-		navigationController.pushViewController(viewController, animated: true)
 	}
 }
 
