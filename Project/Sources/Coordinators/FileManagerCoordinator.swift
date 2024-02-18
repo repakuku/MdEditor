@@ -35,10 +35,8 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator, UINavigat
 		self.fileExplorer = fileExplorer
 
 		super.init()
-
-		if let topViewController = navigationController.topViewController {
-			self.topViewController = topViewController
-		}
+		
+		self.topViewController = navigationController.topViewController
 
 		navigationController.delegate = self
 	}
