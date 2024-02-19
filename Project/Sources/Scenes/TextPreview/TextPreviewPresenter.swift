@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MarkdownParserPackage
 
 protocol ITextPreviewPresenter {
 	func present(response: TextPreviewModel.Response)
@@ -27,6 +28,10 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: TextPreviewModel.Response) {
+
+		let tokens = Lexer().tokenize(response.fileContent)
+		let document = Parser().parse(tokens: tokens)
+
 		let viewModel = TextPreviewModel.ViewModel(
 			currentTitle: response.fileUrl.lastPathComponent,
 			text: response.fileContent

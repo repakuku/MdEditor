@@ -19,8 +19,8 @@ public final class Lexer: ILexer {
 	
 	// MARK: - Initializers
 	
-	public init(TextParser: ITextParser) {
-		self.textParser = TextParser
+	public init() {
+		self.textParser = TextParser()
 	}
 	
 	// MARK: - Public methods
@@ -29,14 +29,26 @@ public final class Lexer: ILexer {
 		
 		let lines = input.components(separatedBy: .newlines)
 		var tokens = [Token?]()
+		var inCodeBlock = false
 		
 		for line in lines {
-			tokens.append(parseLineBreak(rawText: line))
-			tokens.append(parseHeader(rawText: line))
-			tokens.append(parseBlockquote(rawText: line))
-			tokens.append(parseParagraph(rawText: line))
+			
+			if let codeBlockToken = parseCodeBlockMarker(rawText: line) {
+				tokens.append(codeBlockToken)
+				inCodeBlock.toggle()
+				continue
+			}
+			
+			if !inCodeBlock {
+				tokens.append(parseLineBreak(rawText: line))
+				tokens.append(parseHeader(rawText: line))
+				tokens.append(parseBlockquote(rawText: line))
+				tokens.append(parseTextLine(rawText: line))
+			} else {
+				tokens.append(.codeLine(text: line))
+			}
 		}
-		
+	
 		return tokens.compactMap { $0 }
 	}
 }
@@ -62,6 +74,7 @@ private extension Lexer {
 		var headerText: Text?
 		
 		if let match = regex.firstMatch(in: rawText, range: range) {
+
 			if let headerLevelRange = Range(match.range(withName: "headerLevel"), in: rawText) {
 				headerLevel = String(rawText[headerLevelRange]).count
 			}
@@ -103,18 +116,29 @@ private extension Lexer {
 		return nil
 	}
 	
-	func parseParagraph(rawText: String) -> Token? {
+	func parseTextLine(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
 		
-		let pattern = #"^([^#>].*)/"#
+		let pattern = #"^([^#>].*)"#
 		let range = NSRange(rawText.startIndex..., in: rawText)
 		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 		
 		if let match = regex.firstMatch(in: rawText, range: range) {
 			if let range = Range(match.range(at: 1), in: rawText) {
 				let paragraphText = parseText(String(rawText[range]))
-				return .paragraph(text: paragraphText)
+				return .textLine(text: paragraphText)
 			}
+		}
+		
+		return nil
+	}
+
+	func parseCodeBlockMarker(rawText: String) -> Token? {
+		let pattern = #"^`{2,6}(.*)"#
+
+		if let text = rawText.group(for: pattern) {
+			let level = rawText.filter { $0 == "`" }.count
+			return .codeBlockMarker(level: level, lang: text)
 		}
 		
 		return nil
@@ -123,4 +147,5 @@ private extension Lexer {
 	func parseText(_ rawText: String) -> Text {
 		textParser.parse(rawtext: rawText)
 	}
+	
 }
