@@ -59,8 +59,10 @@ enum FlatColor {
 
 enum Colors {
 	static let red = UIColor.color(light: FlatColor.Red.WellRead, dark: FlatColor.Red.Cinnabar)
+	static let orange = UIColor.color(light: FlatColor.Orange.NeonCarrot, dark: FlatColor.Orange.Sun)
 	static let green = UIColor.color(light: FlatColor.Green.ChateauGreen, dark: FlatColor.Green.Fern)
 	static let blue = UIColor.color(light: FlatColor.Blue.CuriousBlue, dark: FlatColor.Blue.PictonBlue)
+	static let violet = UIColor.color(light: FlatColor.Violet.BlueGem, dark: FlatColor.Violet.Wisteria)
 	static let white = UIColor.color(light: UIColor(hex: 0xFFFFFF), dark: UIColor(hex: 0x000000))
 	static let black = UIColor.color(light: UIColor(hex: 0x000000), dark: UIColor(hex: 0xFFFFFF))
 	static let dark = UIColor.color(light: FlatColor.Blue.BlueWhale, dark: FlatColor.Gray.Iron)
@@ -71,7 +73,4 @@ enum Theme {
 	static let mainColor = Colors.dark
 	static let accentColor = Colors.red
 	static let backgroundColor = Colors.light
-
-	static let white = Colors.white
-	static let black = Colors.black
 }
