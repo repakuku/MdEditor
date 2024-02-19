@@ -15,13 +15,11 @@ protocol ITodoListPresenter {
 	func present(response: TodoListModel.Response)
 }
 
-typealias EmptyClosure = () -> Void
-
 final class TodoListPresenter: ITodoListPresenter {
 
 	// MARK: - Dependencies
 
-	private weak var viewController: ITodoListViewController! // swiftlint:disable:this implicitly_unwrapped_optional
+	private weak var viewController: ITodoListViewController?
 
 	// MARK: - Initialization
 
@@ -40,7 +38,7 @@ final class TodoListPresenter: ITodoListPresenter {
 			)
 			sections.append(sectionData)
 		}
-		viewController.render(viewModel: TodoListModel.ViewModel(tasksBySections: sections))
+		viewController?.render(viewModel: TodoListModel.ViewModel(tasksBySections: sections))
 	}
 
 	// MARK: - Private methods

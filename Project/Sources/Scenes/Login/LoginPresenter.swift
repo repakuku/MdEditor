@@ -21,7 +21,7 @@ final class LoginPresenter: ILoginPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: ILoginViewController?
-	private var loginResultClosure: LoginResultClosure?
+	private let loginResultClosure: LoginResultClosure?
 
 	// MARK: - Initialization
 

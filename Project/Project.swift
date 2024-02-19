@@ -49,8 +49,7 @@ let target = Target(
 	sources: ["Sources/**", "Shared/**"],
 	resources: [
 		"Resources/**",
-		"../DataBase/Assets/about.md",
-		.folderReference(path: "../DataBase/Assets/Notes")
+		.folderReference(path: "Examples")
 	],
 	scripts: scripts,
 	dependencies: [
@@ -151,4 +150,3 @@ let project = Project(
 	],
 	resourceSynthesizers: [.strings(), .assets()]
 )
-// .files(extensions: ["md"])
