@@ -47,7 +47,6 @@ public final class Lexer: ILexer {
 				tokens.append(parseOrderedList(rawText: line))
 				tokens.append(parseUnorderedList(rawText: line))
 				tokens.append(parseLink(rawText: line))
-				tokens.append(parseImage(rawText: line))
 				tokens.append(parseTextLine(rawText: line))
 			} else {
 				tokens.append(.codeLine(text: line))
