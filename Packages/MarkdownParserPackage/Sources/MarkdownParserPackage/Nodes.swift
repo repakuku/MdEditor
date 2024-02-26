@@ -22,6 +22,12 @@ public class BaseNode: INode {
 public final class Document: BaseNode {
 }
 
+public extension Document {
+	func accept<T: IVisitor>(visitor: T) -> [T.Result] {
+		visitor.visit(node: self)
+	}
+}
+
 public final class HeaderNode: BaseNode {
 	let level: Int
 

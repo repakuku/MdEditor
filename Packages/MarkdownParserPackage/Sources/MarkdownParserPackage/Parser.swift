@@ -20,8 +20,6 @@ public final class Parser {
 			nodes.append(parseHeader(tokens: &tokens))
 			nodes.append(parseBlockquote(tokens: &tokens))
 			nodes.append(parseParagraph(tokens: &tokens))
-			nodes.append(parseImage(tokens: &tokens))
-			nodes.append(parseLineBreak(tokens: &tokens))
 
 			let resultNodes = nodes.compactMap { $0 }
 

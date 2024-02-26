@@ -27,14 +27,17 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 
 	// MARK: - Public Methods
 
+	#warning("TODO: Fix dependencies here")
 	func present(response: TextPreviewModel.Response) {
 
 		let tokens = Lexer().tokenize(response.fileContent)
 		let document = Parser().parse(tokens: tokens)
+		let visitor = AttributedTextVisitor()
+		let attributedText = document.accept(visitor: visitor).joined()
 
 		let viewModel = TextPreviewModel.ViewModel(
 			currentTitle: response.fileUrl.lastPathComponent,
-			text: response.fileContent
+			text: attributedText
 		)
 		viewController?.render(viewModel: viewModel)
 	}

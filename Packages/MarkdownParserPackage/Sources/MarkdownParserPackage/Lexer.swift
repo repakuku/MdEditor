@@ -43,11 +43,7 @@ public final class Lexer: ILexer {
 				tokens.append(parseLineBreak(rawText: line))
 				tokens.append(parseHeader(rawText: line))
 				tokens.append(parseBlockquote(rawText: line))
-				tokens.append(parseCodeLine(rawText: line))
-				tokens.append(parseOrderedList(rawText: line))
-				tokens.append(parseUnorderedList(rawText: line))
-				tokens.append(parseLink(rawText: line))
-				tokens.append(parseTextLine(rawText: line))
+				tokens.append(parseParagraph(rawText: line))
 			} else {
 				tokens.append(.codeLine(text: line))
 			}
@@ -120,10 +116,10 @@ private extension Lexer {
 		return nil
 	}
 	
-	func parseTextLine(rawText: String) -> Token? {
+	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
 
-		let pattern = #"^([^#>\d+(?!\.)\-\+\*\s(?=\d+)\s(?=[\-\+\*]].*)"#
+		let pattern = #"^([^#>].*)"#
 		let range = NSRange(rawText.startIndex..., in: rawText)
 		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 		
@@ -132,26 +128,6 @@ private extension Lexer {
 				let paragraphText = parseText(String(rawText[range]))
 				return .textLine(text: paragraphText)
 			}
-		}
-		
-		return nil
-	}
-	
-	func parseCodeLine(rawText: String) -> Token? {
-		let pattern = #"^`(.+?)`"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-		
-		var text: String?
-		
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let textRange = Range(match.range(at: 1), in: rawText) {
-				text = String(rawText[textRange])
-			}
-		}
-		
-		if let text {
-			return .codeLine(text: text)
 		}
 		
 		return nil
@@ -168,87 +144,7 @@ private extension Lexer {
 		return nil
 	}
 	
-	func parseOrderedList(rawText: String) -> Token? {
-		let pattern = #"^(\s*)(\d+\.\s+.+)"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-		
-		var level: Int?
-		var text: Text?
-		
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let levelRange = Range(match.range(at: 1), in: rawText) {
-				level = String(rawText[levelRange]).count
-			}
-			
-			if let textRange = Range(match.range(at: 2), in: rawText) {
-				text = parseText(String(rawText[textRange]))
-			}
-		}
-		
-		if let level, let text {
-			return .orderedListItem(level: level, text: text)
-		}
-		
-		return nil
-	}
-	
-	func parseUnorderedList(rawText: String) -> Token? {
-		let pattern = #"^(\s*)[\*\-\+]\s+(.+)"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-		
-		var level: Int?
-		var text: Text?
-		
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let levelRange = Range(match.range(at: 1), in: rawText) {
-				level = String(rawText[levelRange]).count
-			}
-			
-			if let textRange = Range(match.range(at: 2), in: rawText) {
-				text = parseText(String(rawText[textRange]))
-			}
-		}
-		
-		if let level, let text {
-			return .orderedListItem(level: level, text: text)
-		}
-		
-		return nil
-	}
-	
-	func parseLink(rawText: String) -> Token? {
-		let pattern = #"^(?<!\!)\[([^\]]+)\]\(([^\)]+)\)|<([^>]+)>"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-		
-		var title: String?
-		var url: String?
-		
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let titleRange = Range(match.range(at: 1), in: rawText) {
-				title = String(rawText[titleRange])
-			}
-				
-			if let urlRange = Range(match.range(at: 2), in: rawText) {
-				url = String(rawText[urlRange])
-			}
-			
-			if let urlRange = Range(match.range(at: 3), in: rawText) {
-				url = String(rawText[urlRange])
-			}
-		}
-		
-		if let url {
-			return .link(url: url, text: title ?? "")
-		}
-
-		return nil
-	}
-	
 	func parseText(_ rawText: String) -> Text {
 		textParser.parse(rawtext: rawText)
 	}
-	
 }
