@@ -13,10 +13,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	var window: UIWindow?
 
 	private var appCoordinator: AppCoordinator! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var repository = TaskRepositoryStub()
-	private var taskManager: ITaskManager! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var fileExplorer: IFileExplorer! // swiftlint:disable:this implicitly_unwrapped_optional
-	private var recentFileManager: IRecentFileManager! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	func scene(
 		_ scene: UIScene,
@@ -28,17 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		window.makeKeyAndVisible()
 
 		let navigationController = UINavigationController()
-		taskManager = OrderedTaskManager(taskManager: TaskManager())
-		taskManager.addTasks(tasks: repository.getTasks())
-		fileExplorer = FileExplorer()
-		recentFileManager = StubRecentFileManager()
 
-		appCoordinator = AppCoordinator(
-			router: navigationController,
-			taskManager: taskManager,
-			fileExplorer: fileExplorer,
-			recentFileManager: recentFileManager
-		)
+		appCoordinator = AppCoordinator(router: navigationController)
 
 		window.rootViewController = navigationController
 		self.window = window

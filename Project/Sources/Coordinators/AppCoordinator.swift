@@ -13,22 +13,11 @@ final class AppCoordinator: BaseCoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let taskManager: ITaskManager
-	private let fileExplorer: IFileExplorer
-	private let recentFileManager: IRecentFileManager
 
 	// MARK: - Initialization
 
-	init(
-		router: UINavigationController,
-		taskManager: ITaskManager,
-		fileExplorer: IFileExplorer,
-		recentFileManager: IRecentFileManager
-	) {
+	init(router: UINavigationController) {
 		self.navigationController = router
-		self.taskManager = taskManager
-		self.fileExplorer = fileExplorer
-		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Internal methods
@@ -81,9 +70,7 @@ private extension AppCoordinator {
 
 	func runMainFlow() {
 		let coordinator = MainCoordinator(
-			navigationController: navigationController,
-			fileExplorer: fileExplorer,
-			recentFileManager: recentFileManager
+			navigationController: navigationController
 		)
 		addDependency(coordinator)
 		coordinator.start()
