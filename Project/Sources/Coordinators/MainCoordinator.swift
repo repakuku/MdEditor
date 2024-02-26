@@ -13,19 +13,12 @@ final class MainCoordinator: BaseCoordinator {
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let fileExplorer: IFileExplorer
-	private let recentFileManager: IRecentFileManager
+	private let recentFileManager = StubRecentFileManager()
 
 	// MARK: - Initialization
 
-	init(
-		navigationController: UINavigationController,
-		fileExplorer: IFileExplorer,
-		recentFileManager: IRecentFileManager
-	) {
+	init(navigationController: UINavigationController) {
 		self.navigationController = navigationController
-		self.fileExplorer = fileExplorer
-		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Internal methods
@@ -59,8 +52,7 @@ private extension MainCoordinator {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
-			topViewController: topViewController,
-			fileExplorer: fileExplorer
+			topViewController: topViewController
 		)
 		addDependency(coordinator)
 

@@ -19,7 +19,7 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 	private let navigationController: UINavigationController
 	private var topViewController: UIViewController?
 
-	private let fileExplorer: IFileExplorer
+	private let fileExplorer = FileExplorer()
 
 	// MARK: - Internal properties
 
@@ -29,12 +29,10 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 
 	init(
 		navigationController: UINavigationController,
-		topViewController: UIViewController?,
-		fileExplorer: IFileExplorer
+		topViewController: UIViewController?
 	) {
 		self.navigationController = navigationController
 		self.topViewController = topViewController
-		self.fileExplorer = fileExplorer
 
 		super.init()
 
