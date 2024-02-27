@@ -10,7 +10,16 @@ import UIKit
 #warning("TODO: Fix hard code")
 public final class AttributedTextVisitor: IVisitor {
 	
-	public init() {}
+	private let mainColor: UIColor
+	private let accentColor: UIColor
+	
+	public init(
+		mainColor: UIColor,
+		accentColor: UIColor
+	) {
+		self.mainColor = mainColor
+		self.accentColor = accentColor
+	}
 	
 	public func visit(node: Document) -> [NSMutableAttributedString] {
 		visitChildren(of: node)
@@ -55,7 +64,7 @@ public final class AttributedTextVisitor: IVisitor {
 	
 	public func visit(node: TextNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.black,
+			.foregroundColor: mainColor,
 			.font: UIFont.systemFont(ofSize: 18)
 		]
 		let result = NSMutableAttributedString(string: node.text, attributes: attributes)
@@ -66,7 +75,7 @@ public final class AttributedTextVisitor: IVisitor {
 		let code = makeMarkdownCode("**")
 
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.blue,
+			.foregroundColor: accentColor,
 			.font: UIFont.boldSystemFont(ofSize: 18)
 		]
 		
@@ -84,7 +93,7 @@ public final class AttributedTextVisitor: IVisitor {
 		let code = makeMarkdownCode("*")
 
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.blue,
+			.foregroundColor: accentColor,
 			.font: UIFont.italicSystemFont(ofSize: 18)
 		]
 		
@@ -112,7 +121,7 @@ public final class AttributedTextVisitor: IVisitor {
 		}
 
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.blue,
+			.foregroundColor: accentColor,
 			.font: font
 		]
 		

@@ -18,22 +18,23 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: ITextPreviewViewController?
+	private let converter: IMarkdownToAttributedStringConverter
 
 	// MARK: - Initialization
 
-	init(viewController: TextPreviewViewController) {
+	init(
+		viewController: TextPreviewViewController,
+		converter: IMarkdownToAttributedStringConverter
+	) {
 		self.viewController = viewController
+		self.converter = converter
 	}
 
 	// MARK: - Public Methods
 
-	#warning("TODO: Fix dependencies here")
 	func present(response: TextPreviewModel.Response) {
 
-		let tokens = Lexer().tokenize(response.fileContent)
-		let document = Parser().parse(tokens: tokens)
-		let visitor = AttributedTextVisitor()
-		let attributedText = document.accept(visitor: visitor).joined()
+		let attributedText = converter.convertToAttributedText(rawText: response.fileContent)
 
 		let viewModel = TextPreviewModel.ViewModel(
 			currentTitle: response.fileUrl.lastPathComponent,
