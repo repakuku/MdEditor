@@ -7,10 +7,15 @@
 
 import Foundation
 
+/// Represents the parser responsible for converting tokens into a structured document.
 public final class Parser {
 
+	/// Initializes a new Parser instance.
 	public init() { }
 
+	/// Parses a sequence of tokens into a document structure.
+	/// - Parameter tokens: An array of Token objects representing the parsed elements of markdown text.
+	/// - Returns: A Document object that represents the structured hierarchy of the parsed tokens.
 	public func parse(tokens: [Token]) -> Document {
 		var tokens = tokens
 		var result = [INode]()

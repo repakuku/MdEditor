@@ -7,10 +7,16 @@
 
 import Foundation
 
+/// Protocol for converting markdown text into an HTML string.
 public protocol IMarkdownToHtmlConverter {
+
+	/// Converts markdown text into an HTML string.
+	/// - Parameter markdownText: A string containing markdown formatted text.
+	/// - Returns: A string formatted as HTML.
 	func convert(markdownText: String) -> String
 }
 
+/// A MarkdownToHtmlConverter class responsible for converting markdown text into an HTML string.
 public final class MarkdownToHtmlConverter: IMarkdownToHtmlConverter {
 
 	// MARK: - Private properties
@@ -20,10 +26,14 @@ public final class MarkdownToHtmlConverter: IMarkdownToHtmlConverter {
 
 	// MARK: - Initializers
 
+	/// Initializes a IMarkdownToHtmlConverter instance.
 	public init() { }
 
 	// MARK: - Public methods
 
+	/// Converts markdown text into HTML string.
+	/// - Parameter markdownText: A string containing markdown formatted text.
+	/// - Returns: A string formatted as HTML.
 	public func convert(markdownText: String) -> String {
 		let documnet = markdownToDocumnet.convert(markdownText: markdownText)
 		let html = documnet.accept(visitor: visitor)

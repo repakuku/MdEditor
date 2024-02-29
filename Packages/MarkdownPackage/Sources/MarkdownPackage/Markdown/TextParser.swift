@@ -7,7 +7,12 @@
 
 import Foundation
 
+/// Text Parser protocol.
 public protocol ITextParser {
+
+	/// Parses raw markdown text into a structured 'Text' object.
+	/// - Parameter text: A string containing raw markdown text.
+	/// - Returns: A 'Text' object that represents the structured content of the input text.
 	func parse(rawtext text: String) -> Text
 }
 
@@ -40,6 +45,9 @@ public final class TextParser: ITextParser {
 		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#)
 	]
 
+	/// Parses raw markdown text into a structured 'Text' object.
+	/// - Parameter text: A string containing raw markdown text.
+	/// - Returns: A 'Text' object that represents the structured content of the input text.
 	public func parse(rawtext text: String) -> Text {
 		var parts = [Text.Part]()
 		var range = NSRange(text.startIndex..., in: text)

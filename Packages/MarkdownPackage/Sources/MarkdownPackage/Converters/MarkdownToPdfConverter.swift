@@ -8,10 +8,19 @@
 import Foundation
 import PDFKit
 
+/// Protocol for converting markdown text into a PDF document.
 public protocol IMarkdownToPdfConverter {
+
+	/// Converts markdown text into a PDF document.
+	/// - Parameters:
+	///   - markdownText: A string containing markdown formatted text.
+	///   - author: The author of the document.
+	///   - title: The title of the document
+	/// - Returns: A Data object representing the generated PDF document.
 	func convert(markdownText: String, author: String, title: String) -> Data
 }
 
+/// A MarkdownToPdfConverter class responsible for converting markdown text into a PDF document.
 public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	// MARK: - Dependencies
@@ -21,10 +30,17 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	// MARK: - Initialization
 
+	/// Initializes a MarkdownToPdfConverter instance.
 	public init() { }
 
 	// MARK: - Public Methods
 
+	/// Converts markdown text into a PDF document.
+	/// - Parameters:
+	///   - markdownText: A string containing markdown formatted text.
+	///   - author: The author of the document.
+	///   - title: The title of the document
+	/// - Returns: A Data object representing the generated PDF document.
 	public func convert(markdownText: String, author: String, title: String) -> Data {
 		let document = markdownToDocument.convert(markdownText: markdownText)
 

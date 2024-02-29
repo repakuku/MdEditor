@@ -8,26 +8,82 @@
 
 import Foundation
 
+/// The visitor protocol defines a set of methods for visiting different types of nodes in a document's structure.
 public protocol IVisitor {
+
+	/// Represents the type of result produced by visiting nodes.
 	associatedtype Result
 
+	/// Visit the root document node.
+	/// - Parameter node: The document node to visit.
+	/// - Returns: An array of results generated from visiting the document.
 	func visit(node: Document) -> [Result]
+
+	/// Visits a header node.
+	/// - Parameter node: The header node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: HeaderNode) -> Result
+
+	/// Visits a paragraph node.
+	/// - Parameter node: The paragraph node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: ParagraphNode) -> Result
+
+	/// Visits a blockquote node.
+	/// - Parameter node: The blockquote node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: BlockquoteNode) -> Result
+
+	/// Visits a text node.
+	/// - Parameter node: The text node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: TextNode) -> Result
+
+	/// Visits a bold text node.
+	/// - Parameter node: The bold text node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: BoldTextNode) -> Result
+
+	/// Visits a italic text node.
+	/// - Parameter node: The italic text node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: ItalicTextNode) -> Result
+
+	/// Visits a bold and italic node.
+	/// - Parameter node: The bold and italic text node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: BoldItalicTextNode) -> Result
+
+	/// Visits a escaped char node.
+	/// - Parameter node: The escaped char node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: EscapedCharNode) -> Result
+
+	/// Visits a inline code node.
+	/// - Parameter node: The inline code node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: InlineCodeNode) -> Result
+
+	/// Visits a line break node.
+	/// - Parameter node: The line break node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: LineBreakNode) -> Result
+
+	/// Visits a image node.
+	/// - Parameter node: The image node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: ImageNode) -> Result
 }
 
 extension IVisitor {
+
+	/// Visits all children of a given node and returns the collevtive results.
+	/// this method iterates through each child node of the given node,
+	/// dispathing to the appropiate 'visit(node:)' method based on the child's type.
+	/// - Parameter node: The parent node.
+	/// - Returns: An array of results from visiting each child excluding any 'nil' values.
 	func visitChildren(of node: INode) -> [Result] {
-		return node.children.compactMap { child in
+		return node.children.compactMap { child in // swiftlint:disable:this closure_body_length
 			switch child {
 			case let child as HeaderNode:
 				return visit(node: child)

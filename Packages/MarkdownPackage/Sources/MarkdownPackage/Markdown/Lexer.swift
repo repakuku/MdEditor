@@ -7,10 +7,16 @@
 
 import Foundation
 
+/// Lexer protocol.
 public protocol ILexer {
+
+	/// Tokenizes a given string into an array of 'Token'.
+	/// - Parameter input: The string to tokenize.
+	/// - Returns: An array of 'Token'.
 	func tokenize(_ input: String) -> [Token]
 }
 
+/// A Lexer class responsible for tokenizing Markdown text.
 public final class Lexer: ILexer {
 
 	// MARK: - Dependencies
@@ -19,12 +25,16 @@ public final class Lexer: ILexer {
 
 	// MARK: - Initializers
 
+	/// Initializes a new Lexer instance.
 	public init() {
 		self.textParser = TextParser()
 	}
 
 	// MARK: - Public methods
 
+	/// Tokenizes a given string into an array of 'Token'.
+	/// - Parameter input: The string to tokenize.
+	/// - Returns: An array of 'Token'.
 	public func tokenize(_ input: String) -> [Token] {
 
 		let lines = input.components(separatedBy: .newlines)
