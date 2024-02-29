@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MarkdownParserPackage
+import MarkdownPackage
 
 protocol IFileManagerCoordinator: ICoordinator {
 	var finishFlow: (() -> Void)? { get set }

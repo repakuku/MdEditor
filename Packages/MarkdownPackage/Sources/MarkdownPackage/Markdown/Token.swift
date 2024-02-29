@@ -22,7 +22,7 @@ public enum Token {
 
 public struct Text {
 	let text: [Part]
-	
+
 	enum Part {
 		case normal(text: String)
 		case bold(text: String)

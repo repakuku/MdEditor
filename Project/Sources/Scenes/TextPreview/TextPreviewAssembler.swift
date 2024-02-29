@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MarkdownParserPackage
+import MarkdownPackage
 
 final class TextPreviewAssembler {
 

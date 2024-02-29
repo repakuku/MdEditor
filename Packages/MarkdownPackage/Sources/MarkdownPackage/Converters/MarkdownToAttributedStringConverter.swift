@@ -8,37 +8,30 @@
 import UIKit
 
 public protocol IMarkdownToAttributedStringConverter {
-	func convertToAttributedText(rawText: String) -> NSMutableAttributedString
+	func convert(markdownText: String) -> NSMutableAttributedString
 }
 
 public final class MarkdownToAttributedStringConverter: IMarkdownToAttributedStringConverter {
-	
+
 	// MARK: - Dependencies
-	
-	private let mainColor: UIColor
-	private let accentColor: UIColor
-	
-	private let lexer = Lexer()
-	private let parser = Parser()
-	private let visitor: AttributedTextVisitor
-	
+
+	private let visitor = AttributedTextVisitor()
+	private let markdownToDocument = MarkdownToDocument()
+
 	// MARK: - initialization
-	
-	public init(
-		mainColor: UIColor,
-		accentColor: UIColor
-	) {
-		self.mainColor = mainColor
-		self.accentColor = accentColor
-		
-		visitor = AttributedTextVisitor(mainColor: mainColor, accentColor: accentColor)
-	}
-	
+
+	public init() { }
+
 	// MARK: - Public methods
-	
-	public func convertToAttributedText(rawText: String) -> NSMutableAttributedString {
-		let tokens = lexer.tokenize(rawText)
-		let document = parser.parse(tokens: tokens)
+
+	public func convert(markdownText: String) -> NSMutableAttributedString {
+		let documnet = markdownToDocument.convert(markdownText: markdownText)
+		return convert(document: documnet)
+	}
+
+	// MARK: - Private methods
+
+	private func convert(document: Document) -> NSMutableAttributedString {
 		let attributedText = document.accept(visitor: visitor).joined()
 		return attributedText
 	}

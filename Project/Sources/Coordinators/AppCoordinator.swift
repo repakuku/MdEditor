@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import MarkdownParserPackage
+import MarkdownPackage
 
 final class AppCoordinator: BaseCoordinator {
 
@@ -21,10 +21,7 @@ final class AppCoordinator: BaseCoordinator {
 	init(router: UINavigationController) {
 		self.navigationController = router
 
-		converter = MarkdownToAttributedStringConverter(
-			mainColor: Theme.mainColor,
-			accentColor: Theme.accentColor
-		)
+		converter = MarkdownToAttributedStringConverter()
 	}
 
 	// MARK: - Internal methods

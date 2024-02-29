@@ -15,7 +15,7 @@ public final class TextParser: ITextParser {
 	private struct PartRegExp {
 		let type: PartType
 		let regex: NSRegularExpression
-		
+
 		enum PartType: String {
 			case normal
 			case bold
@@ -24,33 +24,33 @@ public final class TextParser: ITextParser {
 			case inlineCode
 			case escapedChar
 		}
-		
-		internal init(type: TextParser.PartRegExp.PartType, pattern: String) {
+
+		init(type: TextParser.PartRegExp.PartType, pattern: String) {
 			self.type = type
-			self.regex = try! NSRegularExpression(pattern: pattern)
+			self.regex = try! NSRegularExpression(pattern: pattern) // swiftlint:disable:this force_try
 		}
 	}
-	
+
 	private let partRegexes = [
 		PartRegExp(type: .escapedChar, pattern: #"^\\([\\\`\*\_\{\}\[\]\<\>\(\)\+\-\.\!\|#]){1}"#),
 		PartRegExp(type: .normal, pattern: #"^(.*?)(?=[\*`\\]|$)"#),
 		PartRegExp(type: .boldItalic, pattern: #"^\*\*\*(.*?)\*\*\*"#),
 		PartRegExp(type: .bold, pattern: #"^\*\*(.*?)\*\*"#),
 		PartRegExp(type: .italic, pattern: #"^\*(.*?)\*"#),
-		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#),
+		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#)
 	]
-	
+
 	public func parse(rawtext text: String) -> Text {
 		var parts = [Text.Part]()
 		var range = NSRange(text.startIndex..., in: text)
-		
+
 		while range.location != NSNotFound && range.length != 0 {
 			let startPartsCount = parts.count
 			for partRegex in partRegexes {
 				if let match = partRegex.regex.firstMatch(in: text, range: range),
 				   let group0 = Range(match.range(at: 0), in: text),
 				   let group1 = Range(match.range(at: 1), in: text) {
-					
+
 					let extractedText = String(text[group1])
 					if !extractedText.isEmpty {
 						switch partRegex.type {
@@ -80,7 +80,7 @@ public final class TextParser: ITextParser {
 				break
 			}
 		}
-		
+
 		return Text(text: parts)
 	}
 }

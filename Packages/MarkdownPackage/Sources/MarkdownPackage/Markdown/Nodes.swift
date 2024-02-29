@@ -12,7 +12,7 @@ public protocol INode {
 }
 
 public class BaseNode: INode {
-	private(set) public var children: [INode]
+	public private(set) var children: [INode]
 
 	public init(_ children: [INode] = []) {
 		self.children = children
@@ -45,7 +45,6 @@ public final class BlockquoteNode: BaseNode {
 		super.init(children)
 	}
 }
-
 
 public final class ParagraphNode: BaseNode {
 }
@@ -115,7 +114,7 @@ public final class ImageNode: BaseNode {
 public final class LinkNode: BaseNode {
 	let title: String?
 	let url: String
-	
+
 	public init(title: String?, url: String) {
 		self.title = title
 		self.url = url

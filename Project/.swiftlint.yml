@@ -46,6 +46,7 @@ included:
   - Sources
   - Tests
   - UITests
+  - ../Packages
 
 # подкаталоги, в которых линтер не будет делать проверку кода
 excluded:

@@ -30,7 +30,7 @@ final class TaskManagerTests: XCTestCase {
 
 		XCTAssertEqual(completedTasks.count, 1, "Expected 1 completed task, but found \(completedTasks.count).")
 		XCTAssertTrue(completedTasks.contains { $0 === completedTask }, "Completed task not found in the completed task list.")
-		XCTAssertFalse(completedTasks.contains { $0 === uncompletedTask}, "Uncompleted task found in the completed task list.")
+		XCTAssertFalse(completedTasks.contains { $0 === uncompletedTask }, "Uncompleted task found in the completed task list.")
 	}
 
 	func test_uncompletedTasks_add1CompletedAnd1Uncompleted_shouldBe1Task() {
@@ -40,7 +40,7 @@ final class TaskManagerTests: XCTestCase {
 
 		XCTAssertEqual(uncompletedTasks.count, 1, "Expected 1 uncompleted task, but found \(uncompletedTasks.count).")
 		XCTAssertTrue(uncompletedTasks.contains { $0 === uncompletedTask }, "Uncompleted task not found in the uncompleted task list.")
-		XCTAssertFalse(uncompletedTasks.contains { $0 === completedTask}, "Completed task found in the uncompleted task list.")
+		XCTAssertFalse(uncompletedTasks.contains { $0 === completedTask }, "Completed task found in the uncompleted task list.")
 	}
 
 	func test_addTask_add1Task_ShouldBe1Task() {

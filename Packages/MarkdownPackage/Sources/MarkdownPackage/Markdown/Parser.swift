@@ -8,9 +8,9 @@
 import Foundation
 
 public final class Parser {
-	
+
 	public init() { }
-	
+
 	public func parse(tokens: [Token]) -> Document {
 		var tokens = tokens
 		var result = [INode]()
@@ -68,7 +68,7 @@ private extension Parser {
 			guard let token = tokens.first else { return nil }
 			if case let .textLine(text) = token {
 				tokens.removeFirst()
-				textNodes.append(contentsOf:  parseText(token: text))
+				textNodes.append(contentsOf: parseText(token: text))
 			} else if case .lineBreak = token {
 				tokens.removeFirst()
 				break
@@ -88,7 +88,7 @@ private extension Parser {
 		guard let token = tokens.first else {
 			return nil
 		}
-		
+
 		if case let .image(url, size) = token {
 			tokens.removeFirst()
 			return ImageNode(url: url, size: String(size))
@@ -101,7 +101,7 @@ private extension Parser {
 		guard let token = tokens.first else {
 			return nil
 		}
-		
+
 		if case .lineBreak = token {
 			tokens.removeFirst()
 			return LineBreakNode()
