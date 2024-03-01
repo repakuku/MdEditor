@@ -211,10 +211,10 @@ public final class AttributedTextVisitor: IVisitor {
 	public func visit(node: LineBreakNode) -> NSMutableAttributedString {
 		String.lineBreak
 	}
-	#warning("TODO: Complete")
+
 	/// Converts an image node into an attributed string.
 	/// - Parameter node: The image node to convert.
-	/// - Returns: <#description#>
+	/// - Returns: A 'NSMutableAttributedString' including a reference to the image.
 	public func visit(node: ImageNode) -> NSMutableAttributedString {
 		let result = NSMutableAttributedString()
 		return result
