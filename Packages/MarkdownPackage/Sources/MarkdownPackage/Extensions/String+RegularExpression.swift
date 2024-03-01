@@ -13,15 +13,15 @@ extension String {
 			let text = self
 			let regex = try NSRegularExpression(pattern: regexPattern)
 			let range = NSRange(location: .zero, length: text.utf16.count)
-			
+
 			if let match = regex.firstMatch(in: text, options: [], range: range),
 			   let group = Range(match.range(at: 1), in: text) {
 				return String(text[group])
 			}
-		} catch let error {
-			print("Invalid regex: \(error.localizedDescription)")
+		} catch {
+			print("Invalid regex: \(error.localizedDescription)") // swiftlint:disable:this print_using
 		}
-		
+
 		return nil
 	}
 }

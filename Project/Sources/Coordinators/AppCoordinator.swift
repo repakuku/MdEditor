@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import TaskManagerPackage
+import MarkdownPackage
 
 final class AppCoordinator: BaseCoordinator {
 
@@ -14,10 +14,14 @@ final class AppCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 
+	private let converter: IMarkdownToAttributedStringConverter
+
 	// MARK: - Initialization
 
 	init(router: UINavigationController) {
 		self.navigationController = router
+
+		converter = MarkdownToAttributedStringConverter()
 	}
 
 	// MARK: - Internal methods
@@ -70,7 +74,8 @@ private extension AppCoordinator {
 
 	func runMainFlow() {
 		let coordinator = MainCoordinator(
-			navigationController: navigationController
+			navigationController: navigationController,
+			converter: converter
 		)
 		addDependency(coordinator)
 		coordinator.start()
