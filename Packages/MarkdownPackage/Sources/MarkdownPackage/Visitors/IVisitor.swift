@@ -85,7 +85,7 @@ public protocol IVisitor {
 	func visit(node: ImageNode) -> Result
 }
 
-extension IVisitor {
+public extension IVisitor {
 
 	/// Visits all children of a given node and returns the collevtive results.
 	/// this method iterates through each child node of the given node,

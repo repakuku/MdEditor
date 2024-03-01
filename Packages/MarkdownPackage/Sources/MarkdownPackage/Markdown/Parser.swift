@@ -33,6 +33,7 @@ public final class Parser {
 				nodes.append(parseHeader(token: token))
 				nodes.append(parseBlockquote(token: token))
 				nodes.append(parseParagraph(token: token))
+				nodes.append(parseTask(token: token))
 			} else {
 				nodes.append(parseCodeLine(token: token))
 			}
@@ -128,5 +129,13 @@ private extension Parser {
 			}
 		}
 		return textNodes
+	}
+
+	func parseTask(token: Token) -> TaskNode? {
+		if case let .task(isDone, text) = token {
+			return TaskNode(isDone: isDone, children: parseText(token: text))
+		}
+
+		return nil
 	}
 }

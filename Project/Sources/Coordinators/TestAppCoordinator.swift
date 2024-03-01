@@ -1,14 +1,14 @@
 //
-//  AppCoordinator.swift
+//  TestAppCoordinator.swift
 //  MdEditor
 //
-//  Created by Alexey Turulin on 1/14/24.
+//  Created by Alexey Turulin on 3/1/24.
+//  Copyright © 2024 repakuku. All rights reserved.
 //
 
 import UIKit
-import MarkdownPackage
 
-final class AppCoordinator: BaseCoordinator {
+final class TestAppCoordinator: BaseCoordinator {
 
 	// MARK: - Dependencies
 
@@ -23,12 +23,25 @@ final class AppCoordinator: BaseCoordinator {
 	// MARK: - Internal methods
 
 	override func start() {
-		runLoginFlow()
+		let parameters = LaunchArguments.parameters()
+		if let enableTesting = parameters[LaunchArguments.enableTesting], enableTesting {
+			UIView.setAnimationsEnabled(false)
+		}
+
+		if let needRunMainFlow = parameters[LaunchArguments.runMainFlow], needRunMainFlow {
+			runMainFlow()
+		} else if let needRunTodoListFlow = parameters[LaunchArguments.runTodoListFlow], needRunTodoListFlow {
+			runTodoListFlow()
+		} else {
+			runLoginFlow()
+		}
 	}
 }
 
 // MARK: - Private methods
-private extension AppCoordinator {
+
+private extension TestAppCoordinator {
+
 	func runLoginFlow() {
 		let coordinator = LoginCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
@@ -48,6 +61,12 @@ private extension AppCoordinator {
 
 	func runMainFlow() {
 		let coordinator = MainCoordinator(navigationController: navigationController)
+		addDependency(coordinator)
+		coordinator.start()
+	}
+
+	func runTodoListFlow() {
+		let coordinator = TodoListCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 		coordinator.start()
 	}

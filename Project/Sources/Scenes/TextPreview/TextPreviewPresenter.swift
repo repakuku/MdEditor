@@ -33,14 +33,7 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: TextPreviewModel.Response) {
-
-#if DEBUG
-		let markdownRepository = MarkdownRepository()
-		let markdownText = markdownRepository.markdownText
-		let attributedText = converter.convert(markdownText: markdownText)
-#else
 		let attributedText = converter.convert(markdownText: response.fileContent)
-#endif
 
 		let viewModel = TextPreviewModel.ViewModel(
 			currentTitle: response.fileUrl.lastPathComponent,

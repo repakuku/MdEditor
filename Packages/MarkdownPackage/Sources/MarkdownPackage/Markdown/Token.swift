@@ -39,6 +39,9 @@ public enum Token {
 
 	/// Represents a line break in the text.
 	case lineBreak
+
+	/// A task with a status and associated text.
+	case task(isDone: Bool, text: Text)
 }
 
 /// Represents formatted text.
