@@ -166,10 +166,13 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The code block node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the code block.
 	public func visit(node: CodeBlockNode) -> NSMutableAttributedString {
-		let code = makeMarkdownCode("```")
-		let lang = NSMutableAttributedString(string: node.lang ?? "")
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: UIColor.gray,
+			.font: UIFont.italicSystemFont(ofSize: 18)
+		]
+
+		let lang = NSMutableAttributedString(string: node.lang ?? "", attributes: attributes)
 		let result = NSMutableAttributedString()
-		result.append(code)
 		result.append(lang)
 		result.append(String.lineBreak)
 		return result
@@ -181,8 +184,9 @@ public final class AttributedTextVisitor: IVisitor {
 	public func visit(node: CodeLineNode) -> NSMutableAttributedString {
 
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.black,
-			.font: UIFont.italicSystemFont(ofSize: 18)
+			.backgroundColor: UIColor.darkGray,
+			.foregroundColor: UIColor.white,
+			.font: UIFont.systemFont(ofSize: 18)
 		]
 
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)

@@ -7,13 +7,20 @@
 
 import Foundation
 
+/// Represents a doubly linked list.
 public struct DoublyLinkedList<T: Equatable> {
 
+	/// Node within the doubly linked list, holding a value, previous, and next pointers.
 	final class Node<N> {
 		var value: N
 		var previous: Node<N>?
 		var next: Node<N>?
 
+		/// Initializes a new node with a given value, and optional previous and next nodes.
+		/// - Parameters:
+		///   - value: The value stored in the node.
+		///   - previous: An optional reference to the node’s predecessor in the list.
+		///   - next: An optional reference to the node’s successor in the list.
 		init(_ value: N, previous: Node<N>? = nil, next: Node<N>? = nil) {
 			self.value = value
 			self.next = next
@@ -26,10 +33,13 @@ public struct DoublyLinkedList<T: Equatable> {
 
 	private(set) var count = 0
 
+	/// Indicates whether the list is empty.
 	var isEmpty: Bool {
 		head == nil && tail == nil
 	}
 
+	/// Initializes a new doubly linked list, optionally with a single initial value.
+	/// - Parameter value: The initial value to be contained in the list.
 	public init(_ value: T? = nil) {
 		if let value = value {
 			let newNode = Node(value)
@@ -39,6 +49,8 @@ public struct DoublyLinkedList<T: Equatable> {
 		}
 	}
 
+	/// Adds a value to the beginning of the doubly linked list.
+	/// - Parameter value: The value to be added at the beginning of the list.
 	public mutating func push(_ value: T) {
 		let newNode = Node(value, next: head)
 		head?.previous = newNode
@@ -51,6 +63,8 @@ public struct DoublyLinkedList<T: Equatable> {
 		count += 1
 	}
 
+	/// Appends a value to the end of the doubly linked list.
+	/// - Parameter value: The value to be added at the end of the list.
 	public mutating func append(_ value: T) {
 		let newNode = Node(value, previous: tail)
 
@@ -64,6 +78,10 @@ public struct DoublyLinkedList<T: Equatable> {
 		count += 1
 	}
 
+	/// Inserts a value at a specified position in the list.
+	/// - Parameters:
+	///   - value: The value to insert into the list.
+	///   - index: The index at which to insert the value.
 	public mutating func insert(_ value: T, after index: Int) {
 		guard let currentNode = node(at: index) else { return }
 		let nextNode = currentNode.next
@@ -78,6 +96,8 @@ public struct DoublyLinkedList<T: Equatable> {
 		count += 1
 	}
 
+	/// Removes and returns the first element of the list.
+	/// - Returns: The value of the first element if the list is not empty; otherwise, 'nil'.
 	public mutating func pop() -> T? {
 		guard let currentHead = head else { return nil }
 		head = currentHead.next
@@ -92,6 +112,8 @@ public struct DoublyLinkedList<T: Equatable> {
 		return currentHead.value
 	}
 
+	/// Removes and returns the last element of the list.
+	/// - Returns: The value of the last element if the list is not empty; otherwise, 'nil'.
 	public mutating func removeLast() -> T? {
 		guard let currentTail = tail else { return nil }
 		tail = currentTail.previous
@@ -106,6 +128,9 @@ public struct DoublyLinkedList<T: Equatable> {
 		return currentTail.value
 	}
 
+	/// Removes and returns an element after a specified index.
+	/// - Parameter index: The index before the element to remove.
+	/// - Returns: The value of the removed element if it exists and the index is valid; otherwise, 'nil'.
 	public mutating func remove(after index: Int) -> T? {
 		guard let currentNode = node(at: index), let nextNode = currentNode.next else { return nil }
 
@@ -122,6 +147,9 @@ public struct DoublyLinkedList<T: Equatable> {
 		return nextNode.value
 	}
 
+	/// Returns the value of a node at a specified index.
+	/// - Parameter index: The index of the node whose value is to be returned.
+	/// - Returns: The value of the node at the given index if it exists; otherwise, 'nil'.
 	public func value(at index: Int) -> T? {
 		node(at: index)?.value
 	}

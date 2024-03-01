@@ -5,54 +5,56 @@
 //  Created by Alexey Turulin on 11/22/23.
 //
 
-/// Менеджер списка заданий.
+/// TaskManager class.
 public final class TaskManager {
 	private var taskList = [Task]()
 
-	/// Создание списка заданий.
-	/// - Parameter taskList: Набор заданий, которые надо поместить в список.
+	/// Initializes a task manager with an optional list of tasks.
+	/// - Parameter taskList: An array of 'Task' objects to initialize the task list.
+	/// Defaults is an empty arrray.
 	public init(taskList: [Task] = [Task]()) {
 		self.taskList = taskList
 	}
 
-	/// Список всех заданий.
-	/// - Returns: Массив заданий.
+	/// Returns all tasks.
+	/// - Returns: An array of all tasks.
 	public func allTasks() -> [Task] {
 		taskList
 	}
 
-	/// Список выполненных заданий.
-	/// - Returns: Массив заданий.
+	/// Returns all completed tasks.
+	/// - Returns: An array of all completed tasks.
 	public func completedTasks() -> [Task] {
 		taskList.filter { $0.completed }
 	}
 
-	/// Список заданий для выполнения.
-	/// - Returns: Массив заданий.
+	/// Returns all uncompleted tasks.
+	/// - Returns: An array of all uncompleted tasks.
 	public func uncompletedTasks() -> [Task] {
 		taskList.filter { !$0.completed }
 	}
 
-	/// Добавление нового задания.
+	/// Adds a new task to the task list.
 	///
-	/// Сложность: В среднем O(1) при многих вызовах append(_:) в массиве.
-	/// - Parameter task: Задание.
+	/// Complexity: On average O(1) for many calls to the append(_:) method in an array.
+	/// - Parameter task: The 'Task' to be added..
 	public func addTask(task: Task) {
 		taskList.append(task)
 	}
 
-	/// Добавление перечня заданий.
+	/// Adds an array of tasks to the task list.
 	///
-	/// Сложность: В среднем O(m), где m размер добавляемого списка заданий, при многих вызовах append(_:) в массиве.
-	/// - Parameter tasks: Массив заданий.
+	/// “Complexity: On average O(m), where  is the size of the list of tasks being added, 
+	/// for many calls to the append(_:) method in an array.”
+	/// - Parameter tasks: An array of 'Task' objects to be added.
 	public func addTasks(tasks: [Task]) {
 		taskList.append(contentsOf: tasks)
 	}
 
-	/// Удаление задания из списка. При вызове метода будут удалены все варианты этого задания по идентичности Task.
+	/// Removes a task from the task list.
 	///
-	/// Сложность: O(n), где n -- размер списка заданий.
-	/// - Parameter task: Задание, которое необходимо удалить.
+	/// Complexity: O(n), where n is the size of the list of tasks.
+	/// - Parameter task: The 'Task' to be removed.
 	public func removeTask(task: Task) {
 		taskList.removeAll { $0 === task }
 	}

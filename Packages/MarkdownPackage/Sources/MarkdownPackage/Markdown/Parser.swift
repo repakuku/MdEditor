@@ -17,7 +17,7 @@ public final class Parser {
 	/// - Parameter tokens: An array of Token objects representing the parsed elements of markdown text.
 	/// - Returns: A Document object that represents the structured hierarchy of the parsed tokens.
 	public func parse(tokens: [Token]) -> Document {
-		var tokens = tokens
+		let tokens = tokens
 		var nodes = [INode?]()
 		var inCodeBlock = false
 

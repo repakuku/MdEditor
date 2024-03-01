@@ -34,11 +34,15 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: BlockquoteNode) -> Result
 
-	#warning("TODO: Documentation")
-	func visit(node: CodeLineNode) -> Result
-
-	#warning("TODO: Documentation")
+	/// Visits a code block node.
+	/// - Parameter node: The code block node to visit.
+	/// - Returns: A result generated from visiting the document.
 	func visit(node: CodeBlockNode) -> Result
+
+	/// Visits a code line node.
+	/// - Parameter node: The code line node to visit.
+	/// - Returns: A result generated from visiting the document.
+	func visit(node: CodeLineNode) -> Result
 
 	/// Visits a text node.
 	/// - Parameter node: The text node to visit.

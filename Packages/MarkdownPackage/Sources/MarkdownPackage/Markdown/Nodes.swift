@@ -120,22 +120,29 @@ public final class BoldItalicTextNode: BaseNode {
 	}
 }
 
-#warning("TODO: Documentation")
-public final class CodeLineNode: BaseNode {
-	let text: String
-
-	public init(text: String) {
-		self.text = text
-	}
-}
-
+/// Represents a code block node in a document structure.
 public final class CodeBlockNode: BaseNode {
 	let level: Int
 	let lang: String?
 
+	/// Initializes a code block node.
+	/// - Parameters:
+	///   - level: An integer representing the indentation level of the code block.
+	///   - lang: An optional string specifying the programming language of the code block.
 	public init(level: Int, lang: String?) {
 		self.level = level
 		self.lang = lang
+	}
+}
+
+/// Represents a code line node in a document structure.
+public final class CodeLineNode: BaseNode {
+	let text: String
+
+	/// Initializes a node representing a single line of code within a code block.
+	/// - Parameter text: A string containing a single line of code.
+	public init(text: String) {
+		self.text = text
 	}
 }
 
