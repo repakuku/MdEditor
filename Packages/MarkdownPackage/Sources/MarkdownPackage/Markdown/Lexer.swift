@@ -144,7 +144,7 @@ private extension Lexer {
 	}
 
 	func parseCodeBlockMarker(rawText: String) -> Token? {
-		let pattern = #"^`{2,6}(.+)"#
+		let pattern = #"^`{2,6}(.*)"#
 
 		if let text = rawText.group(for: pattern) {
 			let level = rawText.filter { $0 == "`" }.count

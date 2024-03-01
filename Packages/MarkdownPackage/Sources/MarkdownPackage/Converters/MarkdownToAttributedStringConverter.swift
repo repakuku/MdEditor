@@ -16,7 +16,8 @@ public protocol IMarkdownToAttributedStringConverter {
 	func convert(markdownText: String) -> NSMutableAttributedString
 }
 
-/// A MarkdownToAttributedStringConverter class responsible for converting markdown text into a 'NSMutableAttributedString'.
+/// A MarkdownToAttributedStringConverter class responsible for converting markdown text 
+/// // swiftlint:disable:this force_unwrappinginto a 'NSMutableAttributedString'.
 public final class MarkdownToAttributedStringConverter: IMarkdownToAttributedStringConverter {
 
 	// MARK: - Dependencies

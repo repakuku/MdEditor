@@ -34,6 +34,12 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: BlockquoteNode) -> Result
 
+	#warning("TODO: Documentation")
+	func visit(node: CodeLineNode) -> Result
+
+	#warning("TODO: Documentation")
+	func visit(node: CodeBlockNode) -> Result
+
 	/// Visits a text node.
 	/// - Parameter node: The text node to visit.
 	/// - Returns: A result generated from visiting the document.
@@ -98,6 +104,10 @@ extension IVisitor {
 			case let child as ItalicTextNode:
 				return visit(node: child)
 			case let child as BoldItalicTextNode:
+				return visit(node: child)
+			case let child as CodeBlockNode:
+				return visit(node: child)
+			case let child as CodeLineNode:
 				return visit(node: child)
 			case let child as InlineCodeNode:
 				return visit(node: child)

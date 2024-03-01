@@ -83,7 +83,7 @@ public final class TextParser: ITextParser {
 			}
 
 			if parts.count == startPartsCount {
-				let extractedText = String(text[Range(range, in: text)!])
+				let extractedText = String(text[Range(range, in: text)!]) // swiftlint:disable:this force_unwrapping
 				parts.append(.normal(text: extractedText))
 				break
 			}

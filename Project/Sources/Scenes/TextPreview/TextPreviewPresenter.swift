@@ -46,6 +46,8 @@ final class TextPreviewPresenter: ITextPreviewPresenter {
 }
 
 extension TextPreviewPresenter {
+	// swiftlint:disable line_length
+	// swiftlint:disable print_using
 	var markdownText: String {
 """
 # 1. Headers

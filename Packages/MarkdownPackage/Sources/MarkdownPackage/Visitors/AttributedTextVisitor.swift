@@ -153,18 +153,49 @@ public final class AttributedTextVisitor: IVisitor {
 
 		return result
 	}
-	#warning("TODO: Complete")
+
 	/// Handles an escaped character node.
 	/// - Parameter node: The escaped character node.
-	/// - Returns: <#description#>
+	/// - Returns: A formatted 'NSMutableAttributedString' representing the escaped char.
 	public func visit(node: EscapedCharNode) -> NSMutableAttributedString {
 		let result = NSMutableAttributedString()
 		return result
 	}
-	#warning("TODO: Complete")
+
+	/// Converts a code block node into an attributed string.
+	/// - Parameter node: The code block node to convert.
+	/// - Returns: A formatted 'NSMutableAttributedString' representing the code block.
+	public func visit(node: CodeBlockNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("```")
+		let lang = NSMutableAttributedString(string: node.lang ?? "")
+		let result = NSMutableAttributedString()
+		result.append(code)
+		result.append(lang)
+		result.append(String.lineBreak)
+		return result
+	}
+
+	/// Converts a code line node into an attributed string.
+	/// - Parameter node: The code line node to convert.
+	/// - Returns: A formatted 'NSMutableAttributedString' representing the code line.
+	public func visit(node: CodeLineNode) -> NSMutableAttributedString {
+
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: UIColor.black,
+			.font: UIFont.italicSystemFont(ofSize: 18)
+		]
+
+		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
+
+		let result = NSMutableAttributedString()
+		result.append(text)
+		result.append(String.lineBreak)
+		return result
+	}
+
 	/// Converts an inline code node into an attributed string formatted as code.
 	/// - Parameter node: The inline code node to convert.
-	/// - Returns: <#description#>
+	/// - Returns: An empty 'NSMutableAttributedString'.
 	public func visit(node: InlineCodeNode) -> NSMutableAttributedString {
 		let result = NSMutableAttributedString()
 		return result

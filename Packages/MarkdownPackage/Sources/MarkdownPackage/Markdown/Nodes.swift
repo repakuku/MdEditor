@@ -120,6 +120,25 @@ public final class BoldItalicTextNode: BaseNode {
 	}
 }
 
+#warning("TODO: Documentation")
+public final class CodeLineNode: BaseNode {
+	let text: String
+
+	public init(text: String) {
+		self.text = text
+	}
+}
+
+public final class CodeBlockNode: BaseNode {
+	let level: Int
+	let lang: String?
+
+	public init(level: Int, lang: String?) {
+		self.level = level
+		self.lang = lang
+	}
+}
+
 /// Represents an inline code node in a document structure.
 public final class InlineCodeNode: BaseNode {
 	let code: String

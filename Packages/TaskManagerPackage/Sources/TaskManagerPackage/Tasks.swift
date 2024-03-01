@@ -42,11 +42,11 @@ public final class ImportantTask: Task {
 	public var deadLine: Date {
 		switch taskPriority {
 		case .low:
-			return Calendar.current.date(byAdding: .day, value: 3, to: createDate)!
+			return Calendar.current.date(byAdding: .day, value: 3, to: createDate)! // swiftlint:disable:this force_unwrapping
 		case .medium:
-			return Calendar.current.date(byAdding: .day, value: 2, to: createDate)!
+			return Calendar.current.date(byAdding: .day, value: 2, to: createDate)! // swiftlint:disable:this force_unwrapping
 		case .high:
-			return Calendar.current.date(byAdding: .day, value: 1, to: createDate)!
+			return Calendar.current.date(byAdding: .day, value: 1, to: createDate)! // swiftlint:disable:this force_unwrapping
 		}
 	}
 

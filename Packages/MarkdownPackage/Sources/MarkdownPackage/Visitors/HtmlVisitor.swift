@@ -76,6 +76,16 @@ public final class HtmlVisitor: IVisitor {
 		node.char
 	}
 
+	#warning("TODO: Complete")
+	public func visit(node: CodeBlockNode) -> String {
+		return ""
+	}
+
+	#warning("TODO: Complete")
+	public func visit(node: CodeLineNode) -> String {
+		return ""
+	}
+
 	/// Converts an inline code node to an HTML code tag string.
 	/// - Parameter node: The inline code node to convert.
 	/// - Returns: An HTML code tag string with node's content.
