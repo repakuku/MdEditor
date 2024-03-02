@@ -193,7 +193,7 @@ public final class EscapedCharNode: BaseNode {
 /// Represents a line break node in a document structure.
 public final class LineBreakNode: BaseNode {
 
-	/// Initializes a line break instance.
+	/// Initializes a line break node instance.
 	public init() { }
 }
 
@@ -249,4 +249,43 @@ public final class TaskNode: BaseNode {
 		self.isDone = isDone
 		super.init(children)
 	}
+}
+
+/// Represents an ordered list node in a document structure.
+public final class OrderedListNode: BaseNode {
+
+	/// The level of the list item, which determines its hierarchical position in the document.
+	public let level: Int
+
+	/// Initializes an ordered node with a specific 'level', 'text' and optional child nodes.
+	/// - Parameters:
+	///   - level: The level of the list item, which determines its hierarchical position in the document.
+	///   - children: An array of child nodes.
+	public init(level: Int, children: [INode] = []) {
+		self.level = level
+		super.init(children)
+	}
+}
+
+/// Represents an unordered list node in a document structure.
+public final class UnorderedListNode: BaseNode {
+
+	/// The level of the list item, which determines its hierarchical position in the document.
+	public let level: Int
+
+	/// Initializes an unordered node with a specific 'level', 'text' and optional child nodes.
+	/// - Parameters:
+	///   - level: The level of the list item, which determines its hierarchical position in the document.
+	///   - children: An array of child nodes.
+	public init(level: Int, children: [INode] = []) {
+		self.level = level
+		super.init(children)
+	}
+}
+
+/// Represents a line node in a document structure.
+public final class LineNode: BaseNode {
+
+	/// Initializes a line node instance.
+	public init() { }
 }

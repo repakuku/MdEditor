@@ -40,18 +40,35 @@ let a = 0
 print({"a":0})
 ```
 
+## 4.1 Inline Code
+
+At the command prompt, type `nano`.
+
 ## 5. lists
 
-1. item-1
-1. item-1
- 1. item-1
- 1. item-1
-  - item
-  - item
+1. First item
+2. Second item
+3. Third item
+	1. Indented item
+	2. Indented item
+4. Fourth item
 
-- item
- 1. item-1
- 2. item-2
+- First item
+- Second item
+- Third item
+- Fourth item
+
++ First item
++ Second item
++ Third item
++ Fourth item
+
+- First item
+- Second item
+- Third item
+	- Indented item
+	- Indented item
+- Fourth item
 
 ## 6. Text decoration
 
@@ -71,7 +88,11 @@ print({"a":0})
 
 External link: [example.com](http://example.com)
 
-Internal link: [[link to h1]]
+[example.com](http://example.com)
+
+Internal link: [[http://example.com]]
+
+[[http://example.com]]
 
 ## 8. Media
 
@@ -109,16 +130,19 @@ emoji: ⛺  😂‚
 
 ### 10.2 Hline
 
-___
+---
+
+Text between lines.
 
 ---
 
-## 11. Задачи
+## 11. Tasks
 
-- [*] задача 1
-- [*] задача 2
-- [ ] задача 3
-- [ ] задача 4
+- [*] Task 1
+- [*] Task 2
+- [ ] Task 3
+- [ ] Task 4
 - [ ] Escaped special symbols
 - [ ] Text decoration
 - [x] Text blocks
+

@@ -42,6 +42,9 @@ public enum Token {
 
 	/// A task with a status and associated text.
 	case task(isDone: Bool, text: Text)
+
+	/// Represents a line  in the text.
+	case line
 }
 
 /// Represents formatted text.

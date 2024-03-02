@@ -55,6 +55,10 @@ public final class Lexer: ILexer {
 				tokens.append(parseBlockquote(rawText: line))
 				tokens.append(parseParagraph(rawText: line))
 				tokens.append(parseTask(rawText: line))
+				tokens.append(parseOrderedList(rawText: line))
+				tokens.append(parseUnorderedList(rawText: line))
+				tokens.append(parseLine(rawText: line))
+				tokens.append(parseLink(rawText: line))
 			} else {
 				tokens.append(.codeLine(text: line))
 			}
@@ -102,10 +106,10 @@ private extension Lexer {
 	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
 
-		let notParagraphPattern = #"^(#|>|\s*- \[ \]|\s*- \[\*\]|\s*- \[x\]|\s*- \[X\]).*"#
+		let notParagraphPattern = #"^(#|>|\s*- \[ \]|\s*- \[\*\]|\s*- \[x\]|\s*- \[X\]|\d\.|\s+\d\.|\s*[\-\+]).*"#
 		let regex = try? NSRegularExpression(pattern: notParagraphPattern)
 
-		if  let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
+		if let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
 
 		return .textLine(text: parseText(rawText))
 	}
@@ -133,6 +137,54 @@ private extension Lexer {
 			return .task(isDone: isDone, text: parseText(text))
 		}
 
+		return nil
+	}
+
+	func parseOrderedList(rawText: String) -> Token? {
+		let pattern = #"^(\t*)(\d+\.\s+.+)"#
+
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .orderedListItem(level: level, text: parseText(text))
+		}
+
+		return nil
+	}
+
+	func parseUnorderedList(rawText: String) -> Token? {
+		let pattern = #"^(\t*)([\-\+\*]\s+.+)"#
+
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .unorderedListItem(level: level, text: parseText(text))
+		}
+
+		return nil
+	}
+
+	func parseLine(rawText: String) -> Token? {
+		let pattern = #"^(\-{3})"#
+
+		if rawText.group(for: pattern) != nil {
+			return .line
+		}
+
+		return nil
+	}
+
+	func parseLink(rawText: String) -> Token? {
+		let pattern = #"^[^\!].*\[(.+)\]\((.+)\)"#
+
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let text = groups[0][0]
+			let url = groups[0][1]
+			return .link(url: url, text: text)
+		}
 		return nil
 	}
 }

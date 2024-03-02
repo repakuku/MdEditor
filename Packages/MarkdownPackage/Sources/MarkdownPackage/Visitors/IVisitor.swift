@@ -79,10 +79,30 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: LineBreakNode) -> Result
 
-	/// Visits a image node.
+	/// Visits an image node.
 	/// - Parameter node: The image node to visit.
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: ImageNode) -> Result
+
+	/// Visits an ordered list node.
+	/// - Parameter node: The ordered list node to visit.
+	/// - Returns: A result generated from visiting the document.
+	func visit(node: OrderedListNode) -> Result
+
+	/// Visits an unordered list node.
+	/// - Parameter node: The unordered list node to visit.
+	/// - Returns: A result generated from visiting the document.
+	func visit(node: UnorderedListNode) -> Result
+
+	/// Visits a line node.
+	/// - Parameter node: The line node to visit.
+	/// - Returns: A result generated from visiting the document.
+	func visit(node: LineNode) -> Result
+
+	/// Visits a link node.
+	/// - Parameter node: The link node to visit.
+	/// - Returns: A result generated from visiting the document.
+	func visit(node: LinkNode) -> Result
 }
 
 public extension IVisitor {
@@ -118,6 +138,14 @@ public extension IVisitor {
 			case let child as LineBreakNode:
 				return visit(node: child)
 			case let child as ImageNode:
+				return visit(node: child)
+			case let child as OrderedListNode:
+				return visit(node: child)
+			case let child as UnorderedListNode:
+				return visit(node: child)
+			case let child as LineNode:
+				return visit(node: child)
+			case let child as LinkNode:
 				return visit(node: child)
 			default:
 				return nil
