@@ -86,13 +86,13 @@ At the command prompt, type `nano`.
 
 ## 7. Links
 
-External link: [example.com](http://example.com)
+External link: [example1.com](http://example1.com)
 
-[example.com](http://example.com)
+[example2.com](http://example2.com)
 
-Internal link: [[http://example.com]]
+Internal link: [[http://example3.com]]
 
-[[http://example.com]]
+[[http://example4.com]]
 
 ## 8. Media
 

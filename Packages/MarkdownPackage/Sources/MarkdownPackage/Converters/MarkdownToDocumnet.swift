@@ -37,8 +37,6 @@ public final class MarkdownToDocument: IMarkdownToDocument {
 	public func convert(markdownText: String) -> Document {
 		let tokens = lexer.tokenize(markdownText)
 		let document = parser.parse(tokens: tokens)
-		print("Tokens")
-		print("Document")
 		return document
 	}
 }

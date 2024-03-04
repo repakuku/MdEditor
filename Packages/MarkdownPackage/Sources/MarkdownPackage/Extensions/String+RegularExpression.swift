@@ -33,7 +33,7 @@ extension String {
 				return String(text[group])
 			}
 		} catch {
-			print("invalid regex: \(error.localizedDescription)")
+			print("invalid regex: \(error.localizedDescription)") // swiftlint:disable:this print_using
 		}
 		return nil
 	}

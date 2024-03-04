@@ -38,6 +38,7 @@ public final class Parser {
 				nodes.append(parseUnorderedList(token: token))
 				nodes.append(parseLine(token: token))
 				nodes.append(parseLink(token: token))
+				nodes.append(parseImage(token: token))
 			} else {
 				nodes.append(parseCodeLine(token: token))
 			}

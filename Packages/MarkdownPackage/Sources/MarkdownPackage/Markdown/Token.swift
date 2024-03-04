@@ -32,7 +32,7 @@ public enum Token {
 	case orderedListItem(level: Int, text: Text)
 
 	/// A link with a display 'text' and 'url'.
-	case link(url: String, text: String)
+	case link(url: String, text: String?)
 
 	/// An image with a source 'url' and 'size'.
 	case image(url: String, size: Int)

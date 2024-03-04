@@ -238,7 +238,13 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The image node to convert.
 	/// - Returns: A 'NSMutableAttributedString' including a reference to the image.
 	public func visit(node: ImageNode) -> NSMutableAttributedString {
-		let result = NSMutableAttributedString()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.font: UIFont.systemFont(ofSize: Appearance.textSize)
+		]
+
+		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
+		result.append(String.lineBreak)
+
 		return result
 	}
 
@@ -293,7 +299,7 @@ public final class AttributedTextVisitor: IVisitor {
 		]
 
 		let result = NSMutableAttributedString(string: node.title ?? node.url, attributes: attributes)
-
+		result.append(String.lineBreak)
 		return result
 	}
 }

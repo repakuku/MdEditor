@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 extension NSRegularExpression {
 	func match(_ text: String) -> Bool {
 		let range = NSRange(text.startIndex..., in: text)
