@@ -14,16 +14,12 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let recentFileManager = StubRecentFileManager()
-	private let converter: IMarkdownToAttributedStringConverter
+	private let converter = MarkdownToAttributedStringConverter()
 
 	// MARK: - Initialization
 
-	init(
-		navigationController: UINavigationController,
-		converter: IMarkdownToAttributedStringConverter
-	) {
+	init(navigationController: UINavigationController) {
 		self.navigationController = navigationController
-		self.converter = converter
 	}
 
 	// MARK: - Internal methods

@@ -54,7 +54,6 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 		let format = UIGraphicsPDFRendererFormat()
 		format.documentInfo = pdfMetaData as [String: Any]
 
-		#warning("TODO: fix")
 		let pageRect = CGRect(x: 10, y: 10, width: 595.2, height: 841.8)
 		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
 

@@ -46,7 +46,9 @@ public extension Document {
 
 /// Represents a header node in a document structure.
 public final class HeaderNode: BaseNode {
-	let level: Int
+
+	/// The level of the header, which determines its hierarchical position in the document.
+	public let level: Int
 
 	/// Initializes a header node with a specific 'level' and optional child nodes.
 	/// - Parameters:
@@ -60,7 +62,9 @@ public final class HeaderNode: BaseNode {
 
 /// Represents a blockquote node in a document structure.
 public final class BlockquoteNode: BaseNode {
-	let level: Int
+
+	/// The level of the blockquote, which determines its hierarchical position in the document.
+	public let level: Int
 
 	/// Initializes a blockquote node with a specific 'level' and optional child nodes.
 	/// - Parameters:
@@ -78,7 +82,9 @@ public final class ParagraphNode: BaseNode {
 
 /// Represents a text node in a document structure.
 public final class TextNode: BaseNode {
-	let text: String
+
+	/// The string content of the text node.
+	public let text: String
 
 	/// Initializes a text node with provided text content.
 	/// - Parameter text: The string content of the text node.
@@ -89,7 +95,9 @@ public final class TextNode: BaseNode {
 
 /// Represents a bold text node in a document structure.
 public final class BoldTextNode: BaseNode {
-	let text: String
+
+	/// The string content of the bold text node.
+	public let text: String
 
 	/// Initializes a bold text node.
 	/// - Parameter text: The string content of the bold text node.
@@ -100,7 +108,9 @@ public final class BoldTextNode: BaseNode {
 
 /// Represents an italic text node in a document structure.
 public final class ItalicTextNode: BaseNode {
-	let text: String
+
+	/// The string content of the italic text node.
+	public let text: String
 
 	/// Initializes an italic text node.
 	/// - Parameter text: The string content of the italic text node.
@@ -111,7 +121,9 @@ public final class ItalicTextNode: BaseNode {
 
 /// Represents a bold and italic text node in a document structure.
 public final class BoldItalicTextNode: BaseNode {
-	let text: String
+
+	/// The string content of the bold and italic text node.
+	public let text: String
 
 	/// Initializes a bold and italic text node.
 	/// - Parameter text: The string content of the bold and italic text node.
@@ -122,8 +134,12 @@ public final class BoldItalicTextNode: BaseNode {
 
 /// Represents a code block node in a document structure.
 public final class CodeBlockNode: BaseNode {
-	let level: Int
-	let lang: String?
+
+	/// An integer representing the indentation level of the code block.
+	public let level: Int
+
+	/// An optional string specifying the programming language of the code block.
+	public let lang: String?
 
 	/// Initializes a code block node.
 	/// - Parameters:
@@ -137,7 +153,9 @@ public final class CodeBlockNode: BaseNode {
 
 /// Represents a code line node in a document structure.
 public final class CodeLineNode: BaseNode {
-	let text: String
+
+	/// A string containing a single line of code.
+	public let text: String
 
 	/// Initializes a node representing a single line of code within a code block.
 	/// - Parameter text: A string containing a single line of code.
@@ -148,7 +166,9 @@ public final class CodeLineNode: BaseNode {
 
 /// Represents an inline code node in a document structure.
 public final class InlineCodeNode: BaseNode {
-	let code: String
+
+	/// The string content of the inline code.
+	public let code: String
 
 	/// Initializes an inline code node.
 	/// - Parameter code: The string content of the inline code.
@@ -159,7 +179,9 @@ public final class InlineCodeNode: BaseNode {
 
 /// Represents an escaped char node in a document structure.
 public final class EscapedCharNode: BaseNode {
-	let char: String
+
+	/// The string content of the escaped char.
+	public let char: String
 
 	/// Initializes an escaped char node.
 	/// - Parameter char: The string content of the escaped char.
@@ -171,14 +193,18 @@ public final class EscapedCharNode: BaseNode {
 /// Represents a line break node in a document structure.
 public final class LineBreakNode: BaseNode {
 
-	/// Initializes a line break instance.
+	/// Initializes a line break node instance.
 	public init() { }
 }
 
 /// Represents an image node in a document structure.
 public final class ImageNode: BaseNode {
-	let url: String
-	let size: String
+
+	/// The URL of the image.
+	public let url: String
+
+	/// The size of the image.
+	public let size: String
 
 	/// Initializes an image node with the source URL and size.
 	/// - Parameters:
@@ -192,8 +218,12 @@ public final class ImageNode: BaseNode {
 
 /// Represents a link node in a document structure.
 public final class LinkNode: BaseNode {
-	let title: String?
-	let url: String
+
+	/// The visible text of the link.
+	public let title: String?
+
+	/// The destination URL.
+	public let url: String
 
 	/// Initializes a link node with an optional title and a URL.
 	/// - Parameters:
@@ -203,4 +233,59 @@ public final class LinkNode: BaseNode {
 		self.title = title
 		self.url = url
 	}
+}
+
+/// Represents a task node in a document structure.
+public final class TaskNode: BaseNode {
+
+	/// A boolean value indicating whether the task is already completed.
+	public let isDone: Bool
+
+	/// Initializes a task node with a completion status and optional child nodes.
+	/// - Parameters:
+	///   - isDone: A boolean value indicating whether the task is already completed.
+	///   - children: An array of child nodes. Defaults to an empty array.
+	public init(isDone: Bool, children: [INode] = []) {
+		self.isDone = isDone
+		super.init(children)
+	}
+}
+
+/// Represents an ordered list node in a document structure.
+public final class OrderedListNode: BaseNode {
+
+	/// The level of the list item, which determines its hierarchical position in the document.
+	public let level: Int
+
+	/// Initializes an ordered node with a specific 'level', 'text' and optional child nodes.
+	/// - Parameters:
+	///   - level: The level of the list item, which determines its hierarchical position in the document.
+	///   - children: An array of child nodes.
+	public init(level: Int, children: [INode] = []) {
+		self.level = level
+		super.init(children)
+	}
+}
+
+/// Represents an unordered list node in a document structure.
+public final class UnorderedListNode: BaseNode {
+
+	/// The level of the list item, which determines its hierarchical position in the document.
+	public let level: Int
+
+	/// Initializes an unordered node with a specific 'level', 'text' and optional child nodes.
+	/// - Parameters:
+	///   - level: The level of the list item, which determines its hierarchical position in the document.
+	///   - children: An array of child nodes.
+	public init(level: Int, children: [INode] = []) {
+		self.level = level
+		super.init(children)
+	}
+}
+
+/// Represents a line node in a document structure.
+public final class LineNode: BaseNode {
+
+	/// Initializes a line node instance.
+	public init() { }
 }

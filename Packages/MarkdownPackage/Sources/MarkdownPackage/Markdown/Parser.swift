@@ -33,6 +33,12 @@ public final class Parser {
 				nodes.append(parseHeader(token: token))
 				nodes.append(parseBlockquote(token: token))
 				nodes.append(parseParagraph(token: token))
+				nodes.append(parseTask(token: token))
+				nodes.append(parseOrderedList(token: token))
+				nodes.append(parseUnorderedList(token: token))
+				nodes.append(parseLine(token: token))
+				nodes.append(parseLink(token: token))
+				nodes.append(parseImage(token: token))
 			} else {
 				nodes.append(parseCodeLine(token: token))
 			}
@@ -128,5 +134,45 @@ private extension Parser {
 			}
 		}
 		return textNodes
+	}
+
+	func parseTask(token: Token) -> TaskNode? {
+		if case let .task(isDone, text) = token {
+			return TaskNode(isDone: isDone, children: parseText(token: text))
+		}
+
+		return nil
+	}
+
+	func parseOrderedList(token: Token) -> OrderedListNode? {
+		if case let .orderedListItem(level, text) = token {
+			return OrderedListNode(level: level, children: parseText(token: text))
+		}
+
+		return nil
+	}
+
+	func parseUnorderedList(token: Token) -> UnorderedListNode? {
+		if case let .unorderedListItem(level, text) = token {
+			return UnorderedListNode(level: level, children: parseText(token: text))
+		}
+
+		return nil
+	}
+
+	func parseLine(token: Token) -> LineNode? {
+		if case .line = token {
+			return LineNode()
+		}
+
+		return nil
+	}
+
+	func parseLink(token: Token) -> LinkNode? {
+		if case let .link(url, text) = token {
+			return LinkNode(title: text, url: url)
+		}
+
+		return nil
 	}
 }

@@ -76,14 +76,18 @@ public final class HtmlVisitor: IVisitor {
 		node.char
 	}
 
-	#warning("TODO: Complete")
+	/// Returns the empty string without any HTML conversion.
+	/// - Parameter node: The code block node.
+	/// - Returns: An empty string.
 	public func visit(node: CodeBlockNode) -> String {
-		return ""
+		""
 	}
 
-	#warning("TODO: Complete")
+	/// Converts a code line node to an HTML code tag string.
+	/// - Parameter node: The code line node to convert.
+	/// - Returns: An HTML code tag string with node's content.
 	public func visit(node: CodeLineNode) -> String {
-		return ""
+		"<code>\(node.text)</code>"
 	}
 
 	/// Converts an inline code node to an HTML code tag string.
@@ -105,5 +109,30 @@ public final class HtmlVisitor: IVisitor {
 	/// - Returns: An HTML image tag string with the node's URL and size.
 	public func visit(node: ImageNode) -> String {
 		"<img src=\"\(node.url)>\" />"
+	}
+
+	/// Converts an ordered list node to an HTML ordered list tag string.
+	/// - Parameter node: The ordered list node to convert.
+	/// - Returns: An HTML ordered list tag string.
+	public func visit(node: OrderedListNode) -> String {
+		""
+	}
+
+	/// Converts an unordered list node to an HTML unordered list tag string.
+	/// - Parameter node: The unordered list node to convert.
+	/// - Returns: An HTML unordered list tag string.
+	public func visit(node: UnorderedListNode) -> String {
+		""
+	}
+
+	/// Converts a line node to an empty HTML string.
+	/// - Parameter node: The line node to convert.
+	/// - Returns: An empty string.
+	public func visit(node: LineNode) -> String {
+		""
+	}
+
+	public func visit(node: LinkNode) -> String {
+		""
 	}
 }

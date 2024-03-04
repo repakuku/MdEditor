@@ -54,6 +54,12 @@ public final class Lexer: ILexer {
 				tokens.append(parseHeader(rawText: line))
 				tokens.append(parseBlockquote(rawText: line))
 				tokens.append(parseParagraph(rawText: line))
+				tokens.append(parseTask(rawText: line))
+				tokens.append(parseOrderedList(rawText: line))
+				tokens.append(parseUnorderedList(rawText: line))
+				tokens.append(parseLine(rawText: line))
+				tokens.append(parseLink(rawText: line))
+				tokens.append(parseImage(rawText: line))
 			} else {
 				tokens.append(.codeLine(text: line))
 			}
@@ -76,71 +82,40 @@ private extension Lexer {
 	}
 
 	func parseHeader(rawText: String) -> Token? {
-		let pattern = #"^(?<headerLevel>#{1,6})\s+(?<headerText>.+)"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive) // swiftlint:disable:this force_try
+		let pattern = #"^(#{1,6}) (.*)"#
 
-		var headerLevel: Int?
-		var headerText: Text?
-
-		if let match = regex.firstMatch(in: rawText, range: range) {
-
-			if let headerLevelRange = Range(match.range(withName: "headerLevel"), in: rawText) {
-				headerLevel = String(rawText[headerLevelRange]).count
-			}
-
-			if let headerTextRange = Range(match.range(withName: "headerText"), in: rawText) {
-				headerText = parseText(String(rawText[headerTextRange]))
-			}
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .header(level: level, text: parseText(text))
 		}
-
-		if let headerLevel, let headerText {
-			return .header(level: headerLevel, text: headerText)
-		}
-
 		return nil
 	}
 
 	func parseBlockquote(rawText: String) -> Token? {
-		let pattern = #"^(>{1,6})\s+(.+)"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive) // swiftlint:disable:this force_try
-
-		var blockquoteLevel: Int?
-		var blockquoteText: Text?
-
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let blockquoteLevelRange = Range(match.range(at: 1), in: rawText) {
-				blockquoteLevel = String(rawText[blockquoteLevelRange]).count
-			}
-
-			if let blockquoteTextRange = Range(match.range(at: 2), in: rawText) {
-				blockquoteText = parseText(String(rawText[blockquoteTextRange]))
-			}
+		let pattern = #"^(>{1,6})(.*)"#
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .blockquote(level: level, text: parseText(text))
 		}
-
-		if let blockquoteLevel, let blockquoteText {
-			return .blockquote(level: blockquoteLevel, text: blockquoteText)
-		}
-
 		return nil
 	}
 
 	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
 
-		let pattern = #"^([^#>].*)"#
-		let range = NSRange(rawText.startIndex..., in: rawText)
-		let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive) // swiftlint:disable:this force_try
+		let notParagraphPattern = #"""
+^(#|>|\s*- \[ \]|\s*- \[\*\]|\s*- \[x\]|\s*- \[X\]|\d\.|\s+\d\.|\s*[\-\+]|\[.+\]\(.+\)|\[\[.+\]\]|\!\[\[.+\]\]).*
+"""#
 
-		if let match = regex.firstMatch(in: rawText, range: range) {
-			if let range = Range(match.range(at: 1), in: rawText) {
-				let paragraphText = parseText(String(rawText[range]))
-				return .textLine(text: paragraphText)
-			}
-		}
+		let regex = try? NSRegularExpression(pattern: notParagraphPattern)
 
-		return nil
+		if let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
+
+		return .textLine(text: parseText(rawText))
 	}
 
 	func parseCodeBlockMarker(rawText: String) -> Token? {
@@ -156,5 +131,85 @@ private extension Lexer {
 
 	func parseText(_ rawText: String) -> Text {
 		textParser.parse(rawtext: rawText)
+	}
+
+	func parseTask(rawText: String) -> Token? {
+		let pattern = #"\s*- \[[ *xX]\]\s+(.*)"#
+
+		if let text = rawText.group(for: pattern) {
+			let isDone = !rawText.contains("- [ ]")
+			return .task(isDone: isDone, text: parseText(text))
+		}
+
+		return nil
+	}
+
+	func parseOrderedList(rawText: String) -> Token? {
+		let pattern = #"^(\t*)(\d+\.\s+.+)"#
+
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .orderedListItem(level: level, text: parseText(text))
+		}
+
+		return nil
+	}
+
+	func parseUnorderedList(rawText: String) -> Token? {
+		let pattern = #"^(\t*)([\-\+\*]\s+.+)"#
+
+		let groups = rawText.groups(for: pattern)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let level = groups[0][0].count
+			let text = groups[0][1]
+			return .unorderedListItem(level: level, text: parseText(text))
+		}
+
+		return nil
+	}
+
+	func parseLine(rawText: String) -> Token? {
+		let pattern = #"^(\-{3})"#
+
+		if rawText.group(for: pattern) != nil {
+			return .line
+		}
+
+		return nil
+	}
+
+	func parseLink(rawText: String) -> Token? {
+		let pattern1 = #"^\[(.+)\]\((.+)\)"#
+		let pattern2 = #"^\[\[(.+)\]\]"#
+
+		let groups1 = rawText.groups(for: pattern1)
+		if !groups1.isEmpty, groups1[0].count == 2 {
+			let text = groups1[0][0]
+			let url = groups1[0][1]
+			return .link(url: url, text: text)
+		}
+
+		let groups2 = rawText.groups(for: pattern2)
+		if !groups2.isEmpty, groups2[0].count == 1 {
+			let url = groups2[0][0]
+			return .link(url: url, text: nil)
+		}
+
+		return nil
+	}
+
+	func parseImage(rawText: String) -> Token? {
+		let pattern1 = #"^\!\[\[(.+)\|(\d*)\]\]"#
+
+		let groups = rawText.groups(for: pattern1)
+		if !groups.isEmpty, groups[0].count == 2 {
+			let url = groups[0][0]
+			let size = Int(groups[0][1])
+			return .image(url: url, size: size ?? 0)
+		}
+
+		return nil
 	}
 }
