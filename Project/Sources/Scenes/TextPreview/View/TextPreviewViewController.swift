@@ -75,6 +75,7 @@ private extension TextPreviewViewController {
 }
 
 // MARK: - Layout UI
+
 private extension TextPreviewViewController {
 	func layout() {
 		NSLayoutConstraint.deactivate(constraints)
@@ -95,7 +96,7 @@ private extension TextPreviewViewController {
 	}
 }
 
-// MARK: - IAboutViewController
+// MARK: - ITextPreviewViewController
 
 extension TextPreviewViewController: ITextPreviewViewController {
 	func render(viewModel: TextPreviewModel.ViewModel) {

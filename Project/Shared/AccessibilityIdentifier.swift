@@ -60,6 +60,17 @@ enum AccessibilityIdentifier {
 		}
 	}
 
+	enum PdfPreviewScene: CustomStringConvertible {
+		case pdfView
+
+		var description: String {
+			switch self {
+			case .pdfView:
+				return "pdfPreviewScene.pdfView"
+			}
+		}
+	}
+
 	enum TodoListScene: CustomStringConvertible {
 		case table
 		case section(Int)
