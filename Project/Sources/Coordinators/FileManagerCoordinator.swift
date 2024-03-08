@@ -21,7 +21,6 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 	private var topViewController: UIViewController?
 
 	private let fileExplorer = FileExplorer()
-	private let converter: IMarkdownToAttributedStringConverter
 
 	// MARK: - Internal properties
 
@@ -31,12 +30,10 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 
 	init(
 		navigationController: UINavigationController,
-		topViewController: UIViewController?,
-		converter: IMarkdownToAttributedStringConverter
+		topViewController: UIViewController?
 	) {
 		self.navigationController = navigationController
 		self.topViewController = topViewController
-		self.converter = converter
 
 		super.init()
 
@@ -66,10 +63,14 @@ private extension FileManagerCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-		let assembler = TextPreviewAssembler(
-			file: file,
-			converter: converter
-		)
+		let assembler = TextPreviewAssembler(file: file)
+		let viewController = assembler.assembly()
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showPdfPreviewScene(file: File) {
+		let assembler = PdfPreviewAssembler(file: file)
 		let viewController = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)
@@ -99,6 +100,6 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 	}
 
 	func openFile(file: File) {
-		showTextPreviewScene(file: file)
+		showPdfPreviewScene(file: file)
 	}
 }

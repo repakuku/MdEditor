@@ -14,16 +14,15 @@ final class PdfPreviewAssembler {
 	// MARK: - Dependencies
 
 	private let file: File
-	private let converter: IMarkdownToPdfConverter
+
+	private let converter = MarkdownToPdfConverter()
 
 	// MARK: - Initializers
 
 	init(
-		file: File,
-		converter: IMarkdownToPdfConverter
+		file: File
 	) {
 		self.file = file
-		self.converter = converter
 	}
 
 	// MARK: - Public methods

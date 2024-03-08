@@ -33,5 +33,18 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: PdfPreviewModel.Response) {
+		let data = converter.convert(
+			markdownText: response.fileContent,
+			author: "",
+			title: response.fileUrl.lastPathComponent,
+			pageFormat: .a4
+		)
+
+		let viewModel = PdfPreviewModel.ViewModel(
+			currentTitle: response.fileUrl.lastPathComponent,
+			data: data
+		)
+
+		viewController?.render(viewModel: viewModel)
 	}
 }

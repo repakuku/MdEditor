@@ -14,16 +14,15 @@ final class TextPreviewAssembler {
 	// MARK: - Dependencies
 
 	private let file: File
-	private let converter: IMarkdownToAttributedStringConverter
+
+	private let converter = MarkdownToAttributedStringConverter()
 
 	// MARK: - Initializers
 
 	init(
-		file: File,
-		converter: IMarkdownToAttributedStringConverter
+		file: File
 	) {
 		self.file = file
-		self.converter = converter
 	}
 
 	// MARK: - Public methods

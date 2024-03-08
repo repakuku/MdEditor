@@ -14,7 +14,6 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let recentFileManager = StubRecentFileManager()
-	private let converter = MarkdownToAttributedStringConverter()
 
 	// MARK: - Initialization
 
@@ -43,10 +42,14 @@ private extension MainCoordinator {
 	}
 
 	func showTextPreviewScene(file: File) {
-		let assembler = TextPreviewAssembler(
-			file: file,
-			converter: converter
-		)
+		let assembler = TextPreviewAssembler(file: file)
+		let viewController = assembler.assembly()
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showPdfPreviewScene(file: File) {
+		let assembler = PdfPreviewAssembler(file: file)
 		let viewController = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)
@@ -56,8 +59,7 @@ private extension MainCoordinator {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
-			topViewController: topViewController,
-			converter: converter
+			topViewController: topViewController
 		)
 		addDependency(coordinator)
 
@@ -88,7 +90,7 @@ extension MainCoordinator: IMainMenuDelegate {
 		)! // swiftlint:disable:this force_unwrapping
 		switch File.parse(url: aboutUrl) {
 		case .success(let aboutFile):
-			showTextPreviewScene(file: aboutFile)
+			showPdfPreviewScene(file: aboutFile)
 		case .failure:
 			break
 		}
@@ -99,7 +101,7 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func openFile(file: File) {
-		showTextPreviewScene(file: file)
+		showPdfPreviewScene(file: file)
 	}
 
 	func newFile() {}

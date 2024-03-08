@@ -21,7 +21,7 @@ final class PdfPreviewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: TextPreviewModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var viewModel: PdfPreviewModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	private lazy var pdfView = makePdfView(
 		accessibilityIdentifier: AccessibilityIdentifier.PdfPreviewScene.pdfView.description
@@ -65,6 +65,10 @@ private extension PdfPreviewController {
 				height: view.bounds.height
 			)
 		}
+
+		view.backgroundColor = Theme.backgroundColor
+		navigationController?.navigationBar.prefersLargeTitles = true
+
 		view.addSubview(pdfView)
 	}
 
@@ -108,7 +112,8 @@ private extension PdfPreviewController {
 
 extension PdfPreviewController: IPdfPreviewController {
 	func render(viewModel: PdfPreviewModel.ViewModel) {
-//		pdfView.document = PDFDocument(data: viewModel.data)
+		title = viewModel.currentTitle
+		pdfView.document = PDFDocument(data: viewModel.data)
 	}
 }
 

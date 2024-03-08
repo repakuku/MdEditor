@@ -16,6 +16,6 @@ enum PdfPreviewModel {
 
 	struct ViewModel {
 		let currentTitle: String
-		let text: NSMutableAttributedString
+		let data: Data
 	}
 }
