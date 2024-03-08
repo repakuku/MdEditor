@@ -43,7 +43,8 @@ private extension MainCoordinator {
 
 	func showTextPreviewScene(file: File) {
 		let assembler = TextPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -101,8 +102,17 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func openFile(file: File) {
-		showPdfPreviewScene(file: file)
+		showTextPreviewScene(file: file)
 	}
 
 	func newFile() {}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension MainCoordinator: ITextPreviewDelegate {
+
+	func openPdf(file: File) {
+		showPdfPreviewScene(file: file)
+	}
 }

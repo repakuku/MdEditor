@@ -58,6 +58,10 @@ private extension TextPreviewViewController {
 		view.backgroundColor = Theme.backgroundColor
 		navigationController?.navigationBar.prefersLargeTitles = true
 
+		navigationItem.rightBarButtonItem = makeBarButtonItem(
+			accessibilityIdentifier: AccessibilityIdentifier.TextPreviewScene.barButton.description
+		)
+
 		view.addSubview(textView)
 	}
 
@@ -71,6 +75,15 @@ private extension TextPreviewViewController {
 		textView.accessibilityIdentifier = accessibilityIdentifier
 
 		return textView
+	}
+
+	func makeBarButtonItem(accessibilityIdentifier: String) -> UIBarButtonItem {
+		let action = UIAction { [weak self] _ in
+			guard let self = self else { return }
+			   interactor?.performAction(request: .openPdf)
+		}
+
+		return UIBarButtonItem(title: "PDF", primaryAction: action)
 	}
 }
 

@@ -64,7 +64,8 @@ private extension FileManagerCoordinator {
 
 	func showTextPreviewScene(file: File) {
 		let assembler = TextPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -100,6 +101,14 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 	}
 
 	func openFile(file: File) {
+		showTextPreviewScene(file: file)
+	}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension FileManagerCoordinator: ITextPreviewDelegate {
+	func openPdf(file: File) {
 		showPdfPreviewScene(file: file)
 	}
 }

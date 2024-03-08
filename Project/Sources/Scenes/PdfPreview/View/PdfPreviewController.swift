@@ -116,16 +116,3 @@ extension PdfPreviewController: IPdfPreviewController {
 		pdfView.document = PDFDocument(data: viewModel.data)
 	}
 }
-
-//		let printController = UIPrintInteractionController.shared
-//		printController.printingItem = data
-//		printController.present(animated: true) { _, completed, error in
-//
-//			if completed {
-//				print("Completed")
-//			} else if let error = error {
-//				print(error.localizedDescription)
-//			} else {
-//				print("Canceled")
-//			}
-//		}

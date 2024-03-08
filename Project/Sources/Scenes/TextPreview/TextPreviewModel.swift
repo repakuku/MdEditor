@@ -9,6 +9,11 @@
 import Foundation
 
 enum TextPreviewModel {
+
+	enum Request {
+		case openPdf
+	}
+
 	struct Response {
 		let fileUrl: URL
 		let fileContent: String

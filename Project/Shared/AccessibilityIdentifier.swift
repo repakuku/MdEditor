@@ -51,11 +51,14 @@ enum AccessibilityIdentifier {
 
 	enum TextPreviewScene: CustomStringConvertible {
 		case textView
+		case barButton
 
 		var description: String {
 			switch self {
 			case .textView:
 				return "textPreviewScene.textView"
+			case .barButton:
+				return "textPreviewScene.barButton"
 			}
 		}
 	}
