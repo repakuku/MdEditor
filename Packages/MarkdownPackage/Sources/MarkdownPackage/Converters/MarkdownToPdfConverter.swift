@@ -32,7 +32,7 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	private struct Cursor {
 		static let initialPosition: CGFloat = 40
-		static let indent: CGFloat = 24
+		static let indent: CGFloat = 12
 
 		var position: CGFloat = Cursor.initialPosition
 	}
