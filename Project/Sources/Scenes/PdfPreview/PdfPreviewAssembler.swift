@@ -15,7 +15,7 @@ final class PdfPreviewAssembler {
 
 	private let file: File
 
-	private let converter = MarkdownToPdfConverter()
+	private let converter = MainQueueDispatchDecorator(decoratee: MarkdownToPdfConverter())
 
 	// MARK: - Initializers
 

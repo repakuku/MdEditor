@@ -14,16 +14,17 @@ public protocol IMarkdownToPdfConverter {
 	/// Converts markdown text into a PDF document.
 	/// - Parameters:
 	///   - markdownText: A string containing markdown formatted text.
-	///   - author: The author of the document.
-	///   - title: The title of the document
-	///   - pageFormat: The page format.
-	/// - Returns: A Data object representing the generated PDF document.
+	///   - author: Author of the document.
+	///   - title: Title of the document
+	///   - pageFormat: Format of the PDF pages.
+	///   - completion:Handler to return the PDF as 'Data'
 	func convert(
 		markdownText: String,
 		author: String,
 		title: String,
-		pageFormat: PageFormat
-	) -> Data
+		pageFormat: PageFormat,
+		completion: @escaping (Data) -> Void
+	)
 }
 
 /// A MarkdownToPdfConverter class responsible for converting markdown text into a PDF document.
@@ -31,7 +32,7 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	private struct Cursor {
 		static let initialPosition: CGFloat = 40
-		static let indent: CGFloat = 24
+		static let indent: CGFloat = 12
 
 		var position: CGFloat = Cursor.initialPosition
 	}
@@ -51,16 +52,18 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 	/// Converts markdown text into a PDF document.
 	/// - Parameters:
 	///   - markdownText: A string containing markdown formatted text.
-	///   - author: The author of the document.
-	///   - title: The title of the document
-	///   - pageFormat: The page format.
-	/// - Returns: A Data object representing the generated PDF document.
+	///   - author: Author of the document.
+	///   - title: Title of the document
+	///   - pageFormat: Format of the PDF pages.
+	///   - completion:Handler to return the PDF as 'Data'
 	public func convert(
 		markdownText: String,
 		author: String,
 		title: String,
-		pageFormat: PageFormat
-	) -> Data {
+		pageFormat: PageFormat,
+		completion: @escaping (Data) -> Void
+	) {
+
 		let document = markdownToDocument.convert(markdownText: markdownText)
 		let format = UIGraphicsPDFRendererFormat()
 
@@ -77,29 +80,33 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 			width: pageFormat.size.width,
 			height: pageFormat.size.height
 		)
+
 		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
-
 		let lines = document.accept(visitor: visitor)
+		var data = Data()
 
-		let data = graphicsRenderer.pdfData { context in
-			context.beginPage()
+		DispatchQueue.global(qos: .userInitiated).async {
 
-			var cursor = Cursor()
+			data = graphicsRenderer.pdfData { context in
+				context.beginPage()
 
-			lines.forEach { line in
-				cursor.position = addAttributedText(
-					context: context,
-					text: line,
-					indent: Cursor.indent,
-					cursor: cursor.position,
-					pdfSize: pageRect.size
-				)
+				var cursor = Cursor()
 
-				cursor.position += Cursor.indent
+				lines.forEach { line in
+					cursor.position = self.addAttributedText(
+						context: context,
+						text: line,
+						indent: Cursor.indent,
+						cursor: cursor.position,
+						pdfSize: pageRect.size
+					)
+
+					cursor.position += Cursor.indent
+				}
 			}
-		}
 
-		return data
+			completion(data)
+		}
 	}
 }
 
@@ -114,7 +121,7 @@ private extension MarkdownToPdfConverter {
 		let pdfTextHeight = textHeight(text, withConstrainedWidth: pdfSize.width - 2 * indent)
 
 		let rect = CGRect(
-			x: indent,
+			x: 2 * indent,
 			y: cursor,
 			width: pdfSize.width - 2 * indent,
 			height: pdfTextHeight
