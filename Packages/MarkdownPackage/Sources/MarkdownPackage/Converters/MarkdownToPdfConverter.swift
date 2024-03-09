@@ -121,7 +121,7 @@ private extension MarkdownToPdfConverter {
 		let pdfTextHeight = textHeight(text, withConstrainedWidth: pdfSize.width - 2 * indent)
 
 		let rect = CGRect(
-			x: indent,
+			x: 2 * indent,
 			y: cursor,
 			width: pdfSize.width - 2 * indent,
 			height: pdfTextHeight
