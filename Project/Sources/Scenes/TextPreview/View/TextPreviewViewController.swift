@@ -51,6 +51,15 @@ final class TextPreviewViewController: UIViewController {
 	}
 }
 
+// MARK: - Actions
+
+extension TextPreviewViewController {
+	@objc
+	func openPdf() {
+		interactor?.performAction()
+	}
+}
+
 // MARK: - Setup UI
 
 private extension TextPreviewViewController {
@@ -78,12 +87,12 @@ private extension TextPreviewViewController {
 	}
 
 	func makeBarButtonItem(accessibilityIdentifier: String) -> UIBarButtonItem {
-		let action = UIAction { [weak self] _ in
-			guard let self = self else { return }
-			   interactor?.performAction(request: .openPdf)
-		}
-
-		return UIBarButtonItem(title: "PDF", primaryAction: action)
+		UIBarButtonItem(
+			title: "PDF",
+			style: .plain,
+			target: self,
+			action: #selector(openPdf)
+		)
 	}
 }
 

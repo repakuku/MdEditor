@@ -14,7 +14,7 @@ protocol ITextPreviewDelegate: AnyObject {
 
 protocol ITextPreviewInteractor {
 	func fetchData()
-	func performAction(request: TextPreviewModel.Request)
+	func performAction()
 }
 
 final class TextPreviewInteractor: ITextPreviewInteractor {
@@ -46,10 +46,7 @@ final class TextPreviewInteractor: ITextPreviewInteractor {
 		presenter.present(response: response)
 	}
 
-	func performAction(request: TextPreviewModel.Request) {
-		switch request {
-		case .openPdf:
-			delegate?.openPdf(file: file)
-		}
+	func performAction() {
+		delegate?.openPdf(file: file)
 	}
 }
