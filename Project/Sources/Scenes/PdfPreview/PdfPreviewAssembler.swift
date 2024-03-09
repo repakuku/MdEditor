@@ -27,18 +27,18 @@ final class PdfPreviewAssembler {
 
 	// MARK: - Public methods
 
-	func assembly() -> PdfPreviewController {
+	func assembly() -> (PdfPreviewController, PdfPreviewInteractor) {
 		let viewController = PdfPreviewController()
 		let presenter: IPdfPreviewPresenter = PdfPreviewPresenter(
 			viewController: viewController,
 			converter: converter
 		)
-		let interactor: IPdfPreviewInteractor = PdfPreviewInteractor(
+		let interactor = PdfPreviewInteractor(
 			presenter: presenter,
 			file: file
 		)
 		viewController.interactor = interactor
 
-		return viewController
+		return (viewController, interactor)
 	}
 }

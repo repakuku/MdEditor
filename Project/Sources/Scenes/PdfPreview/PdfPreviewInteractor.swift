@@ -8,11 +8,20 @@
 
 import Foundation
 
+protocol IPdfPreviewDelegate: AnyObject {
+	func printPdf(data: Data)
+}
+
 protocol IPdfPreviewInteractor {
 	func fetchData()
+	func performAction(request: PdfPreviewModel.Request)
 }
 
 final class PdfPreviewInteractor: IPdfPreviewInteractor {
+
+	// MARK: - Public properties
+
+	weak var delegate: IPdfPreviewDelegate?
 
 	// MARK: - Dependencies
 
@@ -35,5 +44,9 @@ final class PdfPreviewInteractor: IPdfPreviewInteractor {
 		let content = String(data: file.contentOfFile() ?? Data(), encoding: .utf8) ?? ""
 		let response = PdfPreviewModel.Response(fileUrl: file.url, fileContent: content)
 		presenter.present(response: response)
+	}
+
+	func performAction(request: PdfPreviewModel.Request) {
+		delegate?.printPdf(data: request.data)
 	}
 }

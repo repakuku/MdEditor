@@ -72,7 +72,8 @@ private extension FileManagerCoordinator {
 
 	func showPdfPreviewScene(file: File) {
 		let assembler = PdfPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -110,5 +111,15 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 extension FileManagerCoordinator: ITextPreviewDelegate {
 	func openPdf(file: File) {
 		showPdfPreviewScene(file: file)
+	}
+}
+
+// MARK: - IPdfPreviewDelegate
+
+extension FileManagerCoordinator: IPdfPreviewDelegate {
+	func printPdf(data: Data) {
+		let printController = UIPrintInteractionController.shared
+		printController.printingItem = data
+		printController.present(animated: true)
 	}
 }

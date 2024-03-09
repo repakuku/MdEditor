@@ -53,6 +53,16 @@ final class PdfPreviewController: UIViewController {
 	}
 }
 
+// MARK: - Actions
+
+extension PdfPreviewController {
+	@objc
+	func share() {
+		let request = PdfPreviewModel.Request(data: pdfView.document?.dataRepresentation() ?? Data())
+		interactor?.performAction(request: request)
+	}
+}
+
 // MARK: - Setup UI
 
 private extension PdfPreviewController {
@@ -65,6 +75,10 @@ private extension PdfPreviewController {
 				height: view.bounds.height
 			)
 		}
+
+		navigationItem.rightBarButtonItem = makeBarButtonItem(
+			accessibilityIdentifier: AccessibilityIdentifier.PdfPreviewScene.barButton.description
+		)
 
 		view.backgroundColor = Theme.backgroundColor
 		navigationController?.navigationBar.prefersLargeTitles = true
@@ -83,6 +97,14 @@ private extension PdfPreviewController {
 		)
 
 		return pdfView
+	}
+
+	func makeBarButtonItem(accessibilityIdentifier: String) -> UIBarButtonItem {
+		UIBarButtonItem(
+			barButtonSystemItem: .action,
+			target: self,
+			action: #selector(share)
+		)
 	}
 }
 

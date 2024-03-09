@@ -9,6 +9,11 @@
 import Foundation
 
 enum PdfPreviewModel {
+
+	struct Request {
+		let data: Data
+	}
+
 	struct Response {
 		let fileUrl: URL
 		let fileContent: String
