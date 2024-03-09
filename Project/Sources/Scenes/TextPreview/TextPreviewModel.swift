@@ -9,6 +9,7 @@
 import Foundation
 
 enum TextPreviewModel {
+
 	struct Response {
 		let fileUrl: URL
 		let fileContent: String
@@ -16,6 +17,6 @@ enum TextPreviewModel {
 
 	struct ViewModel {
 		let currentTitle: String
-		let text: String
+		let text: NSMutableAttributedString
 	}
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MarkdownPackage
 
 protocol IFileManagerCoordinator: ICoordinator {
 	var finishFlow: (() -> Void)? { get set }
@@ -19,7 +20,7 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 	private let navigationController: UINavigationController
 	private var topViewController: UIViewController?
 
-	private let fileExplorer: IFileExplorer
+	private let fileExplorer = FileExplorer()
 
 	// MARK: - Internal properties
 
@@ -29,12 +30,10 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 
 	init(
 		navigationController: UINavigationController,
-		topViewController: UIViewController?,
-		fileExplorer: IFileExplorer
+		topViewController: UIViewController?
 	) {
 		self.navigationController = navigationController
 		self.topViewController = topViewController
-		self.fileExplorer = fileExplorer
 
 		super.init()
 
@@ -65,7 +64,16 @@ private extension FileManagerCoordinator {
 
 	func showTextPreviewScene(file: File) {
 		let assembler = TextPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showPdfPreviewScene(file: File) {
+		let assembler = PdfPreviewAssembler(file: file)
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -95,5 +103,23 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 
 	func openFile(file: File) {
 		showTextPreviewScene(file: file)
+	}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension FileManagerCoordinator: ITextPreviewDelegate {
+	func openPdf(file: File) {
+		showPdfPreviewScene(file: file)
+	}
+}
+
+// MARK: - IPdfPreviewDelegate
+
+extension FileManagerCoordinator: IPdfPreviewDelegate {
+	func printPdf(data: Data) {
+		let printController = UIPrintInteractionController.shared
+		printController.printingItem = data
+		printController.present(animated: true)
 	}
 }

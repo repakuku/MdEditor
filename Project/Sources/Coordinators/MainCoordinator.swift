@@ -6,26 +6,19 @@
 //
 
 import UIKit
-import TaskManagerPackage
+import MarkdownPackage
 
 final class MainCoordinator: BaseCoordinator {
 
 	// MARK: - Dependencies
 
 	private let navigationController: UINavigationController
-	private let fileExplorer: IFileExplorer
-	private let recentFileManager: IRecentFileManager
+	private let recentFileManager = StubRecentFileManager()
 
 	// MARK: - Initialization
 
-	init(
-		navigationController: UINavigationController,
-		fileExplorer: IFileExplorer,
-		recentFileManager: IRecentFileManager
-	) {
+	init(navigationController: UINavigationController) {
 		self.navigationController = navigationController
-		self.fileExplorer = fileExplorer
-		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Internal methods
@@ -50,7 +43,16 @@ private extension MainCoordinator {
 
 	func showTextPreviewScene(file: File) {
 		let assembler = TextPreviewAssembler(file: file)
-		let viewController = assembler.assembly()
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showPdfPreviewScene(file: File) {
+		let assembler = PdfPreviewAssembler(file: file)
+		let (viewController, interactor) = assembler.assembly()
+		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -59,8 +61,7 @@ private extension MainCoordinator {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
 			navigationController: navigationController,
-			topViewController: topViewController,
-			fileExplorer: fileExplorer
+			topViewController: topViewController
 		)
 		addDependency(coordinator)
 
@@ -91,7 +92,7 @@ extension MainCoordinator: IMainMenuDelegate {
 		)! // swiftlint:disable:this force_unwrapping
 		switch File.parse(url: aboutUrl) {
 		case .success(let aboutFile):
-			showTextPreviewScene(file: aboutFile)
+			showPdfPreviewScene(file: aboutFile)
 		case .failure:
 			break
 		}
@@ -106,4 +107,23 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func newFile() {}
+}
+
+// MARK: - ITextPreviewDelegate
+
+extension MainCoordinator: ITextPreviewDelegate {
+
+	func openPdf(file: File) {
+		showPdfPreviewScene(file: file)
+	}
+}
+
+// MARK: - IPdfPreviewDelegate
+
+extension MainCoordinator: IPdfPreviewDelegate {
+	func printPdf(data: Data) {
+		let printController = UIPrintInteractionController.shared
+		printController.printingItem = data
+		printController.present(animated: true)
+	}
 }

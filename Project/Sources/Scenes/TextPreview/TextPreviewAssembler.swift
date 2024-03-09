@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MarkdownPackage
 
 final class TextPreviewAssembler {
 
@@ -14,23 +15,30 @@ final class TextPreviewAssembler {
 
 	private let file: File
 
+	private let converter = MarkdownToAttributedStringConverter()
+
 	// MARK: - Initializers
 
-	init(file: File) {
+	init(
+		file: File
+	) {
 		self.file = file
 	}
 
 	// MARK: - Public methods
 
-	func assembly() -> TextPreviewViewController {
+	func assembly() -> (TextPreviewViewController, TextPreviewInteractor) {
 		let viewController = TextPreviewViewController()
-		let presenter: ITextPreviewPresenter = TextPreviewPresenter(viewController: viewController)
-		let interactor: ITextPreviewInteractor = TextPreviewInteractor(
+		let presenter: ITextPreviewPresenter = TextPreviewPresenter(
+			viewController: viewController,
+			converter: converter
+		)
+		let interactor = TextPreviewInteractor(
 			presenter: presenter,
 			file: file
 		)
 		viewController.interactor = interactor
 
-		return viewController
+		return (viewController, interactor)
 	}
 }

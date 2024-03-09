@@ -54,7 +54,8 @@ let target = Target(
 	scripts: scripts,
 	dependencies: [
 		.package(product: "TaskManagerPackage"),
-		.package(product: "DataStructuresPackage")
+		.package(product: "DataStructuresPackage"),
+		.package(product: "MarkdownPackage")
 	],
 	settings: .settings(
 		base: [
@@ -109,7 +110,8 @@ let project = Project(
 	organizationName: ProjectSettings.organizationName,
 	packages: [
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
-		.local(path: .relativeToManifest("../Packages/DataStructuresPackage"))
+		.local(path: .relativeToManifest("../Packages/DataStructuresPackage")),
+		.local(path: .relativeToManifest("../Packages/MarkdownPackage"))
 	],
 	settings: .settings(
 		base: [

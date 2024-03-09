@@ -5,30 +5,31 @@
 //  Created by Alexey Turulin on 11/22/23.
 //
 
-/// Протокол для TaskManager
+/// The Task Manager Protocol.
 public protocol ITaskManager {
-	/// Список всех заданий.
-	/// - Returns: Массив заданий.
+
+	/// Returns all completed tasks.
+	/// - Returns: An array of completed 'Task' instances.
 	func allTasks() -> [Task]
-	
-	/// Список выполненных заданий.
-	/// - Returns: Массив заданий.
+
+	/// Returns all complited tasks.
+	/// - Returns: An array of complited 'Task' instances.
 	func completedTasks() -> [Task]
 
-	/// Список заданий для выполнения.
-	/// - Returns: Массив заданий.
+	/// Returns all uncomplited tasks.
+	/// - Returns: An array of uncomplited 'Task' instances.
 	func uncompletedTasks() -> [Task]
 
-	/// Добавление нового задания.
-	/// - Parameter task: Задание.
+	/// Add a new task.
+	/// - Parameter task: The 'Task' instance to add.
 	func addTask(task: Task)
 
-	/// Добавление перечня заданий.
-	/// - Parameter tasks: Массив заданий.
+	/// Adds an array of tasks.
+	/// - Parameter tasks: An array of 'Task' instances to add.
 	func addTasks(tasks: [Task])
 
-	/// Удаление задания из списка.
-	/// - Parameter task: Задание, которое необходимо удалить.
+	/// Removes a task.
+	/// - Parameter task: The 'Task' instance to remove.
 	func removeTask(task: Task)
 }
 
