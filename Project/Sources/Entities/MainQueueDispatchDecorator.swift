@@ -9,14 +9,30 @@
 import Foundation
 import MarkdownPackage
 
+/// A decorator for 'IMarkdownToPdfConverter'.
 final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 
-	let decoratee: IMarkdownToPdfConverter
+	// MARK: - Dependencies
 
+	private let decoratee: IMarkdownToPdfConverter
+
+	// MARK: - Initialization
+
+	/// Initializes a new instance with the given markdown to PDF converter.
+	/// - Parameter decoratee: The actual converter.
 	init(decoratee: IMarkdownToPdfConverter) {
 		self.decoratee = decoratee
 	}
 
+	// MARK: - Public Methods
+
+	/// Converts markdown text into a PDF document.
+	/// - Parameters:
+	///   - markdownText: The markdown formatted text to convert.
+	///   - author: The author of the PDF document.
+	///   - title: The title of the PDF document.
+	///   - pageFormat: The format for the PDF pages.
+	///   - completion: A completion handler that is called with the resulting PDF data.
 	func convert(
 		markdownText: String,
 		author: String,
@@ -37,6 +53,8 @@ final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 			}
 		}
 	}
+
+	// MARK: - Private Methods
 
 	private func doInMainThread(_ work: @escaping () -> Void) {
 		if Thread.isMainThread {
