@@ -26,7 +26,8 @@ final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 
 	// MARK: - Public Methods
 
-	/// Converts markdown text into a PDF document.
+	/// Converts markdown text into a PDF document, ensuring that the conversion process is executed
+	/// on a background thread and the completion handler is called on the main thread.
 	/// - Parameters:
 	///   - markdownText: The markdown formatted text to convert.
 	///   - author: The author of the PDF document.
