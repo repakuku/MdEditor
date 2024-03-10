@@ -39,13 +39,17 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	// MARK: - Dependencies
 
-	private let visitor = AttributedTextVisitor()
+	private let theme: IAttributedTextColors
+	private let visitor: AttributedTextVisitor
 	private let markdownToDocument = MarkdownToDocument()
 
 	// MARK: - Initialization
 
 	/// Initializes a MarkdownToPdfConverter instance.
-	public init() { }
+	public init(theme: IAttributedTextColors) {
+		self.theme = theme
+		visitor = AttributedTextVisitor(theme: theme)
+	}
 
 	// MARK: - Public Methods
 
@@ -82,31 +86,28 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 		)
 
 		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
+
 		let lines = document.accept(visitor: visitor)
-		var data = Data()
 
-		DispatchQueue.global(qos: .userInitiated).async {
+		let data = graphicsRenderer.pdfData { context in
+			context.beginPage()
 
-			data = graphicsRenderer.pdfData { context in
-				context.beginPage()
+			var cursor = Cursor()
 
-				var cursor = Cursor()
+			lines.forEach { line in
+				cursor.position = self.addAttributedText(
+					context: context,
+					text: line,
+					indent: Cursor.indent,
+					cursor: cursor.position,
+					pdfSize: pageRect.size
+				)
 
-				lines.forEach { line in
-					cursor.position = self.addAttributedText(
-						context: context,
-						text: line,
-						indent: Cursor.indent,
-						cursor: cursor.position,
-						pdfSize: pageRect.size
-					)
-
-					cursor.position += Cursor.indent
-				}
+				cursor.position += Cursor.indent
 			}
-
-			completion(data)
 		}
+
+		completion(data)
 	}
 }
 
