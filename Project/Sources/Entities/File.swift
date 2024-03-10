@@ -10,19 +10,19 @@ import Foundation
 
 /// Represents a file or directory within the file system.
 struct File {
-	
+
 	/// The URL of the file or directory.
 	let url: URL
-	
+
 	/// A Boolean value indicating whether the URL is a directory.
 	let isFolder: Bool
-	
+
 	/// The size of the file in bytes.
 	let size: UInt64
-	
+
 	/// The creation date of the file or directory.
 	let creationDate: Date
-	
+
 	/// The last modification date of the file or directory.
 	let modificationDate: Date
 
@@ -33,12 +33,12 @@ struct File {
 		self.creationDate = creationDate
 		self.modificationDate = modificationDate
 	}
-	
+
 	/// Errors that can occur when parsing a file's attributes.
 	enum ParseError: Error {
 		case wrongAttribute
 	}
-	
+
 	/// Parses the attributes of a file or directory from its URL.
 	/// - Parameter url: The URL of the file or directory.
 	/// - Returns: A result containing a File instance or an error.
@@ -67,27 +67,27 @@ struct File {
 			return .failure(error)
 		}
 	}
-	
+
 	/// The full name of the file or directory.
 	var fullName: String {
 		url.absoluteString
 	}
-	
+
 	/// The path of the file or directory, excluding the file name.
 	var path: String {
 		url.deletingLastPathComponent().absoluteString
 	}
-	
+
 	/// The name of the file or directory, excluding the path.
 	var name: String {
 		url.lastPathComponent
 	}
-	
+
 	/// The file extension of the file, if any.
 	var ext: String {
 		url.pathExtension
 	}
-	
+
 	/// Reads the content of the file.
 	/// - Returns: The content of the file as Data, or nil if reading fails.
 	func contentOfFile() -> Data? {

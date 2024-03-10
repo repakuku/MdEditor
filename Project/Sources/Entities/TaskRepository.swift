@@ -10,7 +10,7 @@ import TaskManagerPackage
 
 /// Protocol defining the operations for accessing tasks from a repository.
 protocol ITaskRepository {
-	
+
 	/// Retrieves all tasks from the repository.
 	/// - Returns: An array of 'Task' objects representing all the tasks stored in the repository.
 	func getTasks() -> [Task]
@@ -18,7 +18,7 @@ protocol ITaskRepository {
 
 /// A stub implementation of 'ITaskRepository' for testing or development purposes.
 final class TaskRepositoryStub: ITaskRepository {
-	
+
 	/// Provides a static list of tasks.
 	/// - Returns: An array of 'Task' instances to simulate a set of tasks.
 	func getTasks() -> [Task] {

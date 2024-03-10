@@ -10,16 +10,16 @@ import TaskManagerPackage
 
 /// Protocol defining the requirements for adapting  task manager data into sections for display.
 protocol ISectionForTaskManagerAdapter {
-	
+
 	/// Retrieves all sections representing grouped tasks.
 	/// - Returns: An array of 'Section' representing the sections in the task manager.
 	func getSections() -> [Section]
-	
+
 	/// Retrieves a specific section by its index.
 	/// - Parameter index: The index of the section to retrieve.
 	/// - Returns: The 'Section' at the given index.
 	func getSection(forIndex index: Int) -> Section
-	
+
 	/// Retrieves tasks for a specific section.
 	/// - Parameter section: The section for which to retrieve tasks.
 	/// - Returns: An array of 'Task' belonging to the specified section.
@@ -28,19 +28,19 @@ protocol ISectionForTaskManagerAdapter {
 
 /// An enumeration representing the sections within a task management sustem.
 enum Section {
-	
+
 	/// Represents completed tasks.
 	case completed
-	
+
 	/// Represents uncompleted tasks.
 	case uncompleted
-	
+
 	/// represents all tasks.
 	case allTasks
-	
+
 	/// Represents important tasks.
 	case important
-	
+
 	/// Represents regular tasks.
 	case regular
 
@@ -72,7 +72,7 @@ final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
 	private let sections: [Section]
 
 	// MARK: - Initialization
-	
+
 	/// Initializes the adapter with a task manager and optional section configuration.
 	/// - Parameters:
 	///   - taskManager: The task manager instance to adapt.
@@ -83,13 +83,13 @@ final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
 	}
 
 	// MARK: - Public methods
-	
+
 	/// Retrieves all sections representing grouped tasks.
 	/// - Returns: An array of 'Section' representing the sections in the task manager.
 	func getSections() -> [Section] {
 		sections
 	}
-	
+
 	/// Retrieves a specific section by its index.
 	/// - Parameter index: The index of the section to retrieve.
 	/// - Returns: The 'Section' at the given index.
@@ -97,7 +97,7 @@ final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
 		let correctedIndex = min(index, sections.count - 1)
 		return sections[correctedIndex]
 	}
-	
+
 	/// Retrieves tasks for a specific section.
 	/// - Parameter section: The section for which to retrieve tasks.
 	/// - Returns: An array of 'Task' belonging to the specified section.

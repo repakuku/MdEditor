@@ -10,7 +10,7 @@ import Foundation
 
 /// A protocol definong the interface for managing and retrieving recent files.
 protocol IRecentFileManager {
-	
+
 	/// Retrieves a list of recent files accessed or modified.
 	/// - Returns: An array of 'RecentFile' instances, representing the recent files.
 	func getRecentFiles() -> [RecentFile]
@@ -18,7 +18,7 @@ protocol IRecentFileManager {
 
 /// Manages the retrieval of recent files.
 final class RecentFileManager: IRecentFileManager {
-	
+
 	/// Retrieves a list of recent files accessed or modified.
 	/// - Returns: An array of 'RecentFile' instances, representing the recent files.
 	func getRecentFiles() -> [RecentFile] {
@@ -28,7 +28,7 @@ final class RecentFileManager: IRecentFileManager {
 
 /// Provides a stubbed implementation of the 'IRecentFileManager' for testing or demonstartion purposes.
 final class StubRecentFileManager: IRecentFileManager {
-	
+
 	/// Returns a predefined set of 'RecentFile' instances.
 	/// - Returns: An array of 'RecentFile' instances.
 	func getRecentFiles() -> [RecentFile] {

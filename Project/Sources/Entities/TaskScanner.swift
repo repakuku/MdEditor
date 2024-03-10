@@ -14,23 +14,23 @@ import TaskManagerPackage
 final class TaskScanner: ITaskRepository {
 
 	// MARK: - Dependencies
-	
+
 	private let visitor = AttributedTextVisitor()
 
 	// MARK: - Private Properties
-	
+
 	private let document: Document
-	
+
 	// MARK: - Initialization
-	
+
 	/// Initializes a new TaskScaneer with a given document.
 	/// - Returns: The document to scan for tasks.
 	init(document: Document) {
 		self.document = document
 	}
-	
+
 	// MARK: - Public Methods
-	
+
 	/// Scans the document and returns a list of tasks found within.
 	/// - Returns: An array of 'Task' instances extracted from the document.
 	func getTasks() -> [Task] {
