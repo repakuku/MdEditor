@@ -24,9 +24,16 @@ final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 		pageFormat: MarkdownPackage.PageFormat,
 		completion: @escaping (Data) -> Void
 	) {
-		decoratee.convert(markdownText: markdownText, author: author, title: title, pageFormat: pageFormat) { data in
-			self.doInMainThread {
-				completion(data)
+		DispatchQueue.global(qos: .userInitiated).async {
+			self.decoratee.convert(
+				markdownText: markdownText,
+				author: author,
+				title: title,
+				pageFormat: pageFormat
+			) { data in
+				self.doInMainThread {
+					completion(data)
+				}
 			}
 		}
 	}
