@@ -48,13 +48,13 @@ public enum Token {
 }
 
 /// Represents formatted text.
-public struct Text {
+public struct Text: Equatable {
 
 	/// An array of text parts, allowing for mixed formatting.
 	let text: [Part]
 
 	/// Represents a part of text with specific formatting.
-	enum Part {
+	enum Part: Equatable {
 
 		/// Plain text without any formatting.
 		case normal(text: String)
@@ -73,5 +73,20 @@ public struct Text {
 
 		/// An escaped character.
 		case escapedChar(char: String)
+	}
+}
+
+extension Token: Equatable {
+	public static func == (lhs: Token, rhs: Token) -> Bool {
+		switch (lhs, rhs) {
+		case (.lineBreak, .lineBreak):
+			return true
+		case (.header(let lhsLevel, let lhsText), .header(let rhsLevel, let rhsText)):
+			return lhsLevel == rhsLevel && lhsText == rhsText
+		case (.blockquote(let lhsLevel, let lhsText), .blockquote(let rhsLevel, let rhsText)):
+			return lhsLevel == rhsLevel && lhsText == rhsText
+		default:
+			return false
+		}
 	}
 }

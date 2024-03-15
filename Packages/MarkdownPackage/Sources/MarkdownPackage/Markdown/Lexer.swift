@@ -94,7 +94,7 @@ private extension Lexer {
 	}
 
 	func parseBlockquote(rawText: String) -> Token? {
-		let pattern = #"^(>{1,6})(.*)"#
+		let pattern = #"^(>{1,6})\s+(.*)"#
 		let groups = rawText.groups(for: pattern)
 		if !groups.isEmpty, groups[0].count == 2 {
 			let level = groups[0][0].count

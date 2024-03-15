@@ -5,7 +5,7 @@
 //  Created by Alexey Turulin on 2/26/24.
 //
 
-import UIKit
+import Foundation
 
 /// Protocol for converting markdown text into a 'NSMutableAttributedString'.
 public protocol IMarkdownToAttributedStringConverter {
