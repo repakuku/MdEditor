@@ -6,7 +6,9 @@
 //
 
 #warning("TODO: It breakes CI. Fix it.")
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// A visitor that translates markdown document elements into 'NSMutableAttributedString'
 /// to support rich text formatting.
