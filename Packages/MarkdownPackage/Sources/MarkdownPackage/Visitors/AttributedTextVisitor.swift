@@ -5,6 +5,7 @@
 //  Created by Alexey Turulin on 2/26/24.
 //
 
+#warning("TODO: It breakes CI. Fix it.")
 import UIKit
 
 /// A visitor that translates markdown document elements into 'NSMutableAttributedString'
