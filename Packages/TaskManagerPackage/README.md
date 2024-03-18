@@ -1,38 +1,37 @@
 # TaskManagerPackage
 
-The package contains a set of classes for implementing a task list.
+This package offers a suite of classes for managing a task list.
 
 Tasks:
 
-- Task – A task, for maintaining a to-do list;
-- RegularTask -- A regular task for keeping a to-do list;
-- ImportantTask -- Important task with priority for maintaining a to-do list.
+	•	Task – A generic task for a to-do list management.
+	•	RegularTask – A basic task for to-do list upkeep.
+	•	ImportantTask – A prioritized task for to-do list management, emphasizing urgency.
 
-Task managers:
+Task Managers:
 
-- ITaskManager -- Протокол предоставляющий управление списком заданий;
-- TaskManager -- Менеджер списка заданий;
-- OrderedTaskManager - Менеджер списка заданий, отсортированных по приоритету.
+	•	ITaskManager – A protocol providing management capabilities for a task list.
+	•	TaskManager – Manages a task list.
+	•	OrderedTaskManager – Manages a task list sorted by priority.
 
-## Описание пакета
+## Package Description
 
-Класс `TaskManager`, хранит список заданий и предоставляет функции для управления ими на основе протокола ITaskManager:
+The TaskManager class stores a task list and provides functions for managing it based on the ITaskManager protocol:
 
-- `func allTasks() -> [Task]` -- получение списка всех заданий;
-- `func completedTasks() -> [Task]` -- получение списка выполненных заданий;
-- `func uncompletedTasks() -> [Task]` -- получение списка невыполненных заданий;
-- `func addTask(task: Task)` -- добавление задания в список;
-- `func removeTask(task: Task)` -- удаление задания из списка.
+	•	func allTasks() -> [Task] – Retrieves the list of all tasks.
+	•	func completedTasks() -> [Task] – Retrieves the list of completed tasks.
+	•	func uncompletedTasks() -> [Task] – Retrieves the list of uncompleted tasks.
+	•	func addTask(task: Task) – Adds a task to the list.
+	•	func removeTask(task: Task) – Removes a task from the list.
 
-`TaskManager` оперирует заданиями -- `Task`, который имеет статус готово (completed) и название (title).
+TaskManager operates with Task instances, each having a completion status (completed) and a title (title).
 
-`ImportantTask` поддерживают приоритеты с возможными значениями: `low`, `medium`, `high`. 
-А также дату выполнения задания (deadline) в зависимости от ее приоритета. 
-Если приоритет установлен в `high`, то дата выполнения устанавливается на следующий день от даты создания задания, 
-если в `medium`, то на последующий день, а если в `low`, то на третий день после текущей 
-(использован Calendar.current.date).
+ImportantTask supports priorities with possible values: low, medium, high.
+It also provides a deadline based on its priority. If the priority is set to high, the completion date is set for 
+the next day from the creation date, if medium, then for the day after next, and if low, then for three days after 
+the current date (using Calendar.current.date).
 
-## UML-схема 
+## UML Diagram
 
 ```plantuml
 @startuml
@@ -90,12 +89,22 @@ TaskManager -U-> Task
 ### Swift Package Manager
 Copy framework url to clipboard:
 
-Open your project in Xcode and go to the "Frameworks, Libraries and Embedded Content" section in the general project settings, then click on the add new library button:
+Copy the framework URL to your clipboard:
 
-Then select "Add Other..." -> "Add Package Dependency...":
+Open your project in Xcode and navigate to the “Frameworks, Libraries, and Embedded Content” section in the 
+general project settings, then click on the add new library button:
 
-In the window that opens, go to the search bar and paste the url ```  ```
-Then press the button "Add Package":
+Next, select “Add Other…” -> “Add Package Dependency…”:
 
-In the package selection window, check the TaskManagerPackage and press "Add Package":
+In the pop-up window, paste the copied URL into the search bar and press the “Add Package” button:
 
+In the package selection window, ensure the TaskManagerPackage is checked, then press “Add Package”:
+
+## Contributing
+
+Contributions to the MarkdownPackage are welcome. Whether it’s bug reports, feature requests, or contributions 
+to code, please feel free to reach out or submit a pull request.
+
+## License
+
+The MarkdownPackage is released under the MIT License. See the LICENSE file for more details.
