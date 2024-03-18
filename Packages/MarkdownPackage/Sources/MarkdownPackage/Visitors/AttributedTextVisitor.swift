@@ -5,7 +5,6 @@
 //  Created by Alexey Turulin on 2/26/24.
 //
 
-#warning("TODO: It breakes CI. Fix it.")
 #if canImport(UIKit)
 import UIKit
 #endif

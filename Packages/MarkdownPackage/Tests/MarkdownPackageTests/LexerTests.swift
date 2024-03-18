@@ -5,6 +5,8 @@
 //  Created by Alexey Turulin on 3/14/24.
 //
 
+// swiftlint:disable all
+
 import XCTest
 @testable import MarkdownPackage
 
