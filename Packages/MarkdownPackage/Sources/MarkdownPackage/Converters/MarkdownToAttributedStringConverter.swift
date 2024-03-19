@@ -23,14 +23,14 @@ public final class MarkdownToAttributedStringConverter: IMarkdownToAttributedStr
 	// MARK: - Dependencies
 
 	private let theme: IAttributedTextColors
-	private let fonts: IFonts
+	private let fonts: IAttributedTextFonts
 	private let visitor: AttributedTextVisitor
 	private let markdownToDocument = MarkdownToDocument()
 
 	// MARK: - initialization
 
 	/// Initializes a MarkdownToAttributedStringConverter instance.
-	public init(theme: IAttributedTextColors, fonts: IFonts) {
+	public init(theme: IAttributedTextColors, fonts: IAttributedTextFonts) {
 		self.theme = theme
 		self.fonts = fonts
 		visitor = AttributedTextVisitor(

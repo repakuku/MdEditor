@@ -18,7 +18,7 @@ public protocol IAttributedTextColors {
 }
 
 /// Protocol for managing font styles.
-public protocol IFonts {
+public protocol IAttributedTextFonts {
 
 	/// The font used for normal text.
 	var normalText: UIFont { get }
@@ -39,7 +39,7 @@ public protocol IFonts {
 	var codeBlock: UIFont { get }
 
 	/// Returns the font for headers at different levels.
-	/// - Parameter level: An integer representing the level of the header 
+	/// - Parameter level: An integer representing the level of the header
 	/// (1 for H1, 2 for H2, 3 for H3, 4 for H4, 5 for H5, 6 for H6).
 	/// - Returns: The font used for header.
 	func getHeaderFont(level: Int) -> UIFont
@@ -52,12 +52,12 @@ public final class AttributedTextVisitor: IVisitor {
 	// MARK: - Dependencies
 
 	private let theme: IAttributedTextColors
-	private let fonts: IFonts
+	private let fonts: IAttributedTextFonts
 
 	// MARK: - Initialization
 
 	/// Initializes a new AttributedTextVisitor instance.
-	public init(theme: IAttributedTextColors, fonts: IFonts) {
+	public init(theme: IAttributedTextColors, fonts: IAttributedTextFonts) {
 		self.theme = theme
 		self.fonts = fonts
 	}

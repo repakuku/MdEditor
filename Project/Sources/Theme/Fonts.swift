@@ -9,7 +9,7 @@
 import UIKit
 import MarkdownPackage
 
-struct Fonts: IFonts {
+struct Fonts: IAttributedTextFonts {
 
 	var normalText: UIFont {
 		UIFont.systemFont(ofSize: Sizes.NormalText.size)
