@@ -20,7 +20,8 @@ final class PdfPreviewAssembler {
 			theme: AttributedTextColors(
 				mainColor: .black,
 				accentColor: Theme.accentColor
-			)
+			),
+			fonts: Fonts()
 		)
 	)
 
