@@ -10,17 +10,17 @@ import Foundation
 import MarkdownPackage
 
 /// A decorator for 'IMarkdownToPdfConverter'.
-final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
+final class MainQueueDispatchDecorator: IMarkdownConverter {
 
 	// MARK: - Dependencies
 
-	private let decoratee: IMarkdownToPdfConverter
+	private let decoratee: any IMarkdownConverter
 
 	// MARK: - Initialization
 
 	/// Initializes a new instance with the given markdown to PDF converter.
 	/// - Parameter decoratee: The actual converter.
-	init(decoratee: IMarkdownToPdfConverter) {
+	init(decoratee: any IMarkdownConverter) {
 		self.decoratee = decoratee
 	}
 
@@ -30,30 +30,18 @@ final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 	/// on a background thread and the completion handler is called on the main thread.
 	/// - Parameters:
 	///   - markdownText: The markdown formatted text to convert.
-	///   - author: The author of the PDF document.
-	///   - title: The title of the PDF document.
-	///   - pageFormat: The format for the PDF pages.
 	///   - completion: A completion handler that is called with the resulting PDF data.
-	func convert(
-		markdownText: String,
-		author: String,
-		title: String,
-		pageFormat: MarkdownPackage.PageFormat,
-		completion: @escaping (Data) -> Void
-	) {
-		DispatchQueue.global(qos: .userInitiated).async {
-			sleep(1)
-			self.decoratee.convert(
-				markdownText: markdownText,
-				author: author,
-				title: title,
-				pageFormat: pageFormat
-			) { data in
-				self.doInMainThread {
-					completion(data)
-				}
-			}
-		}
+	func convert(markdownText: String) -> Data {
+//		DispatchQueue.global(qos: .userInitiated).async {
+//			self.decoratee.convert(
+//				markdownText: markdownText
+//			) { data in
+//				self.doInMainThread {
+//					completion(data)
+//				}
+//			}
+//		}
+		return Data()
 	}
 
 	// MARK: - Private Methods

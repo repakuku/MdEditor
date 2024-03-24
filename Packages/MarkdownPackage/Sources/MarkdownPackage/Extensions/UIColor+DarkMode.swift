@@ -8,7 +8,13 @@
 import UIKit
 
 public extension UIColor {
-	convenience init(dark: UIColor, light: UIColor) {
-		self.init(ciColor: .black)
+	static func color(light: UIColor, dark: UIColor) -> UIColor {
+		if #available(iOS 13, *) {
+			return .init { traitCollection in
+				return traitCollection.userInterfaceStyle == .dark ? dark : light
+			}
+		} else {
+			return light
+		}
 	}
 }

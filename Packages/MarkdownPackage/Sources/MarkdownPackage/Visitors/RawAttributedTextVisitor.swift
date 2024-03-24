@@ -35,18 +35,25 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The header node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the header.
 	public func visit(node: HeaderNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode(String(repeating: "#", count: node.level) + " ")
 		let text = visitChildren(of: node).joined()
 
-		let result = NSMutableAttributedString()
-		result.append(text)
-		result.append(String.lineBreak)
-
-		let attributes: [NSAttributedString.Key: Any] = [
+		let textAttributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.headerColor(level: node.level),
 			.font: UIFont.systemFont(ofSize: appearance.headerSize(level: node.level))
 		]
 
-		result.addAttributes(attributes, range: NSRange(0..<result.length))
+		let codeAttributes: [NSAttributedString.Key: Any] = [
+			.font: UIFont.systemFont(ofSize: appearance.headerSize(level: node.level))
+		]
+
+		text.addAttributes(textAttributes, range: NSRange(0..<text.length))
+		code.addAttributes(codeAttributes, range: NSRange(0..<code.length))
+
+		let result = NSMutableAttributedString()
+		result.append(code)
+		result.append(text)
+		result.append(String.lineBreak)
 
 		return result
 	}
@@ -75,22 +82,29 @@ public final class RawAttributedTextVisitor: IVisitor {
 		return result
 	}
 
+	public func visit(node: TextNode) -> NSMutableAttributedString {
+		return visitChildren(of: node).joined()
+	}
+
 	/// Converts a text node into an attributed string.
 	/// - Parameter node: The text node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the text node's content.
-	public func visit(node: TextNode) -> NSMutableAttributedString {
+	public func visit(node: PlainTextNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textColor,
 			.font: UIFont.systemFont(ofSize: appearance.textSize)
 		]
-		let result = NSMutableAttributedString(string: node.text, attributes: attributes)
-		return result
+
+		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
+		return text
 	}
 
 	/// Converts a bold text node into an attributed string with bold formatting.
 	/// - Parameter node: The bold text node to convert.
 	/// - Returns: A bold formatted 'NSMutableAttributedString'.
 	public func visit(node: BoldTextNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("**")
+
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textBoldColor,
 			.font: UIFont.boldSystemFont(ofSize: appearance.textSize)
@@ -99,7 +113,9 @@ public final class RawAttributedTextVisitor: IVisitor {
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
 		let result = NSMutableAttributedString()
+		result.append(code)
 		result.append(text)
+		result.append(code)
 
 		return result
 	}
@@ -108,6 +124,8 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The italic text node to convert.
 	/// - Returns: An italic formatted 'NSMutableAttributedString'.
 	public func visit(node: ItalicTextNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("*")
+
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textItalicColor,
 			.font: UIFont.boldSystemFont(ofSize: appearance.textSize)
@@ -116,7 +134,9 @@ public final class RawAttributedTextVisitor: IVisitor {
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
 		let result = NSMutableAttributedString()
+		result.append(code)
 		result.append(text)
+		result.append(code)
 
 		return result
 	}
@@ -125,6 +145,8 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The bold and italic text node to convert.
 	/// - Returns: A 'NSMutableAttributedString' with both bold and italic formatting..
 	public func visit(node: BoldItalicTextNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("***")
+
 		let font: UIFont
 
 		if let fontDescriptor = UIFontDescriptor
@@ -143,26 +165,36 @@ public final class RawAttributedTextVisitor: IVisitor {
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
 		let result = NSMutableAttributedString()
+		result.append(code)
 		result.append(text)
+		result.append(code)
 
 		return result
 	}
 
-	public func visit(node: StrikeNode) -> NSMutableAttributedString {
+	public func visit(node: StrikeTextNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("~~")
+
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textStrikeColor,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.font: UIFont.systemFont(ofSize: appearance.textSize),
+			.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+			.strikethroughColor: UIColor.red
 		]
 
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
 		let result = NSMutableAttributedString()
+		result.append(code)
 		result.append(text)
+		result.append(code)
 
 		return result
 	}
 
 	public func visit(node: HighlightedTextNode) -> NSMutableAttributedString {
+		let code = makeMarkdownCode("==")
+
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textHighlightedColor,
 			.backgroundColor: appearance.highlightedTextBackgroundColor,
@@ -172,7 +204,9 @@ public final class RawAttributedTextVisitor: IVisitor {
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
 		let result = NSMutableAttributedString()
+		result.append(code)
 		result.append(text)
+		result.append(code)
 
 		return result
 	}
@@ -181,7 +215,14 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The escaped character node.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the escaped char.
 	public func visit(node: EscapedCharNode) -> NSMutableAttributedString {
-		let result = NSMutableAttributedString()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.systemFont(ofSize: appearance.textSize)
+		]
+
+		let result = makeMarkdownCode("\\")
+		result.append(NSMutableAttributedString(string: node.char, attributes: attributes))
+
 		return result
 	}
 
@@ -193,7 +234,7 @@ public final class RawAttributedTextVisitor: IVisitor {
 
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeTextColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium)
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.codeTextSize, weight: .medium)
 		]
 
 		let text = NSMutableAttributedString(string: node.code, attributes: attributes)
@@ -202,6 +243,7 @@ public final class RawAttributedTextVisitor: IVisitor {
 		result.append(String.lineBreak)
 		result.append(makeMarkdownCode(String(repeating: "`", count: node.level)))
 		result.append(String.lineBreak)
+
 		return result
 	}
 
@@ -209,12 +251,18 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The inline code node to convert.
 	/// - Returns: An empty 'NSMutableAttributedString'.
 	public func visit(node: InlineCodeNode) -> NSMutableAttributedString {
+		let result = makeMarkdownCode("`")
+
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeTextColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium)
+			.backgroundColor: appearance.codeBlockBackgroundColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.codeTextSize, weight: .medium)
 		]
 
-		let result = NSMutableAttributedString(string: node.code, attributes: attributes)
+		let text = NSMutableAttributedString(string: node.code, attributes: attributes)
+		result.append(text)
+		result.append(makeMarkdownCode("`"))
+
 		return result
 	}
 
@@ -229,14 +277,7 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The image node to convert.
 	/// - Returns: A 'NSMutableAttributedString' including a reference to the image.
 	public func visit(node: ImageNode) -> NSMutableAttributedString {
-		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: appearance.linkColor,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
-		]
-
-		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
-		result.append(String.lineBreak)
-
+		let result = NSMutableAttributedString()
 		return result
 	}
 
@@ -244,13 +285,27 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The ordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an ordered list item.
 	public func visit(node: OrderedListNode) -> NSMutableAttributedString {
-		let tab = makeMarkdownCode(String(repeating: String.tab.string, count: node.level) + " ")
-		let text = visitChildren(of: node).joined()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.textSize, weight: .medium)
+		]
+
+		let tab = NSMutableAttributedString(
+			string: String(repeating: "\t", count: node.level),
+			attributes: attributes
+		)
+
+		let items = visitChildren(of: node)
 
 		let result = NSMutableAttributedString()
-		result.append(tab)
-		result.append(text)
-		result.append(String.lineBreak)
+		var index = 0
+		items.forEach {
+			index += 1
+			result.append(tab)
+			result.append(makeMarkdownCode("\(index). "))
+			result.append($0)
+			result.append(String.lineBreak)
+		}
 
 		return result
 	}
@@ -259,13 +314,25 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The unordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an unordered list item.
 	public func visit(node: UnorderedListNode) -> NSMutableAttributedString {
-		let tab = makeMarkdownCode(String(repeating: String.tab.string, count: node.level) + " ")
-		let text = visitChildren(of: node).joined()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.textSize, weight: .medium)
+		]
+
+		let tab = NSMutableAttributedString(
+			string: String(repeating: "\t", count: node.level),
+			attributes: attributes
+		)
+
+		let items = visitChildren(of: node)
 
 		let result = NSMutableAttributedString()
-		result.append(tab)
-		result.append(text)
-		result.append(String.lineBreak)
+		items.forEach {
+			result.append(tab)
+			result.append(makeMarkdownCode("- "))
+			result.append($0)
+			result.append(String.lineBreak)
+		}
 
 		return result
 	}
@@ -274,28 +341,43 @@ public final class RawAttributedTextVisitor: IVisitor {
 	/// - Parameter node: The line node.
 	/// - Returns: A 'NSMutableAttributedString' containing a line.
 	public func visit(node: LineNode) -> NSMutableAttributedString {
-		let screenSize: CGRect = UIScreen.main.bounds
-		let result = NSMutableAttributedString(string: String(repeating: "_", count: Int(screenSize.width) / 8))
+		let result = NSMutableAttributedString()
+		result.append(makeMarkdownCode("---"))
 		result.append(String.lineBreak)
-
 		return result
 	}
 
 	public func visit(node: ExternalLinkNode) -> NSMutableAttributedString {
+		let result = makeMarkdownCode("[")
+
 		let attributes: [NSAttributedString.Key: Any] = [
-			.link: node.url,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.foregroundColor: appearance.linkColor,
+			.font: UIFont.italicSystemFont(ofSize: appearance.textSize),
+			.underlineStyle: NSUnderlineStyle.single.rawValue
 		]
-		let result = NSMutableAttributedString(string: node.text, attributes: attributes)
+
+		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
+		let url = NSMutableAttributedString(string: node.url, attributes: attributes)
+
+		result.append(text)
+		result.append(makeMarkdownCode("]("))
+		result.append(url)
+		result.append(makeMarkdownCode(")"))
 		return result
 	}
 
 	public func visit(node: InternalLinkNode) -> NSMutableAttributedString {
+		let result = makeMarkdownCode("[[")
+
 		let attributes: [NSAttributedString.Key: Any] = [
-			.link: node.url,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.foregroundColor: appearance.linkColor,
+			.font: UIFont.italicSystemFont(ofSize: appearance.textSize),
+			.underlineStyle: NSUnderlineStyle.single.rawValue
 		]
-		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
+		let url = NSMutableAttributedString(string: node.url, attributes: attributes)
+
+		result.append(url)
+		result.append(makeMarkdownCode("]]"))
 		return result
 	}
 }
@@ -303,7 +385,8 @@ public final class RawAttributedTextVisitor: IVisitor {
 private extension RawAttributedTextVisitor {
 	func makeMarkdownCode(_ code: String) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: appearance.markdownCodeColor
+			.foregroundColor: appearance.markdownCodeColor,
+			.font: UIFont.systemFont(ofSize: appearance.textSize)
 		]
 
 		return NSMutableAttributedString(string: code, attributes: attributes)

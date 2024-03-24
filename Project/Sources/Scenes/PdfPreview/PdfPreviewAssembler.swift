@@ -15,30 +15,32 @@ final class PdfPreviewAssembler {
 
 	private let file: File
 
-	private let converter = MainQueueDispatchDecorator(
-		decoratee: MarkdownToPdfConverter()
-	)
+	// MARK: - Private properties
+
+	private let pdfAuthor: String
 
 	// MARK: - Initializers
 
-	init(
-		file: File
-	) {
+	init(file: File) {
 		self.file = file
+		pdfAuthor = (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? ""
 	}
 
 	// MARK: - Public methods
 
 	func assembly() -> (PdfPreviewController, PdfPreviewInteractor) {
 		let viewController = PdfPreviewController()
+
 		let presenter: IPdfPreviewPresenter = PdfPreviewPresenter(
 			viewController: viewController,
-			converter: converter
+			pdfAuthor: pdfAuthor
 		)
+
 		let interactor = PdfPreviewInteractor(
 			presenter: presenter,
 			file: file
 		)
+
 		viewController.interactor = interactor
 
 		return (viewController, interactor)

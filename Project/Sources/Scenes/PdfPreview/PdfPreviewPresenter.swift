@@ -18,34 +18,33 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IPdfPreviewController?
-	private let converter: IMarkdownToPdfConverter
+
+	// MARK: - Private properties
+
+	private let pdfAuthor: String
 
 	// MARK: - Initialization
 
-	init(
-		viewController: PdfPreviewController,
-		converter: IMarkdownToPdfConverter
-	) {
+	init(viewController: PdfPreviewController, pdfAuthor: String) {
 		self.viewController = viewController
-		self.converter = converter
+		self.pdfAuthor = pdfAuthor
 	}
 
 	// MARK: - Public Methods
 
 	func present(response: PdfPreviewModel.Response) {
+		let pdfTitle = response.fileUrl.lastPathComponent
 
-		converter.convert(
-			markdownText: response.fileContent,
-			author: "",
-			title: response.fileUrl.lastPathComponent,
-			pageFormat: .a4
-		) { [weak self] data in
-			let viewModel = PdfPreviewModel.ViewModel(
-				currentTitle: response.fileUrl.lastPathComponent,
-				data: data
-			)
+		let pdf = MarkdownToPdfConverter(
+			pageSize: .screen,
+			backgroundColor: Theme.backgroundColor,
+			pdfAuthor: pdfAuthor,
+			pdfTitle: pdfTitle
+		).convert(
+			markdownText: response.fileContent
+		)
 
-			self?.viewController?.render(viewModel: viewModel)
-		}
+		let viewModel = PdfPreviewModel.ViewModel(currentTitle: pdfTitle, data: pdf)
+		viewController?.render(viewModel: viewModel)
 	}
 }

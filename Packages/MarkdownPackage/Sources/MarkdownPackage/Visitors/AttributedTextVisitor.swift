@@ -15,11 +15,16 @@ public final class AttributedTextVisitor: IVisitor {
 
 	private let appearance: IAppearance
 
+	// MARK: - Private properties
+
+	private let width: CGFloat
+
 	// MARK: - Initialization
 
 	/// Initializes a new AttributedTextVisitor instance.
-	public init(appearance: IAppearance = Appearance()) {
+	public init(appearance: IAppearance = Appearance(), width: CGFloat = .zero) {
 		self.appearance = appearance
+		self.width = width
 	}
 
 	// MARK: - Public methods
@@ -39,7 +44,6 @@ public final class AttributedTextVisitor: IVisitor {
 
 		let result = NSMutableAttributedString()
 		result.append(text)
-		result.append(String.lineBreak)
 
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.headerColor(level: node.level),
@@ -47,7 +51,7 @@ public final class AttributedTextVisitor: IVisitor {
 		]
 
 		result.addAttributes(attributes, range: NSRange(0..<result.length))
-
+		result.append(String.lineBreak)
 		return result
 	}
 
@@ -60,11 +64,23 @@ public final class AttributedTextVisitor: IVisitor {
 		return result
 	}
 
+	public func visit(node: TextNode) -> NSMutableAttributedString {
+		return visitChildren(of: node).joined()
+	}
+
 	/// Converts a blockquote node into an attributed string.
 	/// - Parameter node: The blockquote node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the blockquote.
 	public func visit(node: BlockquoteNode) -> NSMutableAttributedString {
-		let code = NSMutableAttributedString(string: String(repeating: ">", count: node.level) + " ")
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.systemFont(ofSize: appearance.textSize)
+		]
+
+		let code = NSMutableAttributedString(
+			string: String(repeating: ">", count: node.level) + " ",
+			attributes: attributes
+		)
 		let text = visitChildren(of: node).joined()
 
 		let result = NSMutableAttributedString()
@@ -78,7 +94,7 @@ public final class AttributedTextVisitor: IVisitor {
 	/// Converts a text node into an attributed string.
 	/// - Parameter node: The text node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the text node's content.
-	public func visit(node: TextNode) -> NSMutableAttributedString {
+	public func visit(node: PlainTextNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textColor,
 			.font: UIFont.systemFont(ofSize: appearance.textSize)
@@ -142,24 +158,20 @@ public final class AttributedTextVisitor: IVisitor {
 
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
-		let result = NSMutableAttributedString()
-		result.append(text)
-
-		return result
+		return text
 	}
 
-	public func visit(node: StrikeNode) -> NSMutableAttributedString {
+	public func visit(node: StrikeTextNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.textStrikeColor,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.font: UIFont.systemFont(ofSize: appearance.textSize),
+			.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+			.strikethroughColor: UIColor.red
 		]
 
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
-		let result = NSMutableAttributedString()
-		result.append(text)
-
-		return result
+		return text
 	}
 
 	public func visit(node: HighlightedTextNode) -> NSMutableAttributedString {
@@ -171,17 +183,19 @@ public final class AttributedTextVisitor: IVisitor {
 
 		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
 
-		let result = NSMutableAttributedString()
-		result.append(text)
-
-		return result
+		return text
 	}
 
 	/// Handles an escaped character node.
 	/// - Parameter node: The escaped character node.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the escaped char.
 	public func visit(node: EscapedCharNode) -> NSMutableAttributedString {
-		let result = NSMutableAttributedString()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.systemFont(ofSize: appearance.textSize)
+		]
+
+		let result = NSMutableAttributedString(string: node.char, attributes: attributes)
 		return result
 	}
 
@@ -194,13 +208,13 @@ public final class AttributedTextVisitor: IVisitor {
 
 		let langAttributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeLangColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium),
+			.font: UIFont.italicSystemFont(ofSize: appearance.codeLangSize),
 			.paragraphStyle: paragraphStyle
 		]
 
 		let codeAttributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeTextColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium)
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.codeTextSize, weight: .medium)
 		]
 
 		let lang = NSMutableAttributedString(string: node.lang, attributes: langAttributes)
@@ -219,7 +233,8 @@ public final class AttributedTextVisitor: IVisitor {
 	public func visit(node: InlineCodeNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeTextColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium)
+			.backgroundColor: appearance.codeBlockBackgroundColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.codeTextSize, weight: .medium)
 		]
 
 		let result = NSMutableAttributedString(string: node.code, attributes: attributes)
@@ -237,14 +252,7 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The image node to convert.
 	/// - Returns: A 'NSMutableAttributedString' including a reference to the image.
 	public func visit(node: ImageNode) -> NSMutableAttributedString {
-		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: appearance.linkColor,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
-		]
-
-		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
-		result.append(String.lineBreak)
-
+		let result = NSMutableAttributedString()
 		return result
 	}
 
@@ -252,11 +260,27 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The ordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an ordered list item.
 	public func visit(node: OrderedListNode) -> NSMutableAttributedString {
-		let text = visitChildren(of: node).joined()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.textSize, weight: .medium)
+		]
+
+		let tab = NSMutableAttributedString(
+			string: String(repeating: "\t", count: node.level),
+			attributes: attributes
+		)
+
+		let items = visitChildren(of: node)
 
 		let result = NSMutableAttributedString()
-		result.append(text)
-		result.append(String.lineBreak)
+		var index = 0
+		items.forEach {
+			index += 1
+			result.append(tab)
+			result.append(NSMutableAttributedString(string: String("\(index). "), attributes: attributes))
+			result.append($0)
+			result.append(String.lineBreak)
+		}
 
 		return result
 	}
@@ -265,11 +289,25 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The unordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an unordered list item.
 	public func visit(node: UnorderedListNode) -> NSMutableAttributedString {
-		let text = visitChildren(of: node).joined()
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.monospacedDigitSystemFont(ofSize: appearance.textSize, weight: .medium)
+		]
+
+		let tab = NSMutableAttributedString(
+			string: String(repeating: "\t", count: node.level),
+			attributes: attributes
+		)
+
+		let items = visitChildren(of: node)
 
 		let result = NSMutableAttributedString()
-		result.append(text)
-		result.append(String.lineBreak)
+		items.forEach {
+			result.append(tab)
+			result.append(NSMutableAttributedString(string: String("• "), attributes: attributes))
+			result.append($0)
+			result.append(String.lineBreak)
+		}
 
 		return result
 	}
@@ -278,8 +316,15 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The line node.
 	/// - Returns: A 'NSMutableAttributedString' containing a line.
 	public func visit(node: LineNode) -> NSMutableAttributedString {
-		let screenSize: CGRect = UIScreen.main.bounds
-		let result = NSMutableAttributedString(string: String(repeating: "_", count: Int(screenSize.width) / 8))
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.textColor,
+			.font: UIFont.systemFont(ofSize: appearance.textSize)
+		]
+		let fontWidth = ("_" as NSString).size(withAttributes: attributes).width
+		let result = NSMutableAttributedString(
+			string: String(repeating: "_", count: Int(width / fontWidth)),
+			attributes: attributes
+		)
 		result.append(String.lineBreak)
 
 		return result
@@ -288,7 +333,8 @@ public final class AttributedTextVisitor: IVisitor {
 	public func visit(node: ExternalLinkNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.link: node.url,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.font: UIFont.systemFont(ofSize: appearance.textSize),
+			.underlineStyle: NSUnderlineStyle.single.rawValue
 		]
 		let result = NSMutableAttributedString(string: node.text, attributes: attributes)
 		return result
@@ -297,7 +343,8 @@ public final class AttributedTextVisitor: IVisitor {
 	public func visit(node: InternalLinkNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.link: node.url,
-			.font: UIFont.systemFont(ofSize: appearance.textSize)
+			.font: UIFont.systemFont(ofSize: appearance.textSize),
+			.underlineStyle: NSUnderlineStyle.single.rawValue
 		]
 		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
 		return result

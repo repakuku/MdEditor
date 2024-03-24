@@ -80,8 +80,11 @@ public final class BlockquoteNode: BaseNode {
 public final class ParagraphNode: BaseNode {
 }
 
-/// Represents a text node in a document structure.
 public final class TextNode: BaseNode {
+}
+
+/// Represents a text node in a document structure.
+public final class PlainTextNode: BaseNode {
 
 	/// The string content of the text node.
 	public let text: String
@@ -132,7 +135,7 @@ public final class BoldItalicTextNode: BaseNode {
 	}
 }
 
-public final class StrikeNode: BaseNode {
+public final class StrikeTextNode: BaseNode {
 
 	public let text: String
 
@@ -147,6 +150,32 @@ public final class HighlightedTextNode: BaseNode {
 
 	public init(text: String) {
 		self.text = text
+	}
+}
+
+/// Represents an escaped char node in a document structure.
+public final class EscapedCharNode: BaseNode {
+
+	/// The string content of the escaped char.
+	public let char: String
+
+	/// Initializes an escaped char node.
+	/// - Parameter char: The string content of the escaped char.
+	public init(char: String) {
+		self.char = char
+	}
+}
+
+/// Represents an inline code node in a document structure.
+public final class InlineCodeNode: BaseNode {
+
+	/// The string content of the inline code.
+	public let code: String
+
+	/// Initializes an inline code node.
+	/// - Parameter code: The string content of the inline code.
+	public init(code: String) {
+		self.code = code
 	}
 }
 
@@ -170,45 +199,6 @@ public final class CodeBlockNode: BaseNode {
 		self.level = level
 		self.lang = lang
 		self.code = code
-	}
-}
-
-///// Represents a code line node in a document structure.
-// public final class CodeLineNode: BaseNode {
-//
-//	/// A string containing a single line of code.
-//	public let text: String
-//
-//	/// Initializes a node representing a single line of code within a code block.
-//	/// - Parameter text: A string containing a single line of code.
-//	public init(text: String) {
-//		self.text = text
-//	}
-// }
-
-/// Represents an inline code node in a document structure.
-public final class InlineCodeNode: BaseNode {
-
-	/// The string content of the inline code.
-	public let code: String
-
-	/// Initializes an inline code node.
-	/// - Parameter code: The string content of the inline code.
-	public init(code: String) {
-		self.code = code
-	}
-}
-
-/// Represents an escaped char node in a document structure.
-public final class EscapedCharNode: BaseNode {
-
-	/// The string content of the escaped char.
-	public let char: String
-
-	/// Initializes an escaped char node.
-	/// - Parameter char: The string content of the escaped char.
-	public init(char: String) {
-		self.char = char
 	}
 }
 

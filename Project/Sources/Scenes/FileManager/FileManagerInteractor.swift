@@ -59,20 +59,11 @@ final class FileManagerInteractor: IFileManagerInteractor {
 		} else {
 			var files = [File]()
 
-			if
-				let bundleUrl = Bundle.main.url(forResource: "Examples", withExtension: nil),
-				case .success(let file) = File.parse(url: bundleUrl) {
+			if case .success(let file) = File.parse(url: Endpoints.examples) {
 				files.append(file)
 			}
 
-			if
-				let documentsUrl = try? FileManager.default.url(
-					for: .documentDirectory,
-					in: .userDomainMask,
-					appropriateFor: nil,
-					create: true
-				),
-				case .success(let file) = File.parse(url: documentsUrl) {
+			if case .success(let file) = File.parse(url: Endpoints.documents) {
 				files.append(file)
 			}
 			fileList = FileManagerModel.Response(currentFile: nil, files: files)

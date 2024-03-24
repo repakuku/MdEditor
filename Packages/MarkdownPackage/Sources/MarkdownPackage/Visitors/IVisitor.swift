@@ -29,6 +29,8 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: ParagraphNode) -> Result
 
+	func visit(node: TextNode) -> Result
+
 	/// Visits a blockquote node.
 	/// - Parameter node: The blockquote node to visit.
 	/// - Returns: A result generated from visiting the document.
@@ -42,7 +44,7 @@ public protocol IVisitor {
 	/// Visits a text node.
 	/// - Parameter node: The text node to visit.
 	/// - Returns: A result generated from visiting the document.
-	func visit(node: TextNode) -> Result
+	func visit(node: PlainTextNode) -> Result
 
 	/// Visits a bold text node.
 	/// - Parameter node: The bold text node to visit.
@@ -59,7 +61,7 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: BoldItalicTextNode) -> Result
 
-	func visit(node: StrikeNode) -> Result
+	func visit(node: StrikeTextNode) -> Result
 
 	func visit(node: HighlightedTextNode) -> Result
 
@@ -117,9 +119,11 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as ParagraphNode:
 				return visit(node: child)
+			case let child as TextNode:
+				return visit(node: child)
 			case let child as BlockquoteNode:
 				return visit(node: child)
-			case let child as TextNode:
+			case let child as PlainTextNode:
 				return visit(node: child)
 			case let child as BoldTextNode:
 				return visit(node: child)
@@ -141,7 +145,7 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as LineNode:
 				return visit(node: child)
-			case let child as StrikeNode:
+			case let child as StrikeTextNode:
 				return visit(node: child)
 			case let child as HighlightedTextNode:
 				return visit(node: child)

@@ -18,10 +18,15 @@ final class FileManagerPresenter: IFileManagerPresenter {
 
 	private weak var viewController: FileManagerViewController?
 
+	// MARK: - Private properties
+
+	private let dateFormatter = DateFormatter()
+
 	// MARK: - Initialization
 
 	init(viewController: FileManagerViewController) {
 		self.viewController = viewController
+		dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
 	}
 
 	// MARK: - Public Methods
@@ -47,8 +52,6 @@ final class FileManagerPresenter: IFileManagerPresenter {
 extension FileManagerPresenter {
 	func getFormattedAttributes(file: File) -> String {
 		let formattedSize = getFormatted(size: file.size)
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss"
 
 		if file.isFolder {
 			return "\(dateFormatter.string(from: file.modificationDate)) | <dir>"

@@ -8,7 +8,7 @@
 import Foundation
 
 /// Lexer protocol.
-public protocol ILexer {
+protocol ILexer {
 
 	/// Tokenizes a given string into an array of 'Token'.
 	/// - Parameter input: The string to tokenize.
@@ -17,25 +17,18 @@ public protocol ILexer {
 }
 
 /// A Lexer class responsible for tokenizing Markdown text.
-public final class Lexer: ILexer {
+final class Lexer: ILexer {
 
 	// MARK: - Dependencies
 
-	private let textParser: ITextParser
-
-	// MARK: - Initializers
-
-	/// Initializes a new Lexer instance.
-	public init() {
-		self.textParser = TextParser()
-	}
+	private let textParser = TextParser()
 
 	// MARK: - Public methods
 
 	/// Tokenizes a given string into an array of 'Token'.
 	/// - Parameter input: The string to tokenize.
 	/// - Returns: An array of 'Token'.
-	public func tokenize(_ input: String) -> [Token] {
+	func tokenize(_ input: String) -> [Token] {
 
 		let lines = input.components(separatedBy: .newlines)
 		var tokens = [Token?]()
@@ -93,7 +86,7 @@ private extension Lexer {
 	}
 
 	func parseBlockquote(rawText: String) -> Token? {
-		let pattern = #"^(>{1,6})\s+(.*)"#
+		let pattern = #"^(>{1,6})(.*)"#
 		let groups = rawText.groups(for: pattern)
 		if !groups.isEmpty, groups[0].count == 2 {
 			let level = groups[0][0].count
@@ -105,13 +98,7 @@ private extension Lexer {
 
 	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
-
-//		let notParagraphPattern = #"""
-// ^(#|>|\s*- \[ \]|\s*- \[\*\]|\s*- \[x\]|\s*- \[X\]|\d\.|\s+\d\.|\s*[\-\+]|\[.+\]\(.+\)|\[\[.+\]\]|\!\[\[.+\]\]).*
-// """#
-
-		let notParagraphPattern = #"^(#|>|[\-_]{3}|\s*[\-\*\+] |\s*\d+\. ).*"#
-
+		let notParagraphPattern = #"^(#|>|[\-_\*]{3}|\s*[\-\*\+] |\s*\d+\. ).*"#
 		let regex = try? NSRegularExpression(pattern: notParagraphPattern)
 
 		if let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
@@ -172,7 +159,7 @@ private extension Lexer {
 	}
 
 	func parseLine(rawText: String) -> Token? {
-		let pattern = #"^([\-_]{3})"#
+		let pattern = #"^([\-_\*]{3})"#
 
 		if rawText.group(for: pattern) != nil {
 			return .line

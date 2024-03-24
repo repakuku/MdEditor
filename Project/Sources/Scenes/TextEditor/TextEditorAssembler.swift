@@ -1,5 +1,5 @@
 //
-//  TextPreviewAssembler.swift
+//  TextEditorAssembler.swift
 //  MdEditor
 //
 //  Created by Alexey Turulin on 2/10/24.
@@ -9,13 +9,13 @@
 import UIKit
 import MarkdownPackage
 
-final class TextPreviewAssembler {
+final class TextEditorAssembler {
 
 	// MARK: - Dependencies
 
 	private let file: File
 
-	private let converter = MarkdownToAttributedStringConverter()
+	private let converter = MarkdownToRawAttributedStringConverter()
 
 	// MARK: - Initializers
 
@@ -27,13 +27,10 @@ final class TextPreviewAssembler {
 
 	// MARK: - Public methods
 
-	func assembly() -> (TextPreviewViewController, TextPreviewInteractor) {
-		let viewController = TextPreviewViewController()
-		let presenter: ITextPreviewPresenter = TextPreviewPresenter(
-			viewController: viewController,
-			converter: converter
-		)
-		let interactor = TextPreviewInteractor(
+	func assembly() -> (TextEditorViewController, TextEditorInteractor) {
+		let viewController = TextEditorViewController()
+		let presenter: ITextEditorPresenter = TextEditorPresenter(viewController: viewController)
+		let interactor = TextEditorInteractor(
 			presenter: presenter,
 			file: file
 		)

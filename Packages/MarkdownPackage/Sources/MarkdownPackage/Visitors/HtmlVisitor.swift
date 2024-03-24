@@ -33,6 +33,10 @@ public final class HtmlVisitor: IVisitor {
 		return "<p>\(text)</p>"
 	}
 
+	public func visit(node: TextNode) -> String {
+		return visitChildren(of: node).joined()
+	}
+
 	/// Converts a blockquote node to an HTML blockquote tag string.
 	/// - Parameter node: The blockquote node to convert.
 	/// - Returns: An HTML blockquote tag string with node's content.
@@ -44,7 +48,7 @@ public final class HtmlVisitor: IVisitor {
 	/// Converts a text node to a string.
 	/// - Parameter node: The text node to convert.
 	/// - Returns: The text content of the node.
-	public func visit(node: TextNode) -> String {
+	public func visit(node: PlainTextNode) -> String {
 		node.text
 	}
 
@@ -69,8 +73,12 @@ public final class HtmlVisitor: IVisitor {
 		"<strong><em>\(node.text)</em></strong>"
 	}
 
-	public func visit(node: StrikeNode) -> String {
+	public func visit(node: StrikeTextNode) -> String {
 		"<strike>\(node.text)</strike>"
+	}
+
+	public func visit(node: HighlightedTextNode) -> String {
+		"<mark>\(node.text)</mark>"
 	}
 
 	/// Returns the escaped character without any HTML conversion.
@@ -136,9 +144,5 @@ public final class HtmlVisitor: IVisitor {
 
 	public func visit(node: InternalLinkNode) -> String {
 		"<a href=\"\(node.url)>\">\(node.url)</a"
-	}
-
-	public func visit(node: HighlightedTextNode) -> String {
-		"<mark>\(node.text)</mark>"
 	}
 }

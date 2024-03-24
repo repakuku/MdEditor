@@ -7,56 +7,47 @@
 
 import Foundation
 
-/// Text Parser protocol.
-public protocol ITextParser {
-
-	/// Parses raw markdown text into a structured 'Text' object.
-	/// - Parameter text: A string containing raw markdown text.
-	/// - Returns: A 'Text' object that represents the structured content of the input text.
-	func parse(rawtext text: String) -> Text
-}
-
-public final class TextParser: ITextParser {
-	private struct PartRegExp {
+final class TextParser {
+	private struct PartRegex {
 		let type: PartType
 		let regex: NSRegularExpression
 
 		enum PartType: String {
-			case normal
-			case bold
-			case italic
-			case boldItalic
+			case plainText
+			case boldText
+			case italicText
+			case boldItalicText
+			case strikeText
+			case highlightedText
 			case inlineCode
 			case escapedChar
 			case externalLink
 			case internalLink
-			case strike
-			case highlighted
 		}
 
-		init(type: TextParser.PartRegExp.PartType, pattern: String) {
+		init(type: TextParser.PartRegex.PartType, pattern: String) {
 			self.type = type
 			self.regex = try! NSRegularExpression(pattern: pattern) // swiftlint:disable:this force_try
 		}
 	}
 
 	private let partRegexes = [
-		PartRegExp(type: .escapedChar, pattern: #"^\\(.)"#),
-		PartRegExp(type: .normal, pattern: #"^([^\[\!]*?)(?=[\~\=\*\!\[`\\]|$)"#),
-		PartRegExp(type: .boldItalic, pattern: #"^\*\*\*(.*?)\*\*\*"#),
-		PartRegExp(type: .bold, pattern: #"^\*\*(.*?)\*\*"#),
-		PartRegExp(type: .italic, pattern: #"^\*(.*?)\*"#),
-		PartRegExp(type: .strike, pattern: #"^\~\~(.*?)\~\~"#),
-		PartRegExp(type: .highlighted, pattern: #"^\=\=(.*?)\=\="#),
-		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#),
-		PartRegExp(type: .externalLink, pattern: #"\[(.+)\]\((.+)\)"#),
-		PartRegExp(type: .internalLink, pattern: #"\[\[(.+)\]\]"#)
+		PartRegex(type: .escapedChar, pattern: #"^\\(.)"#),
+		PartRegex(type: .plainText, pattern: #"^([^\[\!]*?)(?=[\~\=\*\!\[`\\]|$)"#),
+		PartRegex(type: .boldItalicText, pattern: #"^\*\*\*(.*?)\*\*\*"#),
+		PartRegex(type: .boldText, pattern: #"^\*\*(.*?)\*\*"#),
+		PartRegex(type: .italicText, pattern: #"^\*(.*?)\*"#),
+		PartRegex(type: .strikeText, pattern: #"^\~\~(.*?)\~\~"#),
+		PartRegex(type: .highlightedText, pattern: #"^\=\=(.*?)\=\="#),
+		PartRegex(type: .inlineCode, pattern: #"^`(.*?)`"#),
+		PartRegex(type: .externalLink, pattern: #"\[(.+)\]\((.+)\)"#),
+		PartRegex(type: .internalLink, pattern: #"\[\[(.+)\]\]"#)
 	]
 
 	/// Parses raw markdown text into a structured 'Text' object.
 	/// - Parameter text: A string containing raw markdown text.
 	/// - Returns: A 'Text' object that represents the structured content of the input text.
-	public func parse(rawtext text: String) -> Text { // swiftlint:disable:this function_body_length
+	func parse(rawtext text: String) -> Text { // swiftlint:disable:this function_body_length
 		var parts = [Text.Part]()
 		var range = NSRange(text.startIndex..., in: text)
 
@@ -70,14 +61,18 @@ public final class TextParser: ITextParser {
 					let extractedText = String(text[group1])
 					if !extractedText.isEmpty {
 						switch partRegex.type {
-						case .normal:
+						case .plainText:
 							parts.append(.normal(text: extractedText))
-						case .bold:
+						case .boldText:
 							parts.append(.bold(text: extractedText))
-						case .italic:
+						case .italicText:
 							parts.append(.italic(text: extractedText))
-						case .boldItalic:
+						case .boldItalicText:
 							parts.append(.boldItalic(text: extractedText))
+						case .strikeText:
+							parts.append(.strike(text: extractedText))
+						case .highlightedText:
+							parts.append(.highlighted(text: extractedText))
 						case .inlineCode:
 							parts.append(.inlineCode(text: extractedText))
 						case .escapedChar:
@@ -91,10 +86,6 @@ public final class TextParser: ITextParser {
 							}
 						case .internalLink:
 							parts.append(.internalLink(url: extractedText))
-						case .strike:
-							parts.append(.strike(text: extractedText))
-						case .highlighted:
-							parts.append(.highlighted(text: extractedText))
 						}
 
 						range = NSRange(group0.upperBound..., in: text)

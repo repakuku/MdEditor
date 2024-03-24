@@ -8,15 +8,12 @@
 import Foundation
 
 /// Represents the parser responsible for converting tokens into a structured document.
-public final class Parser {
-
-	/// Initializes a new Parser instance.
-	public init() { }
+final class Parser {
 
 	/// Parses a sequence of tokens into a document structure.
 	/// - Parameter tokens: An array of Token objects representing the parsed elements of markdown text.
 	/// - Returns: A Document object that represents the structured hierarchy of the parsed tokens.
-	public func parse(tokens: [Token]) -> Document {
+	func parse(tokens: [Token]) -> Document {
 		var tokens = tokens
 		var result = [INode]()
 
@@ -160,7 +157,7 @@ private extension Parser {
 		token.text.forEach { part in // swiftlint:disable:this closure_body_length
 			switch part {
 			case .normal(let text):
-				textNodes.append(TextNode(text: text))
+				textNodes.append(PlainTextNode(text: text))
 			case .bold(let text):
 				textNodes.append(BoldTextNode(text: text))
 			case .italic(let text):
@@ -174,7 +171,7 @@ private extension Parser {
 			case .highlighted(let text):
 				textNodes.append(HighlightedTextNode(text: text))
 			case .strike(let text):
-				textNodes.append(StrikeNode(text: text))
+				textNodes.append(StrikeTextNode(text: text))
 			case .externalLink(let url, let text):
 				textNodes.append(ExternalLinkNode(url: url, text: text))
 			case .internalLink(let url):

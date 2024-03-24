@@ -32,6 +32,7 @@ public protocol IAppearance {
 }
 
 public extension IAppearance {
+
 	var markdownCodeColor: UIColor {
 		.systemBrown
 	}
@@ -92,11 +93,10 @@ public extension IAppearance {
 	}
 
 	private var darkColor: UIColor {
-//		UIColor.color(
-//			light: UIColor(red: 25 / 255, green: 25 /255, blue: 25 /255, alpha: 1),
-//			dark: UIColor(red: 245 / 255, green: 245 / 255, blue: 245 / 255, alpha: 1)
-//		)
-		UIColor(red: 245 / 255, green: 245 / 255, blue: 245 / 255, alpha: 1)
+		UIColor.color(
+			light: UIColor(red: 25 / 255, green: 25 / 255, blue: 25 / 255, alpha: 1),
+			dark: UIColor(red: 245 / 255, green: 245 / 255, blue: 245 / 255, alpha: 1)
+		)
 	}
 
 	private var headerSizes: [CGFloat] {
