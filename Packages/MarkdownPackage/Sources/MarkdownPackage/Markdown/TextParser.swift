@@ -28,6 +28,10 @@ public final class TextParser: ITextParser {
 			case boldItalic
 			case inlineCode
 			case escapedChar
+			case externalLink
+			case internalLink
+			case strike
+			case highlighted
 		}
 
 		init(type: TextParser.PartRegExp.PartType, pattern: String) {
@@ -37,18 +41,22 @@ public final class TextParser: ITextParser {
 	}
 
 	private let partRegexes = [
-		PartRegExp(type: .escapedChar, pattern: #"^\\([\\\`\*\_\{\}\[\]\<\>\(\)\+\-\.\!\|#]){1}"#),
-		PartRegExp(type: .normal, pattern: #"^(.*?)(?=[\*`\\]|$)"#),
+		PartRegExp(type: .escapedChar, pattern: #"^\\(.)"#),
+		PartRegExp(type: .normal, pattern: #"^([^\[\!]*?)(?=[\~\=\*\!\[`\\]|$)"#),
 		PartRegExp(type: .boldItalic, pattern: #"^\*\*\*(.*?)\*\*\*"#),
 		PartRegExp(type: .bold, pattern: #"^\*\*(.*?)\*\*"#),
 		PartRegExp(type: .italic, pattern: #"^\*(.*?)\*"#),
-		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#)
+		PartRegExp(type: .strike, pattern: #"^\~\~(.*?)\~\~"#),
+		PartRegExp(type: .highlighted, pattern: #"^\=\=(.*?)\=\="#),
+		PartRegExp(type: .inlineCode, pattern: #"^`(.*?)`"#),
+		PartRegExp(type: .externalLink, pattern: #"\[(.+)\]\((.+)\)"#),
+		PartRegExp(type: .internalLink, pattern: #"\[\[(.+)\]\]"#)
 	]
 
 	/// Parses raw markdown text into a structured 'Text' object.
 	/// - Parameter text: A string containing raw markdown text.
 	/// - Returns: A 'Text' object that represents the structured content of the input text.
-	public func parse(rawtext text: String) -> Text {
+	public func parse(rawtext text: String) -> Text { // swiftlint:disable:this function_body_length
 		var parts = [Text.Part]()
 		var range = NSRange(text.startIndex..., in: text)
 
@@ -74,6 +82,19 @@ public final class TextParser: ITextParser {
 							parts.append(.inlineCode(text: extractedText))
 						case .escapedChar:
 							parts.append(.escapedChar(char: extractedText))
+						case .externalLink:
+							if let group2 = Range(match.range(at: 2), in: text) {
+								let extractedUrl = String(text[group2])
+								parts.append(.externalLink(url: extractedUrl, text: extractedText))
+							} else {
+								break
+							}
+						case .internalLink:
+							parts.append(.internalLink(url: extractedText))
+						case .strike:
+							parts.append(.strike(text: extractedText))
+						case .highlighted:
+							parts.append(.highlighted(text: extractedText))
 						}
 
 						range = NSRange(group0.upperBound..., in: text)

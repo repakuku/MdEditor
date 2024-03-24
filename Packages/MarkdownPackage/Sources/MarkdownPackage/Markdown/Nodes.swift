@@ -132,37 +132,59 @@ public final class BoldItalicTextNode: BaseNode {
 	}
 }
 
+public final class StrikeNode: BaseNode {
+
+	public let text: String
+
+	public init(text: String) {
+		self.text = text
+	}
+}
+
+public final class HighlightedTextNode: BaseNode {
+
+	public let text: String
+
+	public init(text: String) {
+		self.text = text
+	}
+}
+
 /// Represents a code block node in a document structure.
 public final class CodeBlockNode: BaseNode {
 
 	/// An integer representing the indentation level of the code block.
 	public let level: Int
 
-	/// An optional string specifying the programming language of the code block.
-	public let lang: String?
+	/// A  string specifying the programming language of the code block.
+	public let lang: String
+
+	public let code: String
 
 	/// Initializes a code block node.
 	/// - Parameters:
 	///   - level: An integer representing the indentation level of the code block.
-	///   - lang: An optional string specifying the programming language of the code block.
-	public init(level: Int, lang: String?) {
+	///   - lang: A string specifying the programming language of the code block.
+	///   - code:
+	public init(level: Int, lang: String, code: String) {
 		self.level = level
 		self.lang = lang
+		self.code = code
 	}
 }
 
-/// Represents a code line node in a document structure.
-public final class CodeLineNode: BaseNode {
-
-	/// A string containing a single line of code.
-	public let text: String
-
-	/// Initializes a node representing a single line of code within a code block.
-	/// - Parameter text: A string containing a single line of code.
-	public init(text: String) {
-		self.text = text
-	}
-}
+///// Represents a code line node in a document structure.
+// public final class CodeLineNode: BaseNode {
+//
+//	/// A string containing a single line of code.
+//	public let text: String
+//
+//	/// Initializes a node representing a single line of code within a code block.
+//	/// - Parameter text: A string containing a single line of code.
+//	public init(text: String) {
+//		self.text = text
+//	}
+// }
 
 /// Represents an inline code node in a document structure.
 public final class InlineCodeNode: BaseNode {
@@ -213,25 +235,6 @@ public final class ImageNode: BaseNode {
 	public init(url: String, size: String) {
 		self.url = url
 		self.size = size
-	}
-}
-
-/// Represents a link node in a document structure.
-public final class LinkNode: BaseNode {
-
-	/// The visible text of the link.
-	public let title: String?
-
-	/// The destination URL.
-	public let url: String
-
-	/// Initializes a link node with an optional title and a URL.
-	/// - Parameters:
-	///   - title: The visible text of the link.
-	///   - url: The destination URL.
-	public init(title: String?, url: String) {
-		self.title = title
-		self.url = url
 	}
 }
 
@@ -288,4 +291,25 @@ public final class LineNode: BaseNode {
 
 	/// Initializes a line node instance.
 	public init() { }
+}
+
+public final class InternalLinkNode: BaseNode {
+
+	public let url: String
+
+	public init(url: String) {
+		self.url = url
+	}
+}
+
+public final class ExternalLinkNode: BaseNode {
+
+	public let url: String
+
+	public let text: String
+
+	public init(url: String, text: String) {
+		self.url = url
+		self.text = text
+	}
 }

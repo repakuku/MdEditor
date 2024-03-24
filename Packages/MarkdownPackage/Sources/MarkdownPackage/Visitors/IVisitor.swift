@@ -39,11 +39,6 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: CodeBlockNode) -> Result
 
-	/// Visits a code line node.
-	/// - Parameter node: The code line node to visit.
-	/// - Returns: A result generated from visiting the document.
-	func visit(node: CodeLineNode) -> Result
-
 	/// Visits a text node.
 	/// - Parameter node: The text node to visit.
 	/// - Returns: A result generated from visiting the document.
@@ -63,6 +58,10 @@ public protocol IVisitor {
 	/// - Parameter node: The bold and italic text node to visit.
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: BoldItalicTextNode) -> Result
+
+	func visit(node: StrikeNode) -> Result
+
+	func visit(node: HighlightedTextNode) -> Result
 
 	/// Visits a escaped char node.
 	/// - Parameter node: The escaped char node to visit.
@@ -99,10 +98,9 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: LineNode) -> Result
 
-	/// Visits a link node.
-	/// - Parameter node: The link node to visit.
-	/// - Returns: A result generated from visiting the document.
-	func visit(node: LinkNode) -> Result
+	func visit(node: ExternalLinkNode) -> Result
+
+	func visit(node: InternalLinkNode) -> Result
 }
 
 public extension IVisitor {
@@ -131,8 +129,6 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as CodeBlockNode:
 				return visit(node: child)
-			case let child as CodeLineNode:
-				return visit(node: child)
 			case let child as InlineCodeNode:
 				return visit(node: child)
 			case let child as LineBreakNode:
@@ -145,7 +141,13 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as LineNode:
 				return visit(node: child)
-			case let child as LinkNode:
+			case let child as StrikeNode:
+				return visit(node: child)
+			case let child as HighlightedTextNode:
+				return visit(node: child)
+			case let child as ExternalLinkNode:
+				return visit(node: child)
+			case let child as InternalLinkNode:
 				return visit(node: child)
 			default:
 				return nil

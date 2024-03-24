@@ -185,6 +185,34 @@ public final class AttributedTextVisitor: IVisitor {
 		return result
 	}
 
+	public func visit(node: StrikeNode) -> NSMutableAttributedString {
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: theme.mainColor,
+			.font: fonts.boldAndItalicText
+		]
+
+		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
+
+		let result = NSMutableAttributedString()
+		result.append(text)
+
+		return result
+	}
+
+	public func visit(node: HighlightedTextNode) -> NSMutableAttributedString {
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: theme.accentColor,
+			.font: fonts.normalText
+		]
+
+		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
+
+		let result = NSMutableAttributedString()
+		result.append(text)
+
+		return result
+	}
+
 	/// Handles an escaped character node.
 	/// - Parameter node: The escaped character node.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the escaped char.
@@ -201,35 +229,24 @@ public final class AttributedTextVisitor: IVisitor {
 		let paragraphStyle = NSMutableParagraphStyle()
 		paragraphStyle.alignment = .right
 
-		let attributes: [NSAttributedString.Key: Any] = [
+		let langAttributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: theme.accentColor,
 			.font: fonts.codeBlock,
 			.paragraphStyle: paragraphStyle
 		]
 
-		let lang = NSMutableAttributedString(string: node.lang ?? "", attributes: attributes)
-		let result = NSMutableAttributedString()
-		result.append(lang)
-		result.append(String.lineBreak)
-		return result
-	}
-
-	/// Converts a code line node into an attributed string.
-	/// - Parameter node: The code line node to convert.
-	/// - Returns: A formatted 'NSMutableAttributedString' representing the code line.
-	public func visit(node: CodeLineNode) -> NSMutableAttributedString {
-		let attributes: [NSAttributedString.Key: Any] = [
+		let codeAttributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: theme.mainColor,
 			.font: fonts.codeText
 		]
 
-		let text = NSMutableAttributedString(string: node.text, attributes: attributes)
-
+		let lang = NSMutableAttributedString(string: node.lang, attributes: langAttributes)
+		let code = NSMutableAttributedString(string: node.code, attributes: codeAttributes)
 		let result = NSMutableAttributedString()
-		result.append(String.tab)
-		result.append(text)
+		result.append(lang)
 		result.append(String.lineBreak)
-
+		result.append(code)
+		result.append(String.lineBreak)
 		return result
 	}
 
@@ -309,17 +326,21 @@ public final class AttributedTextVisitor: IVisitor {
 		return result
 	}
 
-	/// Handles a link node by creating a link in the attributed string.
-	/// - Parameter node: The link node.
-	/// - Returns: A 'NSMutableAttributedString' containing a link.
-	public func visit(node: LinkNode) -> NSMutableAttributedString {
+	public func visit(node: ExternalLinkNode) -> NSMutableAttributedString {
 		let attributes: [NSAttributedString.Key: Any] = [
-			.link: NSURL(string: node.url) as Any,
+			.link: node.url,
 			.font: fonts.normalText
 		]
+		let result = NSMutableAttributedString(string: node.text, attributes: attributes)
+		return result
+	}
 
-		let result = NSMutableAttributedString(string: node.title ?? node.url, attributes: attributes)
-		result.append(String.lineBreak)
+	public func visit(node: InternalLinkNode) -> NSMutableAttributedString {
+		let attributes: [NSAttributedString.Key: Any] = [
+			.link: node.url,
+			.font: fonts.normalText
+		]
+		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
 		return result
 	}
 }

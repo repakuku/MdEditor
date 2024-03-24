@@ -17,60 +17,77 @@ public final class Parser {
 	/// - Parameter tokens: An array of Token objects representing the parsed elements of markdown text.
 	/// - Returns: A Document object that represents the structured hierarchy of the parsed tokens.
 	public func parse(tokens: [Token]) -> Document {
-		let tokens = tokens
-		var nodes = [INode?]()
-		var inCodeBlock = false
+		var tokens = tokens
+		var result = [INode]()
 
-		for token in tokens {
+		while !tokens.isEmpty {
+			var nodes = [INode?]()
+			nodes.append(parseLineBreak(tokens: &tokens))
+			nodes.append(parseHeader(tokens: &tokens))
+			nodes.append(parseBlockquote(tokens: &tokens))
+			nodes.append(parseParagraph(tokens: &tokens))
+			nodes.append(parseCodeBlock(tokens: &tokens))
+			nodes.append(parseTask(tokens: &tokens))
+			nodes.append(parseOrderedList(tokens: &tokens))
+			nodes.append(parseUnorderedList(tokens: &tokens))
+			nodes.append(parseLine(tokens: &tokens))
+			nodes.append(parseImage(tokens: &tokens))
 
-			if let codeBlockNode = parseCodeBlock(token: token) {
-				nodes.append(CodeBlockNode(level: codeBlockNode.level, lang: codeBlockNode.lang))
-				inCodeBlock.toggle()
-			}
+			let resultNodes = nodes.compactMap { $0 }
 
-			if !inCodeBlock {
-				nodes.append(parseLineBreak(token: token))
-				nodes.append(parseHeader(token: token))
-				nodes.append(parseBlockquote(token: token))
-				nodes.append(parseParagraph(token: token))
-				nodes.append(parseTask(token: token))
-				nodes.append(parseOrderedList(token: token))
-				nodes.append(parseUnorderedList(token: token))
-				nodes.append(parseLine(token: token))
-				nodes.append(parseLink(token: token))
-				nodes.append(parseImage(token: token))
+			if resultNodes.isEmpty, !tokens.isEmpty {
+				tokens.removeFirst()
 			} else {
-				nodes.append(parseCodeLine(token: token))
+				result.append(contentsOf: resultNodes)
 			}
 		}
 
-		return Document(nodes.compactMap { $0 })
+		return Document(result)
 	}
 }
 
 private extension Parser {
-	func parseHeader(token: Token) -> HeaderNode? {
+	func parseHeader(tokens: inout [Token]) -> HeaderNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
+
 		if case let .header(level, text) = token {
+			tokens.removeFirst()
 			return HeaderNode(level: level, children: parseText(token: text))
 		}
 
 		return nil
 	}
 
-	func parseBlockquote(token: Token) -> BlockquoteNode? {
+	func parseBlockquote(tokens: inout [Token]) -> BlockquoteNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
+
 		if case let .blockquote(level, text) = token {
+			tokens.removeFirst()
 			return BlockquoteNode(level: level, children: parseText(token: text))
 		}
 
 		return nil
 	}
 
-	func parseParagraph(token: Token) -> ParagraphNode? {
+	func parseParagraph(tokens: inout [Token]) -> ParagraphNode? {
 		var textNodes = [INode]()
 
-			if case let .textLine(text) = token {
-				textNodes.append(contentsOf: parseText(token: text))
+		while !tokens.isEmpty {
+			guard let token = tokens.first else {
+				return nil
 			}
+
+			if case let .textLine(text) = token {
+				tokens.removeFirst()
+				textNodes.append(contentsOf: parseText(token: text))
+			} else {
+				break
+			}
+		}
 
 		if !textNodes.isEmpty {
 			return ParagraphNode(textNodes)
@@ -79,36 +96,59 @@ private extension Parser {
 		return nil
 	}
 
-	func parseCodeBlock(token: Token) -> CodeBlockNode? {
+	func parseCodeBlock(tokens: inout [Token]) -> CodeBlockNode? {
 
-		if case let .codeBlockMarker(level, lang) = token {
-			return CodeBlockNode(level: level, lang: lang)
+		var codeLevel = 3
+		var codeLang = ""
+		var codeText = ""
+
+		if case let .codeBlockMarker(level, lang) = tokens.first {
+			tokens.removeFirst()
+			codeLevel = level
+			codeLang = lang
+		} else {
+			return nil
 		}
 
-		return nil
-	}
+		while !tokens.isEmpty {
+			guard let token = tokens.first else {
+				break
+			}
 
-	func parseCodeLine(token: Token) -> CodeLineNode? {
-
-		if case let .codeLine(text) = token {
-			return CodeLineNode(text: text)
+			if case let .codeLine(text) = token {
+				tokens.removeFirst()
+				codeText += text + "\n"
+			} else if case .codeBlockMarker = token {
+				tokens.removeFirst()
+				break
+			} else {
+				break
+			}
 		}
 
-		return nil
+		return CodeBlockNode(level: codeLevel, lang: codeLang, code: codeText)
 	}
 
-	func parseImage(token: Token) -> ImageNode? {
+	func parseImage(tokens: inout [Token]) -> ImageNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
 
 		if case let .image(url, size) = token {
+			tokens.removeFirst()
 			return ImageNode(url: url, size: String(size))
 		}
 
 		return nil
 	}
 
-	func parseLineBreak(token: Token) -> LineBreakNode? {
+	func parseLineBreak(tokens: inout [Token]) -> LineBreakNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
 
 		if case .lineBreak = token {
+			tokens.removeFirst()
 			return LineBreakNode()
 		}
 
@@ -117,7 +157,7 @@ private extension Parser {
 
 	func parseText(token: Text) -> [INode] {
 		var textNodes = [INode]()
-		token.text.forEach { part in
+		token.text.forEach { part in // swiftlint:disable:this closure_body_length
 			switch part {
 			case .normal(let text):
 				textNodes.append(TextNode(text: text))
@@ -131,46 +171,73 @@ private extension Parser {
 				textNodes.append(InlineCodeNode(code: text))
 			case .escapedChar(let char):
 				textNodes.append(EscapedCharNode(char: char))
+			case .highlighted(let text):
+				textNodes.append(HighlightedTextNode(text: text))
+			case .strike(let text):
+				textNodes.append(StrikeNode(text: text))
+			case .externalLink(let url, let text):
+				textNodes.append(ExternalLinkNode(url: url, text: text))
+			case .internalLink(let url):
+				textNodes.append(InternalLinkNode(url: url))
 			}
 		}
 		return textNodes
 	}
 
-	func parseTask(token: Token) -> TaskNode? {
+	func parseTask(tokens: inout [Token]) -> TaskNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
+
 		if case let .task(isDone, text) = token {
+			tokens.removeFirst()
 			return TaskNode(isDone: isDone, children: parseText(token: text))
 		}
 
 		return nil
 	}
 
-	func parseOrderedList(token: Token) -> OrderedListNode? {
-		if case let .orderedListItem(level, text) = token {
-			return OrderedListNode(level: level, children: parseText(token: text))
+	func parseOrderedList(tokens: inout [Token]) -> OrderedListNode? {
+		var nodes = [INode]()
+		let currentLevel = 0
+
+		while !tokens.isEmpty {
+			guard let token = tokens.first else {
+				return nil
+			}
+
+			if case let .orderedListItem(level, text) = token {
+				tokens.removeFirst()
+				return OrderedListNode(level: level, children: parseText(token: text))
+			} else {
+				break
+			}
 		}
 
 		return nil
 	}
 
-	func parseUnorderedList(token: Token) -> UnorderedListNode? {
+	func parseUnorderedList(tokens: inout [Token]) -> UnorderedListNode? {
+		guard let token = tokens.first else {
+			return nil
+		}
+
 		if case let .unorderedListItem(level, text) = token {
+			tokens.removeFirst()
 			return UnorderedListNode(level: level, children: parseText(token: text))
 		}
 
 		return nil
 	}
 
-	func parseLine(token: Token) -> LineNode? {
-		if case .line = token {
-			return LineNode()
+	func parseLine(tokens: inout [Token]) -> LineNode? {
+		guard let token = tokens.first else {
+			return nil
 		}
 
-		return nil
-	}
-
-	func parseLink(token: Token) -> LinkNode? {
-		if case let .link(url, text) = token {
-			return LinkNode(title: text, url: url)
+		if case .line = token {
+			tokens.removeFirst()
+			return LineNode()
 		}
 
 		return nil

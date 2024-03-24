@@ -69,6 +69,10 @@ public final class HtmlVisitor: IVisitor {
 		"<strong><em>\(node.text)</em></strong>"
 	}
 
+	public func visit(node: StrikeNode) -> String {
+		""
+	}
+
 	/// Returns the escaped character without any HTML conversion.
 	 /// - Parameter node: The escaped character node.
 	 /// - Returns: The escaped character as a string.
@@ -81,13 +85,6 @@ public final class HtmlVisitor: IVisitor {
 	/// - Returns: An empty string.
 	public func visit(node: CodeBlockNode) -> String {
 		""
-	}
-
-	/// Converts a code line node to an HTML code tag string.
-	/// - Parameter node: The code line node to convert.
-	/// - Returns: An HTML code tag string with node's content.
-	public func visit(node: CodeLineNode) -> String {
-		"<code>\(node.text)</code>"
 	}
 
 	/// Converts an inline code node to an HTML code tag string.
@@ -111,28 +108,27 @@ public final class HtmlVisitor: IVisitor {
 		"<img src=\"\(node.url)>\" />"
 	}
 
-	/// Converts an ordered list node to an HTML ordered list tag string.
-	/// - Parameter node: The ordered list node to convert.
-	/// - Returns: An HTML ordered list tag string.
 	public func visit(node: OrderedListNode) -> String {
 		""
 	}
 
-	/// Converts an unordered list node to an HTML unordered list tag string.
-	/// - Parameter node: The unordered list node to convert.
-	/// - Returns: An HTML unordered list tag string.
 	public func visit(node: UnorderedListNode) -> String {
 		""
 	}
 
-	/// Converts a line node to an empty HTML string.
-	/// - Parameter node: The line node to convert.
-	/// - Returns: An empty string.
 	public func visit(node: LineNode) -> String {
 		""
 	}
 
-	public func visit(node: LinkNode) -> String {
+	public func visit(node: ExternalLinkNode) -> String {
+		""
+	}
+
+	public func visit(node: InternalLinkNode) -> String {
+		""
+	}
+
+	public func visit(node: HighlightedTextNode) -> String {
 		""
 	}
 }
