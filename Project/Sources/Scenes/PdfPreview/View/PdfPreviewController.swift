@@ -21,8 +21,6 @@ final class PdfPreviewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: PdfPreviewModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
-
 	private lazy var pdfView = makePdfView(
 		accessibilityIdentifier: AccessibilityIdentifier.PdfPreviewScene.pdfView.description
 	)
@@ -45,8 +43,8 @@ final class PdfPreviewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		interactor?.fetchData()
 		setupUI()
+		interactor?.fetchData()
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -74,7 +72,10 @@ private extension PdfPreviewController {
 	}
 
 	func makePdfView(accessibilityIdentifier: String) -> PDFView {
-		return PDFView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+		let pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+		pdfView.translatesAutoresizingMaskIntoConstraints = false
+		pdfView.backgroundColor = Theme.backgroundColor
+		return pdfView
 	}
 
 	func makeActivityIndicator() -> UIActivityIndicatorView {
@@ -114,7 +115,6 @@ private extension PdfPreviewController {
 
 extension PdfPreviewController: IPdfPreviewController {
 	func render(viewModel: PdfPreviewModel.ViewModel) {
-		self.viewModel = viewModel
 		title = viewModel.currentTitle
 		pdfView.document = PDFDocument(data: viewModel.data)
 		activityIndicator.stopAnimating()

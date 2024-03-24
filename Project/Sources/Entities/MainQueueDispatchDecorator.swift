@@ -10,17 +10,17 @@ import Foundation
 import MarkdownPackage
 
 /// A decorator for 'IMarkdownToPdfConverter'.
-final class MainQueueDispatchDecorator: IMarkdownConverter {
+final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 
 	// MARK: - Dependencies
 
-	private let decoratee: any IMarkdownConverter
+	private let decoratee: IMarkdownToPdfConverter
 
 	// MARK: - Initialization
 
 	/// Initializes a new instance with the given markdown to PDF converter.
 	/// - Parameter decoratee: The actual converter.
-	init(decoratee: any IMarkdownConverter) {
+	init(decoratee: IMarkdownToPdfConverter) {
 		self.decoratee = decoratee
 	}
 
@@ -31,17 +31,16 @@ final class MainQueueDispatchDecorator: IMarkdownConverter {
 	/// - Parameters:
 	///   - markdownText: The markdown formatted text to convert.
 	///   - completion: A completion handler that is called with the resulting PDF data.
-	func convert(markdownText: String) -> Data {
-//		DispatchQueue.global(qos: .userInitiated).async {
-//			self.decoratee.convert(
-//				markdownText: markdownText
-//			) { data in
-//				self.doInMainThread {
-//					completion(data)
-//				}
-//			}
-//		}
-		return Data()
+	func convert(markdownText: String, completion: @escaping (Data) -> Void) {
+		DispatchQueue.global(qos: .userInitiated).async {
+			self.decoratee.convert(
+				markdownText: markdownText
+			) { data in
+				self.doInMainThread {
+					completion(data)
+				}
+			}
+		}
 	}
 
 	// MARK: - Private Methods

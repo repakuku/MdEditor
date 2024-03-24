@@ -35,16 +35,24 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	func present(response: PdfPreviewModel.Response) {
 		let pdfTitle = response.fileUrl.lastPathComponent
 
-		let pdf = MarkdownToPdfConverter(
-			pageSize: .screen,
-			backgroundColor: Theme.backgroundColor,
-			pdfAuthor: pdfAuthor,
-			pdfTitle: pdfTitle
-		).convert(
-			markdownText: response.fileContent
+		let converter = MainQueueDispatchDecorator(
+			decoratee: MarkdownToPdfConverter(
+				pageSize: .screen,
+				backgroundColor: Theme.backgroundColor,
+				pdfAuthor: pdfAuthor,
+				pdfTitle: pdfTitle
+			)
 		)
 
-		let viewModel = PdfPreviewModel.ViewModel(currentTitle: pdfTitle, data: pdf)
-		viewController?.render(viewModel: viewModel)
+		converter.convert(
+			markdownText: response.fileContent
+		) { [weak self] data in
+			let viewModel = PdfPreviewModel.ViewModel(
+				currentTitle: response.fileUrl.lastPathComponent,
+				data: data
+			)
+
+			self?.viewController?.render(viewModel: viewModel)
+		}
 	}
 }

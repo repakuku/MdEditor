@@ -213,12 +213,12 @@ extension TextEditorViewController: ITextEditorViewController {
 
 private extension TextEditorViewController {
 	enum Consts {
-		static let segmentItemText = "Text"
-		static let segmentItemConverter = "Preview"
-		static let menuTitle = "Menu"
-		static let menuMessage = "Выберите дополнительное действие"
-		static let menuItemTasks = "Посмотреть задачи"
-		static let menuItemPrint = "Print"
-		static let menuItemDismiss = "Cancel"
+		static let segmentItemText = L10n.TextEditor.segmentItemText
+		static let segmentItemConverter = L10n.TextEditor.segmentItemConverter
+		static let menuTitle = L10n.TextEditor.menuTitle
+		static let menuMessage = L10n.TextEditor.menuMessage
+		static let menuItemTasks = L10n.TextEditor.menuItemTasks
+		static let menuItemPrint = L10n.TextEditor.menuItemPrint
+		static let menuItemDismiss = L10n.TextEditor.menuItemDismiss
 	}
 }

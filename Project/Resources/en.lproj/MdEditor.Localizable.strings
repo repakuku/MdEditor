@@ -33,6 +33,16 @@
 "MainMenu.openFile" = "Open File";
 "MainMenu.about" = "About";
 
+// MARK: - TextEditorScreen
+
+"TextEditor.segmentItemText" = "Edit";
+"TextEditor.segmentItemConverter" = "Preview";
+"TextEditor.menuTitle" = "Menu";
+"TextEditor.menuMessage" = "Select action";
+"TextEditor.menuItemTasks" = "Tasks";
+"TextEditor.menuItemPrint" = "Print";
+"TextEditor.menuItemDismiss" = "Cancel";
+
 // MARK: - TodoListScreen
 
 "TodoList.title" = "Tasks";

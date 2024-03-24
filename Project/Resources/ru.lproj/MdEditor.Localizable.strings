@@ -33,6 +33,16 @@
 "MainMenu.openFile" = "Открыть документ";
 "MainMenu.about" = "О приложении";
 
+// MARK: - TextEditorScreen
+
+"TextEditor.segmentItemText" = "Редактор";
+"TextEditor.segmentItemConverter" = "Просмотр";
+"TextEditor.menuTitle" = "Меню";
+"TextEditor.menuMessage" = "Выберите дополнительное действие";
+"TextEditor.menuItemTasks" = "Посмотреть задачи";
+"TextEditor.menuItemPrint" = "Печать";
+"TextEditor.menuItemDismiss" = "Отмена";
+
 // MARK: - TodoList strings
 
 "TodoList.title" = "Задачи";
