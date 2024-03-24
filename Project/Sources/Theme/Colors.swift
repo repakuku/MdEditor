@@ -6,8 +6,6 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
-import Foundation
-
 import UIKit
 
 enum FlatColor {

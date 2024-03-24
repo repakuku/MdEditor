@@ -21,8 +21,6 @@ final class PdfPreviewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: PdfPreviewModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
-
 	private lazy var pdfView = makePdfView(
 		accessibilityIdentifier: AccessibilityIdentifier.PdfPreviewScene.pdfView.description
 	)
@@ -45,23 +43,17 @@ final class PdfPreviewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		interactor?.fetchData()
 		setupUI()
+		interactor?.fetchData()
 	}
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		layout()
 	}
-}
 
-// MARK: - Actions
-
-extension PdfPreviewController {
-	@objc
-	func share() {
-		let request = PdfPreviewModel.Request(data: pdfView.document?.dataRepresentation() ?? Data())
-		interactor?.performAction(request: request)
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		interactor?.fetchData()
 	}
 }
 
@@ -69,19 +61,6 @@ extension PdfPreviewController {
 
 private extension PdfPreviewController {
 	private func  setupUI() {
-		if let navigationBarY = navigationController?.navigationBar.frame.maxY {
-			pdfView.frame = CGRect(
-				x: 0,
-				y: navigationBarY,
-				width: view.bounds.width,
-				height: view.bounds.height
-			)
-		}
-
-		navigationItem.rightBarButtonItem = makeBarButtonItem(
-			accessibilityIdentifier: AccessibilityIdentifier.PdfPreviewScene.barButton.description
-		)
-
 		view.backgroundColor = Theme.backgroundColor
 		navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -93,24 +72,10 @@ private extension PdfPreviewController {
 	}
 
 	func makePdfView(accessibilityIdentifier: String) -> PDFView {
-		let pdfView = PDFView()
-		pdfView.autoScales = true
-		pdfView.pageBreakMargins = UIEdgeInsets(
-			top: Sizes.Padding.double,
-			left: Sizes.Padding.normal,
-			bottom: Sizes.Padding.normal,
-			right: Sizes.Padding.normal
-		)
-
+		let pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+		pdfView.translatesAutoresizingMaskIntoConstraints = false
+		pdfView.backgroundColor = Theme.backgroundColor
 		return pdfView
-	}
-
-	func makeBarButtonItem(accessibilityIdentifier: String) -> UIBarButtonItem {
-		UIBarButtonItem(
-			barButtonSystemItem: .action,
-			target: self,
-			action: #selector(share)
-		)
 	}
 
 	func makeActivityIndicator() -> UIActivityIndicatorView {

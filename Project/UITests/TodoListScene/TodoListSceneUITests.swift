@@ -17,7 +17,7 @@ final class TodoListSceneUITests: XCTestCase {
 	override func setUp() {
 		super.setUp()
 		continueAfterFailure = false
-		app.launchArguments = [LaunchArguments.skipLogin.rawValue]
+		app.launchArguments = [LaunchArguments.runTodoListFlow.rawValue]
 
 		app.launch()
 	}

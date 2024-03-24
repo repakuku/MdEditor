@@ -29,6 +29,8 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: ParagraphNode) -> Result
 
+	func visit(node: TextNode) -> Result
+
 	/// Visits a blockquote node.
 	/// - Parameter node: The blockquote node to visit.
 	/// - Returns: A result generated from visiting the document.
@@ -39,15 +41,10 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: CodeBlockNode) -> Result
 
-	/// Visits a code line node.
-	/// - Parameter node: The code line node to visit.
-	/// - Returns: A result generated from visiting the document.
-	func visit(node: CodeLineNode) -> Result
-
 	/// Visits a text node.
 	/// - Parameter node: The text node to visit.
 	/// - Returns: A result generated from visiting the document.
-	func visit(node: TextNode) -> Result
+	func visit(node: PlainTextNode) -> Result
 
 	/// Visits a bold text node.
 	/// - Parameter node: The bold text node to visit.
@@ -63,6 +60,10 @@ public protocol IVisitor {
 	/// - Parameter node: The bold and italic text node to visit.
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: BoldItalicTextNode) -> Result
+
+	func visit(node: StrikeTextNode) -> Result
+
+	func visit(node: HighlightedTextNode) -> Result
 
 	/// Visits a escaped char node.
 	/// - Parameter node: The escaped char node to visit.
@@ -99,10 +100,9 @@ public protocol IVisitor {
 	/// - Returns: A result generated from visiting the document.
 	func visit(node: LineNode) -> Result
 
-	/// Visits a link node.
-	/// - Parameter node: The link node to visit.
-	/// - Returns: A result generated from visiting the document.
-	func visit(node: LinkNode) -> Result
+	func visit(node: ExternalLinkNode) -> Result
+
+	func visit(node: InternalLinkNode) -> Result
 }
 
 public extension IVisitor {
@@ -119,9 +119,11 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as ParagraphNode:
 				return visit(node: child)
+			case let child as TextNode:
+				return visit(node: child)
 			case let child as BlockquoteNode:
 				return visit(node: child)
-			case let child as TextNode:
+			case let child as PlainTextNode:
 				return visit(node: child)
 			case let child as BoldTextNode:
 				return visit(node: child)
@@ -130,8 +132,6 @@ public extension IVisitor {
 			case let child as BoldItalicTextNode:
 				return visit(node: child)
 			case let child as CodeBlockNode:
-				return visit(node: child)
-			case let child as CodeLineNode:
 				return visit(node: child)
 			case let child as InlineCodeNode:
 				return visit(node: child)
@@ -145,7 +145,13 @@ public extension IVisitor {
 				return visit(node: child)
 			case let child as LineNode:
 				return visit(node: child)
-			case let child as LinkNode:
+			case let child as StrikeTextNode:
+				return visit(node: child)
+			case let child as HighlightedTextNode:
+				return visit(node: child)
+			case let child as ExternalLinkNode:
+				return visit(node: child)
+			case let child as InternalLinkNode:
 				return visit(node: child)
 			default:
 				return nil

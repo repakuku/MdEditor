@@ -31,9 +31,6 @@ public enum Token {
 	/// An ordered list item with specified 'level' and associated 'text'.
 	case orderedListItem(level: Int, text: Text)
 
-	/// A link with a display 'text' and 'url'.
-	case link(url: String, text: String?)
-
 	/// An image with a source 'url' and 'size'.
 	case image(url: String, size: Int)
 
@@ -48,13 +45,13 @@ public enum Token {
 }
 
 /// Represents formatted text.
-public struct Text {
+public struct Text: Equatable {
 
 	/// An array of text parts, allowing for mixed formatting.
 	let text: [Part]
 
 	/// Represents a part of text with specific formatting.
-	enum Part {
+	enum Part: Equatable {
 
 		/// Plain text without any formatting.
 		case normal(text: String)
@@ -68,10 +65,33 @@ public struct Text {
 		/// Bold and italic text.
 		case boldItalic(text: String)
 
-		/// text formatted as inline code.
+		/// Text formatted as inline code.
 		case inlineCode(text: String)
 
 		/// An escaped character.
 		case escapedChar(char: String)
+
+		case highlighted(text: String)
+
+		case strike(text: String)
+
+		case externalLink(url: String, text: String)
+
+		case internalLink(url: String)
+	}
+}
+
+extension Token: Equatable {
+	public static func == (lhs: Token, rhs: Token) -> Bool {
+		switch (lhs, rhs) {
+		case (.lineBreak, .lineBreak):
+			return true
+		case (.header(let lhsLevel, let lhsText), .header(let rhsLevel, let rhsText)):
+			return lhsLevel == rhsLevel && lhsText == rhsText
+		case (.blockquote(let lhsLevel, let lhsText), .blockquote(let rhsLevel, let rhsText)):
+			return lhsLevel == rhsLevel && lhsText == rhsText
+		default:
+			return false
+		}
 	}
 }

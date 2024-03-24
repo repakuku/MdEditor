@@ -7,12 +7,9 @@
 //
 
 import Foundation
+import MarkdownPackage
 
 enum PdfPreviewModel {
-
-	struct Request {
-		let data: Data
-	}
 
 	struct Response {
 		let fileUrl: URL

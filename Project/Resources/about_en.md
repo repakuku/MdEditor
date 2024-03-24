@@ -12,8 +12,6 @@ experience.
 making it a breeze to write and review code in Markdown.
 - **Comprehensive Markdown Support:** From basic to extended Markdown syntax, MdEditor supports a wide range of 
 elements, catering to all your formatting needs.
-- **Keyboard Shortcuts:** Increase your efficiency with our thoughtfully designed keyboard shortcuts for common 
-Markdown formatting tasks.
 - **Multiple Export Options:** Flexibility to export your Markdown documents to HTML, PDF, and more, perfect for 
 various distribution needs.
 - **Theming Options:** Choose from dark and light themes to customize your writing environment to your comfort.
