@@ -70,7 +70,7 @@ public final class HtmlVisitor: IVisitor {
 	}
 
 	public func visit(node: StrikeNode) -> String {
-		""
+		"<strike>\(node.text)</strike>"
 	}
 
 	/// Returns the escaped character without any HTML conversion.
@@ -84,7 +84,7 @@ public final class HtmlVisitor: IVisitor {
 	/// - Parameter node: The code block node.
 	/// - Returns: An empty string.
 	public func visit(node: CodeBlockNode) -> String {
-		""
+		"<code>\(node.code)</code>"
 	}
 
 	/// Converts an inline code node to an HTML code tag string.
@@ -109,26 +109,36 @@ public final class HtmlVisitor: IVisitor {
 	}
 
 	public func visit(node: OrderedListNode) -> String {
-		""
+		var list = ["<ol>"]
+		node.children.forEach {
+			list.append("<li>\(visitChildren(of: $0).joined())</li>")
+		}
+		list.append(("</ol>"))
+		return list.joined()
 	}
 
 	public func visit(node: UnorderedListNode) -> String {
-		""
+		var list = ["<ul>"]
+		node.children.forEach {
+			list.append("<li>\(visitChildren(of: $0).joined())</li>")
+		}
+		list.append(("</ul>"))
+		return list.joined()
 	}
 
 	public func visit(node: LineNode) -> String {
-		""
+		"<hr>"
 	}
 
 	public func visit(node: ExternalLinkNode) -> String {
-		""
+		"<a href=\"\(node.url)>\">\(node.url)</a"
 	}
 
 	public func visit(node: InternalLinkNode) -> String {
-		""
+		"<a href=\"\(node.url)>\">\(node.url)</a"
 	}
 
 	public func visit(node: HighlightedTextNode) -> String {
-		""
+		"<mark>\(node.text)</mark>"
 	}
 }

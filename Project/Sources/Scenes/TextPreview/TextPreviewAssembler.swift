@@ -15,7 +15,7 @@ final class TextPreviewAssembler {
 
 	private let file: File
 
-	private let converter = MarkdownToAttributedStringConverter(theme: AttributedTextColors(), fonts: Fonts())
+	private let converter = MarkdownToAttributedStringConverter()
 
 	// MARK: - Initializers
 

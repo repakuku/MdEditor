@@ -1,15 +1,15 @@
 //
-//  AttributedTextVisitor.swift
+//  RawAttributedTextVisitor.swift
 //
 //
-//  Created by Alexey Turulin on 2/26/24.
+//  Created by Alexey Turulin on 3/23/24.
 //
 
 import UIKit
 
 /// A visitor that translates markdown document elements into 'NSMutableAttributedString'
 /// to support rich text formatting.
-public final class AttributedTextVisitor: IVisitor {
+public final class RawAttributedTextVisitor: IVisitor {
 
 	// MARK: - Dependencies
 
@@ -64,7 +64,7 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The blockquote node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the blockquote.
 	public func visit(node: BlockquoteNode) -> NSMutableAttributedString {
-		let code = NSMutableAttributedString(string: String(repeating: ">", count: node.level) + " ")
+		let code = makeMarkdownCode(String(repeating: ">", count: node.level) + " ")
 		let text = visitChildren(of: node).joined()
 
 		let result = NSMutableAttributedString()
@@ -189,26 +189,18 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The code block node to convert.
 	/// - Returns: A formatted 'NSMutableAttributedString' representing the code block.
 	public func visit(node: CodeBlockNode) -> NSMutableAttributedString {
-		let paragraphStyle = NSMutableParagraphStyle()
-		paragraphStyle.alignment = .right
+		let result = makeMarkdownCode(String(repeating: "`", count: node.level) + node.lang)
 
-		let langAttributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: appearance.codeLangColor,
-			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium),
-			.paragraphStyle: paragraphStyle
-		]
-
-		let codeAttributes: [NSAttributedString.Key: Any] = [
+		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: appearance.codeTextColor,
 			.font: UIFont.monospacedSystemFont(ofSize: appearance.textSize, weight: .medium)
 		]
 
-		let lang = NSMutableAttributedString(string: node.lang, attributes: langAttributes)
-		let code = NSMutableAttributedString(string: node.code, attributes: codeAttributes)
-		let result = NSMutableAttributedString()
-		result.append(lang)
+		let text = NSMutableAttributedString(string: node.code, attributes: attributes)
 		result.append(String.lineBreak)
-		result.append(code)
+		result.append(text)
+		result.append(String.lineBreak)
+		result.append(makeMarkdownCode(String(repeating: "`", count: node.level)))
 		result.append(String.lineBreak)
 		return result
 	}
@@ -252,9 +244,11 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The ordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an ordered list item.
 	public func visit(node: OrderedListNode) -> NSMutableAttributedString {
+		let tab = makeMarkdownCode(String(repeating: String.tab.string, count: node.level) + " ")
 		let text = visitChildren(of: node).joined()
 
 		let result = NSMutableAttributedString()
+		result.append(tab)
 		result.append(text)
 		result.append(String.lineBreak)
 
@@ -265,9 +259,11 @@ public final class AttributedTextVisitor: IVisitor {
 	/// - Parameter node: The unordered list node to convert.
 	/// - Returns: A 'NSMutableAttributedString' containing an unordered list item.
 	public func visit(node: UnorderedListNode) -> NSMutableAttributedString {
+		let tab = makeMarkdownCode(String(repeating: String.tab.string, count: node.level) + " ")
 		let text = visitChildren(of: node).joined()
 
 		let result = NSMutableAttributedString()
+		result.append(tab)
 		result.append(text)
 		result.append(String.lineBreak)
 
@@ -301,5 +297,15 @@ public final class AttributedTextVisitor: IVisitor {
 		]
 		let result = NSMutableAttributedString(string: node.url, attributes: attributes)
 		return result
+	}
+}
+
+private extension RawAttributedTextVisitor {
+	func makeMarkdownCode(_ code: String) -> NSMutableAttributedString {
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: appearance.markdownCodeColor
+		]
+
+		return NSMutableAttributedString(string: code, attributes: attributes)
 	}
 }

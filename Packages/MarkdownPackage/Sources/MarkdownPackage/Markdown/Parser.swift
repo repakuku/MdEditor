@@ -206,25 +206,40 @@ private extension Parser {
 				return nil
 			}
 
-			if case let .orderedListItem(level, text) = token {
+			if case let .orderedListItem(_, text) = token {
 				tokens.removeFirst()
-				return OrderedListNode(level: level, children: parseText(token: text))
+				nodes.append(contentsOf: parseText(token: text))
 			} else {
 				break
 			}
+		}
+
+		if !nodes.isEmpty {
+			return OrderedListNode(level: currentLevel, children: nodes)
 		}
 
 		return nil
 	}
 
 	func parseUnorderedList(tokens: inout [Token]) -> UnorderedListNode? {
-		guard let token = tokens.first else {
-			return nil
+		var nodes = [INode]()
+		let currentLevel = 0
+
+		while !tokens.isEmpty {
+			guard let token = tokens.first else {
+				return nil
+			}
+
+			if case let .unorderedListItem(_, text) = token {
+				tokens.removeFirst()
+				nodes.append(contentsOf: parseText(token: text))
+			} else {
+				break
+			}
 		}
 
-		if case let .unorderedListItem(level, text) = token {
-			tokens.removeFirst()
-			return UnorderedListNode(level: level, children: parseText(token: text))
+		if !nodes.isEmpty {
+			return UnorderedListNode(level: currentLevel, children: nodes)
 		}
 
 		return nil

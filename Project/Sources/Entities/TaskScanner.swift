@@ -15,10 +15,7 @@ final class TaskScanner: ITaskRepository {
 
 	// MARK: - Dependencies
 
-	private let visitor = AttributedTextVisitor(
-		theme: AttributedTextColors(),
-		fonts: Fonts()
-	)
+	private let visitor = AttributedTextVisitor()
 
 	// MARK: - Private Properties
 
