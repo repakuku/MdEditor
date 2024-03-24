@@ -81,6 +81,7 @@ private extension Parser {
 			if case let .textLine(text) = token {
 				tokens.removeFirst()
 				textNodes.append(contentsOf: parseText(token: text))
+				textNodes.append(LineBreakNode())
 			} else {
 				break
 			}

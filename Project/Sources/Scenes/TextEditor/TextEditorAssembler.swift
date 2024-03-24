@@ -15,8 +15,6 @@ final class TextEditorAssembler {
 
 	private let file: File
 
-	private let converter = MarkdownToRawAttributedStringConverter()
-
 	// MARK: - Initializers
 
 	init(

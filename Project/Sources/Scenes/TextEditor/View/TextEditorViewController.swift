@@ -215,10 +215,10 @@ private extension TextEditorViewController {
 	enum Consts {
 		static let segmentItemText = "Text"
 		static let segmentItemConverter = "Preview"
-		static let menuTitle = "Меню"
+		static let menuTitle = "Menu"
 		static let menuMessage = "Выберите дополнительное действие"
 		static let menuItemTasks = "Посмотреть задачи"
-		static let menuItemPrint = "Печать"
-		static let menuItemDismiss = "Отмена"
+		static let menuItemPrint = "Print"
+		static let menuItemDismiss = "Cancel"
 	}
 }

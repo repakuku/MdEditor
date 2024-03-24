@@ -47,7 +47,7 @@ final class TextParser {
 	/// Parses raw markdown text into a structured 'Text' object.
 	/// - Parameter text: A string containing raw markdown text.
 	/// - Returns: A 'Text' object that represents the structured content of the input text.
-	func parse(rawtext text: String) -> Text { // swiftlint:disable:this function_body_length
+	func parse(rawText text: String) -> Text { // swiftlint:disable:this function_body_length
 		var parts = [Text.Part]()
 		var range = NSRange(text.startIndex..., in: text)
 

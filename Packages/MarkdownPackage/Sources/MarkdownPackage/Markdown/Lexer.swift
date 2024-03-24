@@ -98,7 +98,7 @@ private extension Lexer {
 
 	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
-		let notParagraphPattern = #"^(#|>|[\-_\*]{3}|\s*[\-\*\+] |\s*\d+\. ).*"#
+		let notParagraphPattern = #"^(#|>|[\-_]{3}|\s*[\-\*\+] |\s*\d+\. ).*"#
 		let regex = try? NSRegularExpression(pattern: notParagraphPattern)
 
 		if let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
@@ -118,7 +118,7 @@ private extension Lexer {
 	}
 
 	func parseText(_ rawText: String) -> Text {
-		textParser.parse(rawtext: rawText)
+		textParser.parse(rawText: rawText)
 	}
 
 	func parseTask(rawText: String) -> Token? {
@@ -159,7 +159,7 @@ private extension Lexer {
 	}
 
 	func parseLine(rawText: String) -> Token? {
-		let pattern = #"^([\-_\*]{3})"#
+		let pattern = #"^([\-_]{3})"#
 
 		if rawText.group(for: pattern) != nil {
 			return .line

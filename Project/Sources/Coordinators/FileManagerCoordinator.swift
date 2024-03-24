@@ -53,10 +53,7 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 private extension FileManagerCoordinator {
 
 	func showFileManagerScene(file: File?) {
-		let assembler = FileManagerAssembler(
-			fileExplorer: fileExplorer,
-			file: file
-		)
+		let assembler = FileManagerAssembler(fileExplorer: fileExplorer, file: file)
 		let (viewController, interactor) = assembler.assembly()
 		interactor.delegate = self
 
