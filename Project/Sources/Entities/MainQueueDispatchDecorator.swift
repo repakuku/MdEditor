@@ -30,24 +30,11 @@ final class MainQueueDispatchDecorator: IMarkdownToPdfConverter {
 	/// on a background thread and the completion handler is called on the main thread.
 	/// - Parameters:
 	///   - markdownText: The markdown formatted text to convert.
-	///   - author: The author of the PDF document.
-	///   - title: The title of the PDF document.
-	///   - pageFormat: The format for the PDF pages.
 	///   - completion: A completion handler that is called with the resulting PDF data.
-	func convert(
-		markdownText: String,
-		author: String,
-		title: String,
-		pageFormat: MarkdownPackage.PageFormat,
-		completion: @escaping (Data) -> Void
-	) {
+	func convert(markdownText: String, completion: @escaping (Data) -> Void) {
 		DispatchQueue.global(qos: .userInitiated).async {
-			sleep(1)
 			self.decoratee.convert(
-				markdownText: markdownText,
-				author: author,
-				title: title,
-				pageFormat: pageFormat
+				markdownText: markdownText
 			) { data in
 				self.doInMainThread {
 					completion(data)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TaskManagerPackage
 import MarkdownPackage
 
 final class MainCoordinator: BaseCoordinator {
@@ -32,6 +33,9 @@ final class MainCoordinator: BaseCoordinator {
 
 private extension MainCoordinator {
 
+	func showMessage(message: String) {
+	}
+
 	func showMainMenuScene() {
 		let assembler = MainMenuAssembler(recentFileManager: recentFileManager)
 		let (viewController, interactor) = assembler.assembly()
@@ -41,8 +45,22 @@ private extension MainCoordinator {
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
-	func showTextPreviewScene(file: File) {
-		let assembler = TextPreviewAssembler(file: file)
+	func showTodoListScene(text: String) {
+		let taskManager = TaskManager()
+
+		let document = MarkdownToDocument().convert(markdownText: text)
+		let taskRepository: ITaskRepository = TaskScanner(document: document)
+
+		taskManager.addTasks(tasks: taskRepository.getTasks())
+
+		let assembler = TodoListAssembler(taskManager: OrderedTaskManager(taskManager: taskManager))
+		let viewController = assembler.assembly(createTaskClosure: nil)
+
+		navigationController.present(viewController, animated: true)
+	}
+
+	func showTextEditorScene(file: File) {
+		let assembler = TextEditorAssembler(file: file)
 		let (viewController, interactor) = assembler.assembly()
 		interactor.delegate = self
 
@@ -52,7 +70,6 @@ private extension MainCoordinator {
 	func showPdfPreviewScene(file: File) {
 		let assembler = PdfPreviewAssembler(file: file)
 		let (viewController, interactor) = assembler.assembly()
-		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -86,11 +103,7 @@ private extension MainCoordinator {
 extension MainCoordinator: IMainMenuDelegate {
 
 	func showAbout() {
-		let aboutUrl = Bundle.main.url(
-			forResource: L10n.aboutFileName,
-			withExtension: "md"
-		)! // swiftlint:disable:this force_unwrapping
-		switch File.parse(url: aboutUrl) {
+		switch File.parse(url: Endpoints.documentAbout) {
 		case .success(let aboutFile):
 			showPdfPreviewScene(file: aboutFile)
 		case .failure:
@@ -103,27 +116,18 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func openFile(file: File) {
-		showTextPreviewScene(file: file)
+		showTextEditorScene(file: file)
 	}
 
-	func newFile() {}
-}
-
-// MARK: - ITextPreviewDelegate
-
-extension MainCoordinator: ITextPreviewDelegate {
-
-	func openPdf(file: File) {
-		showPdfPreviewScene(file: file)
+	func newFile() {
+		showMessage(message: "")
 	}
 }
 
-// MARK: - IPdfPreviewDelegate
+// MARK: - ITextEditorDelegate
 
-extension MainCoordinator: IPdfPreviewDelegate {
-	func printPdf(data: Data) {
-		let printController = UIPrintInteractionController.shared
-		printController.printingItem = data
-		printController.present(animated: true)
+extension MainCoordinator: ITextEditorDelegate {
+	func openTodoList(text: String) {
+		showTodoListScene(text: text)
 	}
 }

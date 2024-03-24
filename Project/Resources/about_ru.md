@@ -1,46 +1,49 @@
 # MdEditor (Бета)
 
-Welcome to MdEditor, a sophisticated Markdown editor developed using the robust CleanSwift architecture. 
-MdEditor is more than just a text editor; it’s a seamless blend of intuitive markdown editing and efficient 
-task management, designed to cater to both casual and power users who desire a streamlined writing and coding 
-experience.
+Добро пожаловать в MdEditor, современный редактор Markdown, разработанный с использованием надежной 
+архитектуры CleanSwift. MdEditor - это не просто текстовый редактор; это гармоничное сочетание интуитивного 
+редактирования Markdown и эффективного управления задачами, разработанное для удовлетворения потребностей 
+как случайных пользователей, так и продвинутых пользователей, желающих иметь упрощенный опыт написания и кодирования.
 
-## Features
+## Особенности
 
-- **Interactive Live Preview:** Watch your Markdown transform in real-time with our dynamic live preview feature.
-- **Advanced Syntax Highlighting:** Our syntax highlighting improves readability, particularly for code blocks, 
-making it a breeze to write and review code in Markdown.
-- **Comprehensive Markdown Support:** From basic to extended Markdown syntax, MdEditor supports a wide range of 
-elements, catering to all your formatting needs.
-- **Keyboard Shortcuts:** Increase your efficiency with our thoughtfully designed keyboard shortcuts for common 
-Markdown formatting tasks.
-- **Multiple Export Options:** Flexibility to export your Markdown documents to HTML, PDF, and more, perfect for 
-various distribution needs.
-- **Theming Options:** Choose from dark and light themes to customize your writing environment to your comfort.
+	- **Интерактивный просмотр в реальном времени:** Наблюдайте за преобразованием вашего Markdown в реальном 
+	времени с помощью нашей функции динамического предварительного просмотра.
+	- **Продвинутая подсветка синтаксиса:** Наша подсветка синтаксиса улучшает читаемость, особенно для блоков кода, 
+	делая написание и проверку кода в Markdown очень простым.
+	- **Полная поддержка Markdown:** От базового до расширенного синтаксиса Markdown, MdEditor поддерживает широкий 
+	спектр элементов, удовлетворяя все ваши потребности в форматировании.
+	- **Множество вариантов экспорта:** Гибкость экспорта ваших документов Markdown в HTML, PDF и многое другое, 
+	идеально подходит для различных потребностей распространения.
+	- **Опции тем:** Выбирайте из темных и светлых тем, чтобы настроить ваше рабочее пространство на ваше удобство.
 
-## Integrated Task Management
+## Интегрированное управление задачами
 
-- **Task Manager Integration:** MdEditor integrates with TaskManagerPackage, offering an in-built task management tool to keep track of your writing milestones and code-related tasks.
-- **Prioritization and Organization:** Organize tasks based on priority, ensuring that critical tasks are always at the forefront.
-- **Seamless Workflow:** The combination of Markdown editing and task management in a single application enhances productivity and focus.
+	- **Интеграция менеджера задач:** MdEditor интегрируется с TaskManagerPackage, предлагая встроенный инструмент 
+	управления задачами для отслеживания ваших писательских вех и задач, связанных с кодом.
+	- **Приоритизация и организация:** Организуйте задачи на основе приоритетов, гарантируя, что критические задачи 
+	всегда находятся на переднем плане.
+	- **Беспрепятственный рабочий процесс:** Сочетание редактирования Markdown и управления задачами в одном приложении 
+	повышает производительность и концентрацию внимания.
 
-## Requirements
+## Требования
 
-- Runtime Environment: Xcode 14.2 or higher.
-- Additional Dependencies: Tuist, SwiftGen.
+	- **Среда выполнения:** Xcode 14.2 или выше.
+	- **Дополнительные зависимости:** Tuist, SwiftGen.
 
-## Installation
+## Установка
 
-1.	Clone the Repository:
+1.	Клонируйте репозиторий:
 ```
 git clone https://github.com/repakuku/MdEditor.git
 ```
-2.	Navigate to the Project Directory in Console:
+2.	Перейдите в директорию проекта в консоли:
 ```
 cd ./MdEditorRepository/Project
 ```
-3.	Run Tuist to Generate the Project:
+3.	Запустите Tuist для генерации проекта:
 ```
 tuist generate
 ```
-Now you’re ready to use MdEditor with all its powerful features! If you encounter any issues during installation, please refer to the documentation for troubleshooting.
+Теперь вы готовы использовать MdEditor со всеми его мощными функциями! Если вы столкнетесь с какими-либо проблемами во 
+время установки, пожалуйста, обратитесь к документации для устранения неполадок.

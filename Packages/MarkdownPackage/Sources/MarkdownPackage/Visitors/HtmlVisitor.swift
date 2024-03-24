@@ -33,6 +33,10 @@ public final class HtmlVisitor: IVisitor {
 		return "<p>\(text)</p>"
 	}
 
+	public func visit(node: TextNode) -> String {
+		return visitChildren(of: node).joined()
+	}
+
 	/// Converts a blockquote node to an HTML blockquote tag string.
 	/// - Parameter node: The blockquote node to convert.
 	/// - Returns: An HTML blockquote tag string with node's content.
@@ -44,7 +48,7 @@ public final class HtmlVisitor: IVisitor {
 	/// Converts a text node to a string.
 	/// - Parameter node: The text node to convert.
 	/// - Returns: The text content of the node.
-	public func visit(node: TextNode) -> String {
+	public func visit(node: PlainTextNode) -> String {
 		node.text
 	}
 
@@ -69,6 +73,14 @@ public final class HtmlVisitor: IVisitor {
 		"<strong><em>\(node.text)</em></strong>"
 	}
 
+	public func visit(node: StrikeTextNode) -> String {
+		"<strike>\(node.text)</strike>"
+	}
+
+	public func visit(node: HighlightedTextNode) -> String {
+		"<mark>\(node.text)</mark>"
+	}
+
 	/// Returns the escaped character without any HTML conversion.
 	 /// - Parameter node: The escaped character node.
 	 /// - Returns: The escaped character as a string.
@@ -80,14 +92,7 @@ public final class HtmlVisitor: IVisitor {
 	/// - Parameter node: The code block node.
 	/// - Returns: An empty string.
 	public func visit(node: CodeBlockNode) -> String {
-		""
-	}
-
-	/// Converts a code line node to an HTML code tag string.
-	/// - Parameter node: The code line node to convert.
-	/// - Returns: An HTML code tag string with node's content.
-	public func visit(node: CodeLineNode) -> String {
-		"<code>\(node.text)</code>"
+		"<code>\(node.code)</code>"
 	}
 
 	/// Converts an inline code node to an HTML code tag string.
@@ -111,28 +116,33 @@ public final class HtmlVisitor: IVisitor {
 		"<img src=\"\(node.url)>\" />"
 	}
 
-	/// Converts an ordered list node to an HTML ordered list tag string.
-	/// - Parameter node: The ordered list node to convert.
-	/// - Returns: An HTML ordered list tag string.
 	public func visit(node: OrderedListNode) -> String {
-		""
+		var list = ["<ol>"]
+		node.children.forEach {
+			list.append("<li>\(visitChildren(of: $0).joined())</li>")
+		}
+		list.append(("</ol>"))
+		return list.joined()
 	}
 
-	/// Converts an unordered list node to an HTML unordered list tag string.
-	/// - Parameter node: The unordered list node to convert.
-	/// - Returns: An HTML unordered list tag string.
 	public func visit(node: UnorderedListNode) -> String {
-		""
+		var list = ["<ul>"]
+		node.children.forEach {
+			list.append("<li>\(visitChildren(of: $0).joined())</li>")
+		}
+		list.append(("</ul>"))
+		return list.joined()
 	}
 
-	/// Converts a line node to an empty HTML string.
-	/// - Parameter node: The line node to convert.
-	/// - Returns: An empty string.
 	public func visit(node: LineNode) -> String {
-		""
+		"<hr>"
 	}
 
-	public func visit(node: LinkNode) -> String {
-		""
+	public func visit(node: ExternalLinkNode) -> String {
+		"<a href=\"\(node.url)>\">\(node.url)</a"
+	}
+
+	public func visit(node: InternalLinkNode) -> String {
+		"<a href=\"\(node.url)>\">\(node.url)</a"
 	}
 }

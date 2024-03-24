@@ -8,7 +8,7 @@
 import Foundation
 
 /// Lexer protocol.
-public protocol ILexer {
+protocol ILexer {
 
 	/// Tokenizes a given string into an array of 'Token'.
 	/// - Parameter input: The string to tokenize.
@@ -17,25 +17,18 @@ public protocol ILexer {
 }
 
 /// A Lexer class responsible for tokenizing Markdown text.
-public final class Lexer: ILexer {
+final class Lexer: ILexer {
 
 	// MARK: - Dependencies
 
-	private let textParser: ITextParser
-
-	// MARK: - Initializers
-
-	/// Initializes a new Lexer instance.
-	public init() {
-		self.textParser = TextParser()
-	}
+	private let textParser = TextParser()
 
 	// MARK: - Public methods
 
 	/// Tokenizes a given string into an array of 'Token'.
 	/// - Parameter input: The string to tokenize.
 	/// - Returns: An array of 'Token'.
-	public func tokenize(_ input: String) -> [Token] {
+	func tokenize(_ input: String) -> [Token] {
 
 		let lines = input.components(separatedBy: .newlines)
 		var tokens = [Token?]()
@@ -58,7 +51,6 @@ public final class Lexer: ILexer {
 				tokens.append(parseOrderedList(rawText: line))
 				tokens.append(parseUnorderedList(rawText: line))
 				tokens.append(parseLine(rawText: line))
-				tokens.append(parseLink(rawText: line))
 				tokens.append(parseImage(rawText: line))
 			} else {
 				tokens.append(.codeLine(text: line))
@@ -106,11 +98,7 @@ private extension Lexer {
 
 	func parseParagraph(rawText: String) -> Token? {
 		if rawText.isEmpty { return nil }
-
-		let notParagraphPattern = #"""
-^(#|>|\s*- \[ \]|\s*- \[\*\]|\s*- \[x\]|\s*- \[X\]|\d\.|\s+\d\.|\s*[\-\+]|\[.+\]\(.+\)|\[\[.+\]\]|\!\[\[.+\]\]).*
-"""#
-
+		let notParagraphPattern = #"^(#|>|[\-_]{3}|\s*[\-\*\+] |\s*\d+\. ).*"#
 		let regex = try? NSRegularExpression(pattern: notParagraphPattern)
 
 		if let notParagraph = regex?.match(rawText), notParagraph == true { return nil }
@@ -130,7 +118,7 @@ private extension Lexer {
 	}
 
 	func parseText(_ rawText: String) -> Text {
-		textParser.parse(rawtext: rawText)
+		textParser.parse(rawText: rawText)
 	}
 
 	func parseTask(rawText: String) -> Token? {
@@ -145,7 +133,7 @@ private extension Lexer {
 	}
 
 	func parseOrderedList(rawText: String) -> Token? {
-		let pattern = #"^(\t*)(\d+\.\s+.+)"#
+		let pattern = #"^(\t*)\d+\.\s+(.+)"#
 
 		let groups = rawText.groups(for: pattern)
 		if !groups.isEmpty, groups[0].count == 2 {
@@ -158,7 +146,7 @@ private extension Lexer {
 	}
 
 	func parseUnorderedList(rawText: String) -> Token? {
-		let pattern = #"^(\t*)([\-\+\*]\s+.+)"#
+		let pattern = #"^(\t*)[\-\+\*]\s+(.+)"#
 
 		let groups = rawText.groups(for: pattern)
 		if !groups.isEmpty, groups[0].count == 2 {
@@ -171,30 +159,10 @@ private extension Lexer {
 	}
 
 	func parseLine(rawText: String) -> Token? {
-		let pattern = #"^(\-{3})"#
+		let pattern = #"^([\-_]{3})"#
 
 		if rawText.group(for: pattern) != nil {
 			return .line
-		}
-
-		return nil
-	}
-
-	func parseLink(rawText: String) -> Token? {
-		let pattern1 = #"^\[(.+)\]\((.+)\)"#
-		let pattern2 = #"^\[\[(.+)\]\]"#
-
-		let groups1 = rawText.groups(for: pattern1)
-		if !groups1.isEmpty, groups1[0].count == 2 {
-			let text = groups1[0][0]
-			let url = groups1[0][1]
-			return .link(url: url, text: text)
-		}
-
-		let groups2 = rawText.groups(for: pattern2)
-		if !groups2.isEmpty, groups2[0].count == 1 {
-			let url = groups2[0][0]
-			return .link(url: url, text: nil)
 		}
 
 		return nil
