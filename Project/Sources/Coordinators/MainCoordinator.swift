@@ -8,6 +8,7 @@
 import UIKit
 import TaskManagerPackage
 import MarkdownPackage
+import NetworkPackage
 
 final class MainCoordinator: BaseCoordinator {
 
@@ -69,7 +70,7 @@ private extension MainCoordinator {
 
 	func showPdfPreviewScene(file: File) {
 		let assembler = PdfPreviewAssembler(file: file)
-		let (viewController, interactor) = assembler.assembly()
+		let (viewController, _) = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -120,6 +121,18 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func newFile() {
+
+		let authService = AuthService()
+
+		authService.perform { result in
+			switch result {
+			case .success(let response):
+				let token = response.access_token
+				print("Token: \(token)")
+			case .failure(let error):
+				print(error)
+			}
+		}
 		showMessage(message: "")
 	}
 }
