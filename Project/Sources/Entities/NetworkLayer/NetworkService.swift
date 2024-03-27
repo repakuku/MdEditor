@@ -18,8 +18,8 @@ final class NetworkService {
 	}
 
 	func perform<T: Codable>(
-		request: INetworkRequest,
-		completion: @escaping (Result<T, HttpNetworkSrviceError>) -> Void
+		_ request: INetworkRequest,
+		completion: @escaping (Result<T, HttpNetworkServiceError>) -> Void
 	) {
 		let urlRequest = requestBuilder.build(forRequest: request)
 		perform(urlRequest: urlRequest) { result in
@@ -29,8 +29,12 @@ final class NetworkService {
 					completion(.failure(.noData))
 					return
 				}
+
+				let decoder = JSONDecoder()
+				decoder.keyDecodingStrategy = .convertFromSnakeCase
+
 				do {
-					let object = try JSONDecoder().decode(T.self, from: data)
+					let object = try decoder.decode(T.self, from: data)
 					completion(.success(object))
 				} catch {
 					completion(.failure(.failedToDecodeResponse(error)))
@@ -42,19 +46,23 @@ final class NetworkService {
 	}
 
 	func perform(
-		urlRequest: URLRequest,
-		completion: @escaping (Result<Data?, HttpNetworkSrviceError>) -> Void
+		_ request: INetworkRequest,
+		completion: @escaping (Result<Data?, HttpNetworkServiceError>) -> Void
 	) {
+		let urlRequest = requestBuilder.build(forRequest: request)
+		perform(urlRequest: urlRequest, completion: completion)
+	}
+
+	func perform(urlRequest: URLRequest, completion: @escaping (Result<Data?, HttpNetworkServiceError>) -> Void) {
 		let task = session.dataTask(with: urlRequest) { data, response, error in
 			let networkResponse = NetworkResponse(data: data, response: response, error: error)
 			completion(networkResponse.result)
 		}
-
 		task.resume()
 	}
 }
 
-public enum HttpNetworkSrviceError: Error {
+public enum HttpNetworkServiceError: Error {
 	case networkError(Error)
 	case invalidResponse(URLResponse?)
 	case invalidStatusCode(Int, Data?)

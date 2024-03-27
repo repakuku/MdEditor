@@ -23,12 +23,12 @@ enum LoginError: Error {
 
 final class LoginWorker: ILoginWorker {
 
-	private let networkManager = LoginManager()
+	private let loginManager = AuthService()
 
 	// MARK: - Public methods
 
 	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void) {
-		networkManager.login(login: login, password: password) { result in
+		loginManager.login(login: login, password: password) { result in
 			switch result {
 			case .success:
 				completion(.success(()))

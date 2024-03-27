@@ -9,73 +9,54 @@
 import Foundation
 
 struct AuthRequestDTO: Codable {
-	var login: String
-	var password: String
+	let login: String
+	let password: String
 }
 
 struct AuthResponseDTO: Codable {
-	var accessToken: String
+	let accessToken: String
 }
 
 protocol IAuthService {
-	func perform(authRequest: AuthRequestDTO, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void)
+	func login(login: String, password: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class AuthService: IAuthService {
 
-	private let session: URLSession
-	private let requestBuilder: IRequestBuilder
+	private let session = URLSession.shared
 
-	init (session: URLSession, reqestBuilder: IRequestBuilder) {
-		self.session = session
-		self.requestBuilder = reqestBuilder
-	}
+	private let baseUrl = URL(string: "https://practice.swiftbook.org")! // swiftlint:disable:this force_unwrapping
 
-	func perform(authRequest: AuthRequestDTO, completion: @escaping (Result<AuthResponseDTO, Error>) -> Void) {
+	func login(login: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
+		let requestBulder = RequestBuilder(baseUrl: baseUrl)
+		let networkSevice = NetworkService(session: session, requestBuilder: requestBulder)
 
 		let headerField = HttpHeaderField.contentType(ContentType.json)
 		let header = [
 			headerField.key: headerField.value
 		]
 
+		let authRequest = AuthRequestDTO(login: login, password: password)
 		let bodyData = try? JSONEncoder().encode(authRequest)
 
 		let request = NetworkRequest(
-			path: Path.authorization.value,
+			path: PathComponent.login.path,
 			method: .post,
 			header: header,
 			body: String(data: bodyData ?? Data(), encoding: .utf8) ?? ""
 		)
 
-		let urlRequest = requestBuilder.build(forRequest: request)
-
-		let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-			if let error = error {
-				completion(.failure(AuthError.serverError(error)))
-				return
-			}
-
-			guard let data = data else {
-				completion(.failure(AuthError.noResponse))
-				return
-			}
-
-			let decoder = JSONDecoder()
-			decoder.keyDecodingStrategy = .convertFromSnakeCase
-			do {
-				let responseData = try decoder.decode(AuthResponseDTO.self, from: data)
-				completion(.success(responseData))
-			} catch {
-				completion(.failure(AuthError.jsonError(error)))
+		networkSevice.perform(request) { (result: Result<AuthResponseDTO, HttpNetworkServiceError>) in
+			switch result {
+			case .success(let response):
+				let keychainService = KeychainService(account: login)
+				if !keychainService.saveToken(response.accessToken) {
+					_ = keychainService.updateToken(response.accessToken)
+				}
+				completion(.success(()))
+			case .failure(let error):
+				completion(.failure(error))
 			}
 		}
-
-		task.resume()
-	}
-
-	enum AuthError: Error {
-		case serverError(Swift.Error)
-		case noResponse
-		case jsonError(Swift.Error)
 	}
 }

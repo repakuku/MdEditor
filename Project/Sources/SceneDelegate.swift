@@ -26,6 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		appCoordinator = coordinator
 
 		appCoordinator.start()
+
+//		FileService().getList()
 	}
 }
 

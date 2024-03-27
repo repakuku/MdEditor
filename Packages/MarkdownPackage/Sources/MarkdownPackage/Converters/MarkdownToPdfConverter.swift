@@ -8,21 +8,8 @@
 import Foundation
 import PDFKit
 
-/// Protocol for converting markdown text into a PDF document.
- public protocol IMarkdownToPdfConverter {
-
-	/// Converts markdown text into a PDF document.
-	/// - Parameters:
-	///   - markdownText: A string containing markdown formatted text.
-	///   - completion:Handler to return the PDF as 'Data'
-	func convert(
-		markdownText: String,
-		completion: @escaping (Data) -> Void
-	)
- }
-
 /// A MarkdownToPdfConverter class responsible for converting markdown text into a PDF document.
- public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
+public final class MarkdownToPdfConverter: IMarkdownConverter {
 
 	private struct Cursor {
 		static let initialPosition: CGFloat = 40
@@ -63,7 +50,7 @@ import PDFKit
 	///   - title: Title of the document
 	///   - pageFormat: Format of the PDF pages.
 	///   - completion:Handler to return the PDF as 'Data'
-	public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
+	public func convert(markdownText: String) -> Data {
 		let document = markdownToDocument.convert(markdownText: markdownText)
 		let format = UIGraphicsPDFRendererFormat()
 
@@ -100,8 +87,16 @@ import PDFKit
 			}
 		}
 
-		completion(data)
+		return data
 	}
+	 
+	 public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
+		 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			 guard let self = self else { return }
+			 let result = self.convert(markdownText: markdownText)
+			 completion(result)
+		 }
+	 }
 
 	public enum PageSize {
 		// swiftlint:disable identifier_name

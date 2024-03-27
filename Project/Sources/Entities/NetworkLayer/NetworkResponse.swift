@@ -9,7 +9,7 @@
 import Foundation
 
 final class NetworkResponse {
-	let result: Result<Data?, HttpNetworkSrviceError>
+	let result: Result<Data?, HttpNetworkServiceError>
 
 	init(data: Data? = nil, response: URLResponse? = nil, error: Error? = nil) {
 		guard let response = response as? HTTPURLResponse else {

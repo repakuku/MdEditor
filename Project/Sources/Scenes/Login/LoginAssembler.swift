@@ -18,7 +18,7 @@ final class LoginAssembler {
 			viewController: viewController,
 			loginResultClosure: loginResultClosure
 		)
-		let worker = LoginWorker()
+		let worker = StubLoginWorker()
 		let interactor = LoginInteractor(
 			presenter: presenter,
 			worker: worker
