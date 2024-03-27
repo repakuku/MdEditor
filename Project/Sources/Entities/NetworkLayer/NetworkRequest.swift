@@ -61,7 +61,7 @@ struct NetworkRequest: INetworkRequest {
 	var body: String?
 }
 
-public enum ResponseCode {
+enum ResponseCode {
 	static let informationalCodes = 100..<200
 	static let successCodes = 200..<300
 	static let redirectCodes = 300..<400
