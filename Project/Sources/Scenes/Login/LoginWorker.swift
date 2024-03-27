@@ -14,7 +14,7 @@ protocol ILoginWorker {
 	///   - login: Логин пользователя.
 	///   - password: Пароль пользователя.
 	/// - Returns: Результат прохождения авторизации.
-	func login(login: String, password: String) -> Result<Void, LoginError>
+	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void)
 }
 
 enum LoginError: Error {
@@ -23,29 +23,24 @@ enum LoginError: Error {
 
 final class LoginWorker: ILoginWorker {
 
-	// MARK: - Private properties
-
-	private let validLogin = "Admin"
-	private let validPassword = "pa$$32!"
+	private let networkManager = LoginManager()
 
 	// MARK: - Public methods
 
-	/// Авторизация пользователя.
-	/// - Parameters:
-	///   - login: Логин пользователя.
-	///   - password: Пароль пользователя.
-	/// - Returns: Результат прохождения авторизации.
-	func login(login: String, password: String) -> Result<Void, LoginError> {
-		if login == validLogin && password == validPassword {
-			return .success(())
-		} else {
-			return .failure(.wrongLoginOrPassword)
+	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void) {
+		networkManager.login(login: login, password: password) { result in
+			switch result {
+			case .success:
+				completion(.success(()))
+			case .failure:
+				completion(.failure(.wrongLoginOrPassword))
+			}
 		}
 	}
 }
 
-class StubLoginWorker: ILoginWorker {
-	func login(login: String, password: String) -> Result<Void, LoginError> {
-		.success(())
+final class StubLoginWorker: ILoginWorker {
+	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void) {
+		completion(.success(()))
 	}
 }

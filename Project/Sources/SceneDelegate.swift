@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import TaskManagerPackage
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
