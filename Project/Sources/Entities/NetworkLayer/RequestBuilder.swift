@@ -13,10 +13,10 @@ protocol IRequestBuilder {
 }
 
 struct RequestBuilder: IRequestBuilder {
-	private var token: String?
+	private var token: Token?
 	private var baseUrl: URL
 
-	init(token: String? = nil, baseUrl: URL) {
+	init(token: Token? = nil, baseUrl: URL) {
 		self.token = token
 		self.baseUrl = baseUrl
 	}
@@ -34,7 +34,7 @@ struct RequestBuilder: IRequestBuilder {
 		}
 
 		if let body = request.body {
-			urlRequest.httpBody = body.data(using: .utf8)
+			urlRequest.httpBody = body
 		}
 
 		return urlRequest

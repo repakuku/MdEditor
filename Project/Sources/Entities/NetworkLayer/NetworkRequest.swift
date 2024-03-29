@@ -12,7 +12,7 @@ protocol INetworkRequest {
 	var path: String { get }
 	var method: HttpMethod { get }
 	var header: [String: String] { get }
-	var body: String? { get }
+	var body: Data? { get }
 }
 
 enum HttpMethod: String {
@@ -22,7 +22,8 @@ enum HttpMethod: String {
 
 enum HttpHeaderField {
 	case contentType(ContentType)
-	case authorization(String)
+	case authorization(Token)
+	case contentDisposition(name: String, fileName: String)
 
 	var key: String {
 		switch self {
@@ -30,6 +31,8 @@ enum HttpHeaderField {
 			return "Content-Type"
 		case .authorization:
 			return "Authorization"
+		case .contentDisposition:
+			return "Content-Disposition"
 		}
 	}
 
@@ -38,27 +41,38 @@ enum HttpHeaderField {
 		case .contentType(let contentType):
 			return contentType.value
 		case .authorization(let token):
-			return "Bearer \(token)"
+			return "Bearer \(token.rawValue)"
+		case .contentDisposition(let name, let fileName):
+			return "form-data; name=\"\(name)\"; filename=\"\(fileName)\""
 		}
 	}
 }
 
 enum ContentType {
 	case json
+	case multipart(boundary: String)
+	case markdown
 
 	var value: String {
 		switch self {
 		case .json:
 			return "application/json"
+		case .multipart(let boundary):
+			return "multipart/form-data; boundary=----\(boundary)"
+		case .markdown:
+			return "text/markdown"
 		}
 	}
 }
 
 struct NetworkRequest: INetworkRequest {
+
+	static let baseURL = URL(string: "https://practice.swiftbook.org")! // swiftlint:disable:this force_unwrapping
+
 	var path: String
 	var method: HttpMethod
 	var header: [String: String]
-	var body: String?
+	var body: Data?
 }
 
 enum ResponseCode {

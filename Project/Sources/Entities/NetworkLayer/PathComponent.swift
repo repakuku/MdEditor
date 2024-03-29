@@ -11,6 +11,7 @@ import Foundation
 enum PathComponent {
 	case login
 	case files
+	case upload
 
 	var path: String {
 		switch self {
@@ -18,6 +19,8 @@ enum PathComponent {
 			return "/api/auth/login"
 		case .files:
 			return "/api/files"
+		case .upload:
+			return "/api/files/upload"
 		}
 	}
 }

@@ -8,7 +8,21 @@
 
 import Foundation
 
-final class NetworkService {
+protocol INetworkService {
+	func perform<T: Codable>(
+		_ request: INetworkRequest,
+		completion: @escaping (Result<T, HttpNetworkServiceError>) -> Void
+	)
+
+	func perform(
+		_ request: INetworkRequest,
+		completion: @escaping (Result<Data?, HttpNetworkServiceError>) -> Void
+	)
+
+	func perform(urlRequest: URLRequest, completion: @escaping (Result<Data?, HttpNetworkServiceError>) -> Void)
+}
+
+final class NetworkService: INetworkService {
 	private let session: URLSession
 	private let requestBuilder: IRequestBuilder
 

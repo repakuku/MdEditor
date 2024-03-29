@@ -9,13 +9,14 @@
 import Foundation
 
 struct KeychainService {
+
 	let account: String
 
 	private let service = "NetworkLayer"
 
-	func saveToken(_ token: String) -> Bool {
+	func saveToken(_ token: Token) -> Bool {
 
-		guard let passData = token.data(using: .utf8) else {
+		guard let passData = token.rawValue.data(using: .utf8) else {
 			return false
 		}
 
@@ -31,7 +32,7 @@ struct KeychainService {
 		return status == errSecSuccess
 	}
 
-	func getToken() -> String? {
+	func getToken() -> Token? {
 
 		let query = [
 			kSecAttrService: service,
@@ -46,7 +47,12 @@ struct KeychainService {
 		let status = SecItemCopyMatching(query, &dataTypeRef)
 
 		if status == errSecSuccess, let data = dataTypeRef as? Data {
-			return String(data: data, encoding: .utf8)
+			if let rawValue = String(data: data, encoding: .utf8) {
+				let token = Token(rawValue: rawValue)
+				return token
+			} else {
+				return nil
+			}
 		} else {
 			return nil
 		}
@@ -65,9 +71,9 @@ struct KeychainService {
 		return status == errSecSuccess
 	}
 
-	func updateToken(_ token: String) -> Bool {
+	func updateToken(_ token: Token) -> Bool {
 
-		guard let passData = token.data(using: .utf8) else {
+		guard let passData = token.rawValue.data(using: .utf8) else {
 			return false
 		}
 

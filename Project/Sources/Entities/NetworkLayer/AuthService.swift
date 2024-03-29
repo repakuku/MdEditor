@@ -25,9 +25,8 @@ final class AuthService: IAuthService {
 
 	private let session = URLSession.shared
 
-	private let baseUrl = URL(string: "https://practice.swiftbook.org")! // swiftlint:disable:this force_unwrapping
-
 	func login(login: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
+		let baseUrl = NetworkRequest.baseURL
 		let requestBulder = RequestBuilder(baseUrl: baseUrl)
 		let networkSevice = NetworkService(session: session, requestBuilder: requestBulder)
 
@@ -43,15 +42,16 @@ final class AuthService: IAuthService {
 			path: PathComponent.login.path,
 			method: .post,
 			header: header,
-			body: String(data: bodyData ?? Data(), encoding: .utf8) ?? ""
+			body: bodyData
 		)
 
 		networkSevice.perform(request) { (result: Result<AuthResponseDTO, HttpNetworkServiceError>) in
 			switch result {
 			case .success(let response):
 				let keychainService = KeychainService(account: login)
-				if !keychainService.saveToken(response.accessToken) {
-					_ = keychainService.updateToken(response.accessToken)
+				let token = Token(rawValue: response.accessToken)
+				if !keychainService.saveToken(token) {
+					_ = keychainService.updateToken(token)
 				}
 				completion(.success(()))
 			case .failure(let error):

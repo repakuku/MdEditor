@@ -31,19 +31,35 @@ struct FilesResponseDataDTO: Codable {
 	}
 }
 
+struct UploadResponseDTO: Codable {
+  let url: String
+  let originalName: String
+//  "size": 2460,
+//  "contentType": "text/markdown",
+//  "createdAt": "2024-03-27T21:17:21.902Z",
+//  "updatedAt": "2024-03-27T21:17:21.902Z",
+//  "hash": "f90556a597e25c544148f70a7951844b3bf377d7d6954869c7f36ae5996eed77",
+//  "_id": "66048ce1e6cda734368c5fca",
+//  "__v": 0
+}
+
 final class FileService {
 
 	private let session = URLSession.shared
+	private let requestBuilder: IRequestBuilder
+	private let networkService: INetworkService
 
+	private let token: Token
 	private let baseUrl = URL(string: "https://practice.swiftbook.org")! // swiftlint:disable:this force_unwrapping
 
-	func getList() {
-		guard let token = KeychainService(account: "repakuku@icloud.com").getToken() else {
-			return
-		}
+	init(token: Token) {
+		self.token = token
 
-		let requestBuilder = RequestBuilder(token: token, baseUrl: baseUrl)
-		let networkSevice = NetworkService(session: session, requestBuilder: requestBuilder)
+		requestBuilder = RequestBuilder(token: token, baseUrl: baseUrl)
+		networkService = NetworkService(session: session, requestBuilder: requestBuilder)
+	}
+
+	func getFiles(completion: @escaping (Result<FilesResponseDataDTO, HttpNetworkServiceError>) -> Void) {
 
 		let headerField = HttpHeaderField.authorization(token)
 		let header = [
@@ -56,12 +72,56 @@ final class FileService {
 			header: header
 		)
 
-		networkSevice.perform(request) { (result: Result<[FilesResponseDataDTO.Item], HttpNetworkServiceError>) in
+		networkService.perform(request) { (result: Result<[FilesResponseDataDTO.Item], HttpNetworkServiceError>) in
+			switch result {
+			case .success(let files):
+				let response = FilesResponseDataDTO(items: files)
+				completion(.success(response))
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
+	}
+
+	func upload(file: File, completion: @escaping (Result<UploadResponseDTO, HttpNetworkServiceError>) -> Void) {
+
+		let authHeader = HttpHeaderField.authorization(token)
+
+		let boundary = UUID().uuidString
+		let multipartContentTypeHeader = HttpHeaderField.contentType(.multipart(boundary: boundary))
+
+		let contentDispositionHeader = HttpHeaderField.contentDisposition(name: "file", fileName: file.name)
+		let markdownContentTypeHeader = HttpHeaderField.contentType(.markdown)
+
+		let formData = NSMutableData()
+		formData.append("------\(boundary)\r\n".data(using: .utf8)!)
+		formData.append(
+			"\(contentDispositionHeader.key): \(contentDispositionHeader.value)\r\n".data(using: .utf8)!
+		)
+		formData.append("\(markdownContentTypeHeader.key): \(markdownContentTypeHeader.value)\r\n".data(using: .utf8)!)
+
+		formData.append(file.contentOfFile()!)
+
+		formData.append("------\(boundary)--\r\n".data(using: .utf8)!)
+
+		let header = [
+			authHeader.key: authHeader.value,
+			multipartContentTypeHeader.key: multipartContentTypeHeader.value
+		]
+
+		let request = NetworkRequest(
+			path: PathComponent.upload.path,
+			method: .post,
+			header: header,
+			body: formData as Data
+		)
+
+		networkService.perform(request) { (result: Result<UploadResponseDTO, HttpNetworkServiceError>) in
 			switch result {
 			case .success(let response):
-				print(response)
+				completion(.success(response))
 			case .failure(let error):
-				print(error)
+				completion(.failure(error))
 			}
 		}
 	}
