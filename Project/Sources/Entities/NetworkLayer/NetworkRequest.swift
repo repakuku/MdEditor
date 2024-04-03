@@ -58,7 +58,7 @@ enum ContentType {
 		case .json:
 			return "application/json"
 		case .multipart(let boundary):
-			return "multipart/form-data; boundary=----\(boundary)"
+			return "multipart/form-data; boundary=\(boundary)"
 		case .markdown:
 			return "text/markdown"
 		}
