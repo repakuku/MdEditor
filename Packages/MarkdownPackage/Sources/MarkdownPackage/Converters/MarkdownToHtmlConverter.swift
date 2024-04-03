@@ -7,17 +7,8 @@
 
 import Foundation
 
-/// Protocol for converting markdown text into an HTML string.
-public protocol IMarkdownToHtmlConverter {
-
-	/// Converts markdown text into an HTML string.
-	/// - Parameter markdownText: A string containing markdown formatted text.
-	/// - Returns: A string formatted as HTML.
-	func convert(markdownText: String) -> String
-}
-
 /// A MarkdownToHtmlConverter class responsible for converting markdown text into an HTML string.
-public final class MarkdownToHtmlConverter: IMarkdownToHtmlConverter {
+public final class MarkdownToHtmlConverter: IMarkdownConverter {
 
 	// MARK: - Private properties
 
@@ -39,6 +30,14 @@ public final class MarkdownToHtmlConverter: IMarkdownToHtmlConverter {
 		let html = documnet.accept(visitor: visitor)
 
 		return makeHtml(html.joined())
+	}
+	
+	public func convert(markdownText: String, completion: @escaping (String) -> Void) {
+		DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			guard let self else { return }
+			let result = convert(markdownText: markdownText)
+			completion(result)
+		}
 	}
 
 	// MARK: - Private methods

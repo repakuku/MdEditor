@@ -80,8 +80,11 @@ public final class BlockquoteNode: BaseNode {
 public final class ParagraphNode: BaseNode {
 }
 
-/// Represents a text node in a document structure.
 public final class TextNode: BaseNode {
+}
+
+/// Represents a text node in a document structure.
+public final class PlainTextNode: BaseNode {
 
 	/// The string content of the text node.
 	public let text: String
@@ -132,35 +135,34 @@ public final class BoldItalicTextNode: BaseNode {
 	}
 }
 
-/// Represents a code block node in a document structure.
-public final class CodeBlockNode: BaseNode {
+public final class StrikeTextNode: BaseNode {
 
-	/// An integer representing the indentation level of the code block.
-	public let level: Int
+	public let text: String
 
-	/// An optional string specifying the programming language of the code block.
-	public let lang: String?
-
-	/// Initializes a code block node.
-	/// - Parameters:
-	///   - level: An integer representing the indentation level of the code block.
-	///   - lang: An optional string specifying the programming language of the code block.
-	public init(level: Int, lang: String?) {
-		self.level = level
-		self.lang = lang
+	public init(text: String) {
+		self.text = text
 	}
 }
 
-/// Represents a code line node in a document structure.
-public final class CodeLineNode: BaseNode {
+public final class HighlightedTextNode: BaseNode {
 
-	/// A string containing a single line of code.
 	public let text: String
 
-	/// Initializes a node representing a single line of code within a code block.
-	/// - Parameter text: A string containing a single line of code.
 	public init(text: String) {
 		self.text = text
+	}
+}
+
+/// Represents an escaped char node in a document structure.
+public final class EscapedCharNode: BaseNode {
+
+	/// The string content of the escaped char.
+	public let char: String
+
+	/// Initializes an escaped char node.
+	/// - Parameter char: The string content of the escaped char.
+	public init(char: String) {
+		self.char = char
 	}
 }
 
@@ -177,16 +179,26 @@ public final class InlineCodeNode: BaseNode {
 	}
 }
 
-/// Represents an escaped char node in a document structure.
-public final class EscapedCharNode: BaseNode {
+/// Represents a code block node in a document structure.
+public final class CodeBlockNode: BaseNode {
 
-	/// The string content of the escaped char.
-	public let char: String
+	/// An integer representing the indentation level of the code block.
+	public let level: Int
 
-	/// Initializes an escaped char node.
-	/// - Parameter char: The string content of the escaped char.
-	public init(char: String) {
-		self.char = char
+	/// A  string specifying the programming language of the code block.
+	public let lang: String
+
+	public let code: String
+
+	/// Initializes a code block node.
+	/// - Parameters:
+	///   - level: An integer representing the indentation level of the code block.
+	///   - lang: A string specifying the programming language of the code block.
+	///   - code:
+	public init(level: Int, lang: String, code: String) {
+		self.level = level
+		self.lang = lang
+		self.code = code
 	}
 }
 
@@ -213,25 +225,6 @@ public final class ImageNode: BaseNode {
 	public init(url: String, size: String) {
 		self.url = url
 		self.size = size
-	}
-}
-
-/// Represents a link node in a document structure.
-public final class LinkNode: BaseNode {
-
-	/// The visible text of the link.
-	public let title: String?
-
-	/// The destination URL.
-	public let url: String
-
-	/// Initializes a link node with an optional title and a URL.
-	/// - Parameters:
-	///   - title: The visible text of the link.
-	///   - url: The destination URL.
-	public init(title: String?, url: String) {
-		self.title = title
-		self.url = url
 	}
 }
 
@@ -288,4 +281,25 @@ public final class LineNode: BaseNode {
 
 	/// Initializes a line node instance.
 	public init() { }
+}
+
+public final class InternalLinkNode: BaseNode {
+
+	public let url: String
+
+	public init(url: String) {
+		self.url = url
+	}
+}
+
+public final class ExternalLinkNode: BaseNode {
+
+	public let url: String
+
+	public let text: String
+
+	public init(url: String, text: String) {
+		self.url = url
+		self.text = text
+	}
 }

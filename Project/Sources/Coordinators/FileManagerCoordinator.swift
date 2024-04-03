@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TaskManagerPackage
 import MarkdownPackage
 
 protocol IFileManagerCoordinator: ICoordinator {
@@ -52,30 +53,33 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 private extension FileManagerCoordinator {
 
 	func showFileManagerScene(file: File?) {
-		let assembler = FileManagerAssembler(
-			fileExplorer: fileExplorer,
-			file: file
-		)
+		let assembler = FileManagerAssembler(fileExplorer: fileExplorer, file: file)
 		let (viewController, interactor) = assembler.assembly()
 		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
-	func showTextPreviewScene(file: File) {
-		let assembler = TextPreviewAssembler(file: file)
+	func showTextEditorScene(file: File) {
+		let assembler = TextEditorAssembler(file: file)
 		let (viewController, interactor) = assembler.assembly()
 		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
-	func showPdfPreviewScene(file: File) {
-		let assembler = PdfPreviewAssembler(file: file)
-		let (viewController, interactor) = assembler.assembly()
-		interactor.delegate = self
+	private func showTodoListScene(text: String) {
+		let taskManager = TaskManager()
 
-		navigationController.pushViewController(viewController, animated: true)
+		let document = MarkdownToDocument().convert(markdownText: text)
+		let taskRepository: ITaskRepository = TaskScanner(document: document)
+
+		taskManager.addTasks(tasks: taskRepository.getTasks())
+
+		let assembler = TodoListAssembler(taskManager: OrderedTaskManager(taskManager: taskManager))
+		let viewController = assembler.assembly(createTaskClosure: nil)
+
+		navigationController.present(viewController, animated: true)
 	}
 }
 
@@ -102,24 +106,14 @@ extension FileManagerCoordinator: IFileManagerDelegate {
 	}
 
 	func openFile(file: File) {
-		showTextPreviewScene(file: file)
+		showTextEditorScene(file: file)
 	}
 }
 
-// MARK: - ITextPreviewDelegate
+// MARK: - ITextEditorDelegate
 
-extension FileManagerCoordinator: ITextPreviewDelegate {
-	func openPdf(file: File) {
-		showPdfPreviewScene(file: file)
-	}
-}
-
-// MARK: - IPdfPreviewDelegate
-
-extension FileManagerCoordinator: IPdfPreviewDelegate {
-	func printPdf(data: Data) {
-		let printController = UIPrintInteractionController.shared
-		printController.printingItem = data
-		printController.present(animated: true)
+extension FileManagerCoordinator: ITextEditorDelegate {
+	func openTodoList(text: String) {
+		showTodoListScene(text: text)
 	}
 }

@@ -59,22 +59,14 @@ final class FileManagerInteractor: IFileManagerInteractor {
 		} else {
 			var files = [File]()
 
-			if
-				let bundleUrl = Bundle.main.url(forResource: "Examples", withExtension: nil),
-				case .success(let file) = File.parse(url: bundleUrl) {
+			if case .success(let file) = File.parse(url: Endpoints.examples) {
 				files.append(file)
 			}
 
-			if
-				let documentsUrl = try? FileManager.default.url(
-					for: .documentDirectory,
-					in: .userDomainMask,
-					appropriateFor: nil,
-					create: true
-				),
-				case .success(let file) = File.parse(url: documentsUrl) {
+			if case .success(let file) = File.parse(url: Endpoints.documents) {
 				files.append(file)
 			}
+
 			fileList = FileManagerModel.Response(currentFile: nil, files: files)
 		}
 
@@ -88,7 +80,31 @@ final class FileManagerInteractor: IFileManagerInteractor {
 			if selectedFile.isFolder {
 				delegate?.openFolder(file: selectedFile)
 			} else {
+
 				delegate?.openFile(file: selectedFile)
+
+				let token = KeychainService(account: "repakuku@icloud.com").getToken()
+				FileService(token: token!).upload(file: selectedFile) { result in
+					switch result {
+					case .success(let response):
+						print(response.originalName)
+						self.delegate?.openFile(file: selectedFile)
+					case .failure(let error):
+						switch error {
+						case .networkError:
+							break
+						case .invalidResponse:
+							break
+						case .invalidStatusCode(let code, let data):
+							print(code)
+							print(String(bytes: data!, encoding: .utf8))
+						case .noData:
+							break
+						case .failedToDecodeResponse:
+							break
+						}
+					}
+				}
 			}
 		}
 	}

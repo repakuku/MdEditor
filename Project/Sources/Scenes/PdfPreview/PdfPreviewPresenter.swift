@@ -18,28 +18,37 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IPdfPreviewController?
-	private let converter: IMarkdownToPdfConverter
+
+	// swiftlint:disable:next implicitly_unwrapped_optional
+	private var converter: MainQueueDispatchConverterDecorator<MarkdownToPdfConverter>!
+
+	// MARK: - Private properties
+
+	private let pdfAuthor: String
 
 	// MARK: - Initialization
 
-	init(
-		viewController: PdfPreviewController,
-		converter: IMarkdownToPdfConverter
-	) {
+	init(viewController: PdfPreviewController, pdfAuthor: String) {
 		self.viewController = viewController
-		self.converter = converter
+		self.pdfAuthor = pdfAuthor
 	}
 
 	// MARK: - Public Methods
 
 	func present(response: PdfPreviewModel.Response) {
+		let pdfTitle = response.fileUrl.lastPathComponent
 
-		converter.convert(
-			markdownText: response.fileContent,
-			author: "",
-			title: response.fileUrl.lastPathComponent,
-			pageFormat: .a4
-		) { [weak self] data in
+		converter = MainQueueDispatchConverterDecorator(
+			decoratee:
+				MarkdownToPdfConverter(
+					pageSize: .screen,
+					backgroundColor: Theme.backgroundColor,
+					pdfAuthor: pdfAuthor,
+					pdfTitle: pdfTitle
+				)
+		)
+
+		converter.convert(markdownText: response.fileContent) { [weak self] (data: Data) in
 			let viewModel = PdfPreviewModel.ViewModel(
 				currentTitle: response.fileUrl.lastPathComponent,
 				data: data

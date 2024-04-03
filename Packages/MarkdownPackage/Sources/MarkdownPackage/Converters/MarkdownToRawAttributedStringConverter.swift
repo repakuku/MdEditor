@@ -1,18 +1,18 @@
 //
-//  MarkdownToAttributedStringConverter.swift
+//  MarkdownToRawAttributedStringConverter.swift
 //
 //
-//  Created by Alexey Turulin on 2/26/24.
+//  Created by Alexey Turulin on 3/24/24.
 //
 
 import Foundation
 
-/// A MarkdownToAttributedStringConverter class responsible for converting markdown text 
+/// A MarkdownToRawAttributedStringConverter class responsible for converting markdown text
 /// // swiftlint:disable:this force_unwrappinginto a 'NSMutableAttributedString'.
-public final class MarkdownToAttributedStringConverter: IMarkdownConverter {
+public final class MarkdownToRawAttributedStringConverter: IMarkdownConverter {
 
 	// MARK: - Dependencies
-	private let visitor = AttributedTextVisitor()
+	private let visitor = RawAttributedTextVisitor()
 	private let markdownToDocument = MarkdownToDocument()
 
 	// MARK: - initialization

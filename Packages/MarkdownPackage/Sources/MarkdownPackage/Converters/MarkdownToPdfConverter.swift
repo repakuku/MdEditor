@@ -8,27 +8,8 @@
 import Foundation
 import PDFKit
 
-/// Protocol for converting markdown text into a PDF document.
-public protocol IMarkdownToPdfConverter {
-
-	/// Converts markdown text into a PDF document.
-	/// - Parameters:
-	///   - markdownText: A string containing markdown formatted text.
-	///   - author: Author of the document.
-	///   - title: Title of the document
-	///   - pageFormat: Format of the PDF pages.
-	///   - completion:Handler to return the PDF as 'Data'
-	func convert(
-		markdownText: String,
-		author: String,
-		title: String,
-		pageFormat: PageFormat,
-		completion: @escaping (Data) -> Void
-	)
-}
-
 /// A MarkdownToPdfConverter class responsible for converting markdown text into a PDF document.
-public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
+public final class MarkdownToPdfConverter: IMarkdownConverter {
 
 	private struct Cursor {
 		static let initialPosition: CGFloat = 40
@@ -39,18 +20,25 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 	// MARK: - Dependencies
 
-	private let theme: IAttributedTextColors
-	private let fonts: IAttributedTextFonts
 	private let visitor: AttributedTextVisitor
 	private let markdownToDocument = MarkdownToDocument()
+
+	// MARK: - Private properties
+
+	private let pageSize: PageSize
+	private let backgroundColor: UIColor
+	private let pdfAuthor: String
+	private let pdfTitle: String
 
 	// MARK: - Initialization
 
 	/// Initializes a MarkdownToPdfConverter instance.
-	public init(theme: IAttributedTextColors, fonts: IAttributedTextFonts) {
-		self.theme = theme
-		self.fonts = fonts
-		visitor = AttributedTextVisitor(theme: theme, fonts: fonts)
+	public init(pageSize: PageSize, backgroundColor: UIColor, pdfAuthor: String, pdfTitle: String) {
+		self.pageSize = pageSize
+		self.backgroundColor = backgroundColor
+		self.pdfAuthor = pdfAuthor
+		self.pdfTitle = pdfTitle
+		visitor = AttributedTextVisitor()
 	}
 
 	// MARK: - Public Methods
@@ -62,30 +50,18 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 	///   - title: Title of the document
 	///   - pageFormat: Format of the PDF pages.
 	///   - completion:Handler to return the PDF as 'Data'
-	public func convert(
-		markdownText: String,
-		author: String,
-		title: String,
-		pageFormat: PageFormat,
-		completion: @escaping (Data) -> Void
-	) {
-
+	public func convert(markdownText: String) -> Data {
 		let document = markdownToDocument.convert(markdownText: markdownText)
 		let format = UIGraphicsPDFRendererFormat()
 
 		let pdfMetaData = [
-			kCGPDFContextAuthor: author,
-			kCGPDFContextTitle: title
+			kCGPDFContextAuthor: pdfAuthor,
+			kCGPDFContextTitle: pdfTitle
 		]
 
 		format.documentInfo = pdfMetaData as [String: Any]
 
-		let pageRect = CGRect(
-			x: pageFormat.size.x,
-			y: pageFormat.size.y,
-			width: pageFormat.size.width,
-			height: pageFormat.size.height
-		)
+		let pageRect = pageSize.pageRect
 
 		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
 
@@ -93,6 +69,8 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 
 		let data = graphicsRenderer.pdfData { context in
 			context.beginPage()
+			context.cgContext.setFillColor(backgroundColor.cgColor)
+			context.fill(pageRect)
 
 			var cursor = Cursor()
 
@@ -109,11 +87,35 @@ public final class MarkdownToPdfConverter: IMarkdownToPdfConverter {
 			}
 		}
 
-		completion(data)
+		return data
 	}
-}
+	 
+	 public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
+		 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			 guard let self = self else { return }
+			 let result = self.convert(markdownText: markdownText)
+			 completion(result)
+		 }
+	 }
 
-private extension MarkdownToPdfConverter {
+	public enum PageSize {
+		// swiftlint:disable identifier_name
+		case a4
+
+		case screen
+
+		var pageRect: CGRect {
+			switch self {
+			case .a4:
+				return CGRect(x: 0, y: 0, width: 595.2, height: 841.8)
+			case .screen:
+				return UIScreen.main.bounds
+			}
+		}
+	}
+ }
+
+ private extension MarkdownToPdfConverter {
 	func addAttributedText(
 		context: UIGraphicsPDFRendererContext,
 		text: NSAttributedString,
@@ -158,31 +160,4 @@ private extension MarkdownToPdfConverter {
 
 		return cursor
 	}
-}
-
-/// Represents page formats.
-public enum PageFormat {
-	// swiftlint:disable identifier_name
-
-	/// Represents A4 page format.
-	case a4
-
-	struct PageSize {
-		let x: Double = 10
-		let y: Double = 10
-		let width: Double
-		let height: Double
-
-		init(width: Double, height: Double) {
-			self.width = width / 25.4 * 72
-			self.height = height / 25.4 * 72
-		}
-	}
-
-	var size: PageSize {
-		switch self {
-		case .a4:
-			return PageSize(width: 210, height: 297)
-		}
-	}
-}
+ }

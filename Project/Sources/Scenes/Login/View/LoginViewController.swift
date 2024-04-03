@@ -116,6 +116,7 @@ private extension LoginViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 
 		textFieldLogin.placeholder = L10n.Login.loginPlaceholder
+		textFieldLogin.autocapitalizationType = .none
 		textFieldPass.placeholder = L10n.Login.passwordPlaceholder
 		textFieldPass.isSecureTextEntry = true
 
