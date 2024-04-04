@@ -9,7 +9,7 @@
 import Foundation
 import MarkdownPackage
 
-/// A decorator for 'IMarkdownToPdfConverter'.
+/// A decorator for 'IMarkdownConverter'.
 final class MainQueueDispatchConverterDecorator<Converter: IMarkdownConverter>: IMarkdownConverter {
 	typealias ResultType = Converter.ResultType
 
@@ -33,6 +33,7 @@ final class MainQueueDispatchConverterDecorator<Converter: IMarkdownConverter>: 
 	///   - markdownText: The markdown formatted text to convert.
 	///   - completion: A completion handler that is called with the result.
 	func convert(markdownText: String, completion: @escaping (ResultType) -> Void) {
+
 		decoratee.convert(markdownText: markdownText) { [weak self] result in
 			self?.doInMainThread {
 				completion(result)

@@ -94,15 +94,17 @@ final class FileService {
 		let markdownContentTypeHeader = HttpHeaderField.contentType(.markdown)
 
 		let formData = NSMutableData()
-		formData.append("------\(boundary)\r\n".data(using: .utf8)!)
+		formData.append("------\(boundary)\r\n".data(using: .utf8)!) // swiftlint:disable:this force_unwrapping
 		formData.append(
+			// swiftlint:disable:next force_unwrapping
 			"\(contentDispositionHeader.key): \(contentDispositionHeader.value)\r\n".data(using: .utf8)!
 		)
+		// swiftlint:disable:next force_unwrapping
 		formData.append("\(markdownContentTypeHeader.key): \(markdownContentTypeHeader.value)\r\n".data(using: .utf8)!)
 
-		formData.append(file.contentOfFile()!)
+		formData.append(file.contentOfFile()!) // swiftlint:disable:this force_unwrapping
 
-		formData.append("------\(boundary)--\r\n".data(using: .utf8)!)
+		formData.append("------\(boundary)--\r\n".data(using: .utf8)!) // swiftlint:disable:this force_unwrapping
 
 		let header = [
 			authHeader.key: authHeader.value,

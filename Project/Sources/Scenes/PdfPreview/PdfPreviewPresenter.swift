@@ -18,6 +18,8 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IPdfPreviewController?
+	
+	private let opQueue = OperationQueue()
 
 	// swiftlint:disable:next implicitly_unwrapped_optional
 	private var converter: MainQueueDispatchConverterDecorator<MarkdownToPdfConverter>!
@@ -36,25 +38,38 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: PdfPreviewModel.Response) {
-		let pdfTitle = response.fileUrl.lastPathComponent
 
-		converter = MainQueueDispatchConverterDecorator(
-			decoratee:
-				MarkdownToPdfConverter(
-					pageSize: .screen,
-					backgroundColor: Theme.backgroundColor,
-					pdfAuthor: pdfAuthor,
-					pdfTitle: pdfTitle
-				)
+		let downloadOperation = MdDocumentDownloadOperation(
+			// swiftlint:disable:next force_unwrapping
+			url: URL(string: "https://raw.githubusercontent.com/repakuku/MdEditor/dev/README.md")!
 		)
 
-		converter.convert(markdownText: response.fileContent) { [weak self] (data: Data) in
+		let generatorOperation = PdfGeneratorOperation(pdfAuthor: pdfAuthor)
+		let saverOperation = MdDocumentSaverOperation()
+
+		generatorOperation.addDependency(downloadOperation)
+		saverOperation.addDependency(downloadOperation)
+
+		generatorOperation.completionBlock = { [weak self] in
+
+			var title = "Title"
+
+			if let documentName = downloadOperation.document?.name {
+				title = documentName
+			}
+
 			let viewModel = PdfPreviewModel.ViewModel(
-				currentTitle: response.fileUrl.lastPathComponent,
-				data: data
+				currentTitle: title,
+				data: generatorOperation.data
 			)
 
-			self?.viewController?.render(viewModel: viewModel)
+			DispatchQueue.main.async {
+				self?.viewController?.render(viewModel: viewModel)
+			}
 		}
+
+		opQueue.addOperation(downloadOperation)
+		opQueue.addOperation(generatorOperation)
+		opQueue.addOperation(saverOperation)
 	}
 }

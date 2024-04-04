@@ -83,26 +83,8 @@ final class FileManagerInteractor: IFileManagerInteractor {
 
 				delegate?.openFile(file: selectedFile)
 
-				let token = KeychainService(account: "repakuku@icloud.com").getToken()
-				FileService(token: token!).upload(file: selectedFile) { result in
-					switch result {
-					case .success(let response):
-						print(response.originalName)
-						self.delegate?.openFile(file: selectedFile)
-					case .failure(let error):
-						switch error {
-						case .networkError:
-							break
-						case .invalidResponse:
-							break
-						case .invalidStatusCode(let code, let data):
-							print(code)
-							print(String(bytes: data!, encoding: .utf8))
-						case .noData:
-							break
-						case .failedToDecodeResponse:
-							break
-						}
+				if let token = KeychainService(account: "repakuku@icloud.com").getToken() {
+					FileService(token: token).upload(file: selectedFile) { _ in
 					}
 				}
 			}

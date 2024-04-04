@@ -91,11 +91,12 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 	}
 	 
 	 public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
-		 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-			 guard let self = self else { return }
+//		 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+//			 guard let self = self else { return }
+		 sleep(1)
 			 let result = self.convert(markdownText: markdownText)
 			 completion(result)
-		 }
+//		 }
 	 }
 
 	public enum PageSize {
