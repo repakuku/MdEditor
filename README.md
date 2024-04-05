@@ -1,4 +1,4 @@
-# MdEditor (Beta)
+# MdEditor
 
 Welcome to MdEditor, a sophisticated Markdown editor developed using the robust CleanSwift architecture. 
 MdEditor is more than just a text editor; it’s a seamless blend of intuitive markdown editing and efficient 
