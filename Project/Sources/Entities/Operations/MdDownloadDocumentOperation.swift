@@ -23,6 +23,7 @@ final class MdDocumentDownloadOperation: Operation {
 
 	private let url: URL
 	private let completion: MdDocumentOperationCompletion?
+	private var task: URLSessionDataTask?
 
 	var document: MdDocument?
 
@@ -39,7 +40,7 @@ final class MdDocumentDownloadOperation: Operation {
 
 		let semaphore = DispatchSemaphore(value: 0)
 
-		let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { [weak self] data, response, error in
+		task = URLSession.shared.dataTask(with: URLRequest(url: url)) { [weak self] data, response, error in
 
 			defer { semaphore.signal() }
 
@@ -62,8 +63,13 @@ final class MdDocumentDownloadOperation: Operation {
 
 			self.document = MdDocument(name: self.url.lastPathComponent, body: body)
 		}
-		task.resume()
+		task?.resume()
 		semaphore.wait()
+	}
+
+	override func cancel() {
+		super.cancel()
+		task?.cancel()
 	}
 }
 

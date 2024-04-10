@@ -18,7 +18,7 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Dependencies
 
 	private weak var viewController: IPdfPreviewController?
-	
+
 	private let opQueue = OperationQueue()
 
 	// swiftlint:disable:next implicitly_unwrapped_optional
@@ -39,10 +39,7 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 
 	func present(response: PdfPreviewModel.Response) {
 
-		let downloadOperation = MdDocumentDownloadOperation(
-			// swiftlint:disable:next force_unwrapping
-			url: URL(string: "https://raw.githubusercontent.com/repakuku/MdEditor/dev/README.md")!
-		)
+		let downloadOperation = MdDocumentDownloadOperation(url: Endpoints.readmeUrl)
 
 		let generatorOperation = PdfGeneratorOperation(pdfAuthor: pdfAuthor)
 		let saverOperation = MdDocumentSaverOperation()
@@ -52,7 +49,7 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 
 		generatorOperation.completionBlock = { [weak self] in
 
-			var title = "Title"
+			var title = ""
 
 			if let documentName = downloadOperation.document?.name {
 				title = documentName
