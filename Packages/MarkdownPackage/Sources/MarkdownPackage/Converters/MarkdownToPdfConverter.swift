@@ -61,16 +61,12 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 
 		format.documentInfo = pdfMetaData as [String: Any]
 
-		let pageRect = pageSize.pageRect
-
-		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
+		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageSize.pageRect, format: format)
 
 		let lines = document.accept(visitor: visitor)
 
 		let data = graphicsRenderer.pdfData { context in
-			context.beginPage()
-			context.cgContext.setFillColor(backgroundColor.cgColor)
-			context.fill(pageRect)
+			newPage(context)
 
 			var cursor = Cursor()
 
@@ -80,7 +76,7 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 					text: line,
 					indent: Cursor.indent,
 					cursor: cursor.position,
-					pdfSize: pageRect.size
+					pdfSize: pageSize.pageRect.size
 				)
 
 				cursor.position += Cursor.indent
@@ -155,10 +151,16 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 		pdfSize: CGSize
 	) -> CGFloat {
 		if cursor > pdfSize.height - 100 {
-			context.beginPage()
+			newPage(context)
 			return Cursor.initialPosition
 		}
 
 		return cursor
 	}
+
+	 func newPage(_ context: UIGraphicsPDFRendererContext) {
+		 context.beginPage()
+		 context.cgContext.setFillColor(backgroundColor.cgColor)
+		 context.fill(pageSize.pageRect)
+	 }
  }
