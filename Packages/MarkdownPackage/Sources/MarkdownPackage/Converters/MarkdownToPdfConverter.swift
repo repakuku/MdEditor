@@ -11,13 +11,6 @@ import PDFKit
 /// A MarkdownToPdfConverter class responsible for converting markdown text into a PDF document.
 public final class MarkdownToPdfConverter: IMarkdownConverter {
 
-	private struct Cursor {
-		static let initialPosition: CGFloat = 40
-		static let indent: CGFloat = 12
-
-		var position: CGFloat = Cursor.initialPosition
-	}
-
 	// MARK: - Dependencies
 
 	private let visitor: AttributedTextVisitor
@@ -52,48 +45,41 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 	///   - completion:Handler to return the PDF as 'Data'
 	public func convert(markdownText: String) -> Data {
 		let document = markdownToDocument.convert(markdownText: markdownText)
-		let format = UIGraphicsPDFRendererFormat()
+		let lines = document.accept(visitor: visitor)
 
 		let pdfMetaData = [
 			kCGPDFContextAuthor: pdfAuthor,
 			kCGPDFContextTitle: pdfTitle
 		]
 
+		let format = UIGraphicsPDFRendererFormat()
 		format.documentInfo = pdfMetaData as [String: Any]
 
 		let graphicsRenderer = UIGraphicsPDFRenderer(bounds: pageSize.pageRect, format: format)
 
-		let lines = document.accept(visitor: visitor)
-
 		let data = graphicsRenderer.pdfData { context in
 			newPage(context)
 
-			var cursor = Cursor()
+			var cursor = Const.cursorIndent
 
 			lines.forEach { line in
-				cursor.position = self.addAttributedText(
+				cursor = addAttributedText(
 					context: context,
 					text: line,
-					indent: Cursor.indent,
-					cursor: cursor.position,
+					indent: Const.textIndent,
+					cursor: cursor,
 					pdfSize: pageSize.pageRect.size
 				)
-
-				cursor.position += Cursor.indent
 			}
 		}
 
 		return data
 	}
 	 
-	 public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
-//		 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-//			 guard let self = self else { return }
-		 sleep(1)
-			 let result = self.convert(markdownText: markdownText)
-			 completion(result)
-//		 }
-	 }
+	public func convert(markdownText: String, completion: @escaping (Data) -> Void) {
+		let result = self.convert(markdownText: markdownText)
+		completion(result)
+	}
 
 	public enum PageSize {
 		// swiftlint:disable identifier_name
@@ -150,9 +136,9 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 		cursor: CGFloat,
 		pdfSize: CGSize
 	) -> CGFloat {
-		if cursor > pdfSize.height - 100 {
+		if cursor > pdfSize.height - Const.safePageArea {
 			newPage(context)
-			return Cursor.initialPosition
+			return Const.cursorIndent
 		}
 
 		return cursor
@@ -162,5 +148,11 @@ public final class MarkdownToPdfConverter: IMarkdownConverter {
 		 context.beginPage()
 		 context.cgContext.setFillColor(backgroundColor.cgColor)
 		 context.fill(pageSize.pageRect)
+	 }
+
+	 enum Const {
+		 static let cursorIndent: CGFloat = 20
+		 static let textIndent: CGFloat = 20
+		 static let safePageArea: CGFloat = 100
 	 }
  }
