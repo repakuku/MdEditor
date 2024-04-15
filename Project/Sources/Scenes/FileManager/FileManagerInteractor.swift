@@ -66,6 +66,7 @@ final class FileManagerInteractor: IFileManagerInteractor {
 			if case .success(let file) = File.parse(url: Endpoints.documents) {
 				files.append(file)
 			}
+
 			fileList = FileManagerModel.Response(currentFile: nil, files: files)
 		}
 
@@ -79,7 +80,13 @@ final class FileManagerInteractor: IFileManagerInteractor {
 			if selectedFile.isFolder {
 				delegate?.openFolder(file: selectedFile)
 			} else {
+
 				delegate?.openFile(file: selectedFile)
+
+				if let token = KeychainService(account: "repakuku@icloud.com").getToken() {
+					FileService(token: token).upload(file: selectedFile) { _ in
+					}
+				}
 			}
 		}
 	}

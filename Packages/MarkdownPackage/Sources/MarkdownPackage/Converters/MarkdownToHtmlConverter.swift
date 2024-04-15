@@ -31,6 +31,14 @@ public final class MarkdownToHtmlConverter: IMarkdownConverter {
 
 		return makeHtml(html.joined())
 	}
+	
+	public func convert(markdownText: String, completion: @escaping (String) -> Void) {
+		DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			guard let self else { return }
+			let result = convert(markdownText: markdownText)
+			completion(result)
+		}
+	}
 
 	// MARK: - Private methods
 

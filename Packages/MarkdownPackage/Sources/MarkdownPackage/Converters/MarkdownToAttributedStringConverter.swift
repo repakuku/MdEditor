@@ -29,6 +29,14 @@ public final class MarkdownToAttributedStringConverter: IMarkdownConverter {
 		let documnet = markdownToDocument.convert(markdownText: markdownText)
 		return convert(document: documnet)
 	}
+	
+	public func convert(markdownText: String, completion: @escaping (NSMutableAttributedString) -> Void) {
+		DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			guard let self else { return }
+			let result = convert(markdownText: markdownText)
+			completion(result)
+		}
+	}
 
 	// MARK: - Private methods
 

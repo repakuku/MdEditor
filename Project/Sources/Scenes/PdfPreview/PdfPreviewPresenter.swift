@@ -19,6 +19,11 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 
 	private weak var viewController: IPdfPreviewController?
 
+	private let opQueue = OperationQueue()
+
+	// swiftlint:disable:next implicitly_unwrapped_optional
+	private var converter: MainQueueDispatchConverterDecorator<MarkdownToPdfConverter>!
+
 	// MARK: - Private properties
 
 	private let pdfAuthor: String
@@ -33,26 +38,35 @@ final class PdfPreviewPresenter: IPdfPreviewPresenter {
 	// MARK: - Public Methods
 
 	func present(response: PdfPreviewModel.Response) {
-		let pdfTitle = response.fileUrl.lastPathComponent
 
-		let converter = MainQueueDispatchDecorator(
-			decoratee: MarkdownToPdfConverter(
-				pageSize: .screen,
-				backgroundColor: Theme.backgroundColor,
-				pdfAuthor: pdfAuthor,
-				pdfTitle: pdfTitle
-			)
-		)
+		let downloadOperation = MdDocumentDownloadOperation(url: Endpoints.readmeUrl)
 
-		converter.convert(
-			markdownText: response.fileContent
-		) { [weak self] data in
+		let generatorOperation = PdfGeneratorOperation(pdfAuthor: pdfAuthor)
+		let saverOperation = MdDocumentSaverOperation()
+
+		generatorOperation.addDependency(downloadOperation)
+		saverOperation.addDependency(downloadOperation)
+
+		generatorOperation.completionBlock = { [weak self] in
+
+			var title = ""
+
+			if let documentName = downloadOperation.document?.name {
+				title = documentName
+			}
+
 			let viewModel = PdfPreviewModel.ViewModel(
-				currentTitle: response.fileUrl.lastPathComponent,
-				data: data
+				currentTitle: title,
+				data: generatorOperation.data
 			)
 
-			self?.viewController?.render(viewModel: viewModel)
+			DispatchQueue.main.async {
+				self?.viewController?.render(viewModel: viewModel)
+			}
 		}
+
+		opQueue.addOperation(downloadOperation)
+		opQueue.addOperation(generatorOperation)
+		opQueue.addOperation(saverOperation)
 	}
 }

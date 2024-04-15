@@ -69,7 +69,7 @@ private extension MainCoordinator {
 
 	func showPdfPreviewScene(file: File) {
 		let assembler = PdfPreviewAssembler(file: file)
-		let (viewController, interactor) = assembler.assembly()
+		let (viewController, _) = assembler.assembly()
 
 		navigationController.pushViewController(viewController, animated: true)
 	}

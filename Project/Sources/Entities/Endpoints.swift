@@ -13,6 +13,10 @@ import Foundation
 
 enum Endpoints {
 
+	static var readmeUrl: URL = {
+		URL(string: "https://raw.githubusercontent.com/repakuku/MdEditor/dev/README.md")!
+	}()
+
 	static var documents: URL = {
 		try! FileManager.default.url(
 			for: .documentDirectory,
