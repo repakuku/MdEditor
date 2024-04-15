@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+final class SearchManagerAssembler {
+
+	// MARK: - Public methods
+	func assembly(delegate: ISearchManagerDelegate) -> SearchManagerViewController {
+		let viewController = SearchManagerViewController()
+		let presenter = SearchManagerPresenter(viewController: viewController)
+		let interactor = SearchManagerInteractor(presenter: presenter, delegate: delegate)
+
+		viewController.interactor = interactor
+
+		return viewController
+	}
+}

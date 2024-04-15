@@ -31,6 +31,7 @@
 "MainMenu.title" = "MD Editor";
 "MainMenu.newFile" = "New File";
 "MainMenu.openFile" = "Open File";
+"MainMenu.search" = "Search";
 "MainMenu.about" = "About";
 
 // MARK: - TextEditorScreen
@@ -56,6 +57,10 @@
 "TodoList.Section.important" = "Important";
 "TodoList.Section.regular" = "Regular";
 "TodoList.dateFormat" = "yyyy-MM-dd";
+
+// MARK: - SearchScreen
+
+"Search.placeholder" = "Search";
 
 // MARK: - TaskData string
 

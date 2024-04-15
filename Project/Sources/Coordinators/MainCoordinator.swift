@@ -74,6 +74,13 @@ private extension MainCoordinator {
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
+	func showSearchManager() {
+		let assembler = SearchManagerAssembler()
+		let viewController = assembler.assembly(delegate: self)
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
 	func runFileManagerFlow() {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
@@ -122,6 +129,10 @@ extension MainCoordinator: IMainMenuDelegate {
 	func newFile() {
 		showMessage(message: "")
 	}
+
+	func search() {
+		showSearchManager()
+	}
 }
 
 // MARK: - ITextEditorDelegate
@@ -131,3 +142,7 @@ extension MainCoordinator: ITextEditorDelegate {
 		showTodoListScene(text: text)
 	}
 }
+
+// MARK: - ISearchManagerDelegate
+
+extension MainCoordinator: ISearchManagerDelegate { }

@@ -93,4 +93,15 @@ enum AccessibilityIdentifier {
 			}
 		}
 	}
+
+	enum SearchManagerScene: CustomStringConvertible {
+		case table
+
+		var description: String {
+			switch self {
+			case .table:
+				return "searchManagerScene.table"
+			}
+		}
+	}
 }

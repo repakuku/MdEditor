@@ -13,6 +13,7 @@ enum MainMenuModel {
 	enum MenuIdentifier {
 		case openFile
 		case newFile
+		case search
 		case showAbout
 	}
 

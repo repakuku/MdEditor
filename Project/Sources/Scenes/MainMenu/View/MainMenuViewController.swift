@@ -35,6 +35,7 @@ final class MainMenuViewController: UIViewController {
 
 	private lazy var folderImage = makeFolderImage()
 	private lazy var fileImage = makeFileImage()
+	private lazy var searchImage = makeSearchImage()
 	private lazy var aboutImage = makeAboutImage()
 
 	private var constraints = [NSLayoutConstraint]()
@@ -136,6 +137,13 @@ private extension MainMenuViewController {
 		) ?? UIImage()
 	}
 
+	func makeSearchImage() -> UIImage {
+		UIImage(systemName: "magnifyingglass")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
 	func makeAboutImage() -> UIImage {
 		UIImage(systemName: "info.bubble.fill")?.withTintColor(
 			Theme.mainColor,
@@ -214,6 +222,8 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
 		case .newFile:
 			cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
+		case .search:
+			cell.configure(menuTitle: menuItem.title, menuImage: searchImage)
 		case .showAbout:
 			cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
 		}

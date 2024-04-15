@@ -31,6 +31,7 @@
 "MainMenu.title" = "MD Editor";
 "MainMenu.newFile" = "Новый документ";
 "MainMenu.openFile" = "Открыть документ";
+"MainMenu.search" = "Поиск";
 "MainMenu.about" = "О приложении";
 
 // MARK: - TextEditorScreen
@@ -56,6 +57,10 @@
 "TodoList.Section.important" = "Важные";
 "TodoList.Section.regular" = "Обычные";
 "TodoList.dateFormat" = "dd MMMM YYYY";
+
+// MARK: - SearchScreen
+
+"Search.placeholder" = "Поиск";
 
 // MARK: - TaskData string
 

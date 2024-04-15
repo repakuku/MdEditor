@@ -12,6 +12,7 @@ protocol IMainMenuDelegate: AnyObject {
 	func showAbout()
 	func openFileExplorer()
 	func openFile(file: File)
+	func search()
 	func newFile()
 }
 
@@ -36,6 +37,7 @@ final class MainMenuInteractor: IMainMenuInteractor {
 	private let menu: [MainMenuModel.MenuIdentifier] = [
 		.newFile,
 		.openFile,
+		.search,
 		.showAbout
 	]
 
@@ -66,6 +68,8 @@ final class MainMenuInteractor: IMainMenuInteractor {
 				delegate?.openFileExplorer()
 			case .newFile:
 				delegate?.newFile()
+			case .search:
+				delegate?.search()
 			case .showAbout:
 				delegate?.showAbout()
 			}
