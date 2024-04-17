@@ -9,7 +9,7 @@
 import SwiftUI
 
 protocol ITagManagerViewController {
-	func render()
+	func render(viewModel: TagManagerModel.ViewModel)
 }
 
 final class TagManagerViewController: UIViewController {
@@ -25,6 +25,8 @@ final class TagManagerViewController: UIViewController {
 	private lazy var tableView = makeTableView(
 		accessibilityIdentifier: AccessibilityIdentifier.TagManagerScene.table.description
 	)
+
+	private var viewModel: TagManagerModel.ViewModel?
 
 	// MARK: - Initialization
 
@@ -87,10 +89,6 @@ extension TagManagerViewController {
 
 		return tableView
 	}
-
-	func configureCell(_ cell: UITableViewCell) {
-		cell.backgroundColor = Theme.backgroundColor
-	}
 }
 
 // MARK: - Layout UI
@@ -110,13 +108,28 @@ extension TagManagerViewController {
 			]
 		)
 	}
+
+	func configureCell(_ cell: UITableViewCell, with searchModel: String) {
+		var content = cell.defaultContentConfiguration()
+
+		cell.tintColor = Theme.accentColor
+		cell.backgroundColor = Theme.backgroundColor
+
+		content.text = searchModel
+
+		cell.contentConfiguration = content
+	}
 }
 
 // MARK: - Preview
 
 struct TagManagerViewControllerProvider: PreviewProvider {
 	static var previews: some View {
-		TagManagerAssembler().assembly().preview()
+		TagManagerAssembler()
+			.assembly(
+				delegate: MainCoordinator(navigationController: UINavigationController())
+			)
+			.preview()
 	}
 }
 // MARK: - UISearchBarDelegate
@@ -124,6 +137,10 @@ struct TagManagerViewControllerProvider: PreviewProvider {
 extension TagManagerViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
+
+		if let searchTag = searchBar.text {
+			interactor?.fetchData(request: .searchButtonPressed(searchTag: searchTag))
+		}
 	}
 }
 
@@ -131,14 +148,31 @@ extension TagManagerViewController: UISearchBarDelegate {
 
 extension TagManagerViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		10
+		viewModel?.result.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
-		configureCell(cell)
+		if let item = viewModel?.result[indexPath.row] {
+			configureCell(cell, with: item.text)
+		}
 
 		return cell
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+
+		interactor?.performAction(request: .resultSelected(indexPath: indexPath))
+	}
+}
+
+// MARK: - ITagManagerViewController
+
+extension TagManagerViewController: ITagManagerViewController {
+	func render(viewModel: TagManagerModel.ViewModel) {
+		self.viewModel = viewModel
+		tableView.reloadData()
 	}
 }

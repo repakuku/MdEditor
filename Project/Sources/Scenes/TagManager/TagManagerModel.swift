@@ -6,11 +6,30 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
+import UIKit
+
 enum TagManagerModel {
 
-	struct Request { }
+	enum Request {
+		case searchButtonPressed(searchTag: String)
+		case resultSelected(indexPath: IndexPath)
+	}
 
-	struct Response { }
+	struct Response {
+		let result: [SearchModel]
 
-	struct ViewModel {  }
+		struct SearchModel {
+			let fileUrl: URL
+			let text: String
+			let lineNumber: Int
+		}
+	}
+
+	struct ViewModel {
+		let result: [SearchModel]
+
+		struct SearchModel {
+			let text: String
+		}
+	}
 }

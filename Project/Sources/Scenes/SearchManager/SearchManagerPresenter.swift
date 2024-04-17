@@ -25,13 +25,13 @@ final class SearchManagerPresenter: ISearchManagerPresenter {
 	}
 
 	func present(response: SearchManagerModel.Response) {
-		let results: [SearchManagerModel.ViewModel.SearchModel] = response.results.map {
+		let result: [SearchManagerModel.ViewModel.SearchModel] = response.result.map {
 			SearchManagerModel.ViewModel.SearchModel(
 				fileName: $0.fileUrl.lastPathComponent,
 				text: $0.text
 			)
 		}
-		let viewModel = SearchManagerModel.ViewModel(results: results)
+		let viewModel = SearchManagerModel.ViewModel(result: result)
 		viewController.render(viewModel: viewModel)
 	}
 }

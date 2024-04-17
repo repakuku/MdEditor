@@ -88,7 +88,7 @@ private extension MainCoordinator {
 
 	func showTagManager() {
 		let assembler = TagManagerAssembler()
-		let viewController = assembler.assembly()
+		let viewController = assembler.assembly(delegate: self)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -162,3 +162,7 @@ extension MainCoordinator: ITextEditorDelegate {
 // MARK: - ISearchManagerDelegate
 
 extension MainCoordinator: ISearchManagerDelegate { }
+
+// MARK: - ITagmanagerDelegate
+
+extension MainCoordinator: ITagManagerDelegate { }

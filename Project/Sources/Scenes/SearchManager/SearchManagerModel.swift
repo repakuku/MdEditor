@@ -16,7 +16,7 @@ enum SearchManagerModel {
 	}
 
 	struct Response {
-		let results: [SearchModel]
+		let result: [SearchModel]
 
 		struct SearchModel {
 			let fileUrl: URL
@@ -26,7 +26,7 @@ enum SearchManagerModel {
 	}
 
 	struct ViewModel {
-		let results: [SearchModel]
+		let result: [SearchModel]
 
 		struct SearchModel {
 			let fileName: String

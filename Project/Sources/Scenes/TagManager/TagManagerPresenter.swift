@@ -28,5 +28,13 @@ final class TagManagerPresenter: ITagManagerPresenter {
 
 	// MARK: - Public Methods
 
-	func present(response: TagManagerModel.Response) { }
+	func present(response: TagManagerModel.Response) {
+		let result: [TagManagerModel.ViewModel.SearchModel] = response.result.map {
+			TagManagerModel.ViewModel.SearchModel(
+				text: $0.text
+			)
+		}
+		let viewModel = TagManagerModel.ViewModel(result: result)
+		viewController.render(viewModel: viewModel)
+	}
 }

@@ -125,12 +125,12 @@ private extension SearchManagerViewController {
 
 extension SearchManagerViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		viewModel?.results.count ?? 0
+		viewModel?.result.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-		if let item = viewModel?.results[indexPath.row] {
+		if let item = viewModel?.result[indexPath.row] {
 			configureCell(cell, with: item)
 		}
 		return cell

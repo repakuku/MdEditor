@@ -7,10 +7,11 @@
 //
 
 final class TagManagerAssembler {
-	func assembly() -> TagManagerViewController {
+	func assembly(delegate: ITagManagerDelegate) -> TagManagerViewController {
 		let viewController = TagManagerViewController()
 		let presenter = TagManagerPresenter(viewController: viewController)
-		let interactor = TagManagerInteractor(presenter: presenter)
+		let interactor = TagManagerInteractor(presenter: presenter, delegate: delegate)
+		viewController.interactor = interactor
 
 		return viewController
 	}

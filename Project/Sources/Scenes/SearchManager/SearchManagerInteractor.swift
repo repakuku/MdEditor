@@ -35,25 +35,25 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	}
 
 	func fetchData(request: SearchManagerModel.Request) {
-		// TODO: Replace test implementation
+		// TODO: Replace
 		if case let .searchButtonPressed(searchText) = request {
 			let result = SearchManagerModel.Response.SearchModel(
 				fileUrl: Endpoints.documentTest,
-				text: "Test",
+				text: searchText,
 				lineNumber: 1
 			)
-			presenter.present(response: SearchManagerModel.Response(results: [result]))
+			presenter.present(response: SearchManagerModel.Response(result: [result]))
 		}
 	}
 
 	func performAction(request: SearchManagerModel.Request) {
-		// TODO: Replace test implementation
-		if case let .resultSelected(indexPath) = request {
+		// TODO: Replace
+		if case .resultSelected = request {
 			switch File.parse(url: Endpoints.documentTest) {
 			case .success(let file):
 				delegate?.openFile(file: file)
 			case .failure(let error):
-				print(error.localizedDescription)
+				print(error.localizedDescription) // swiftlint:disable:this print_using
 			}
 		}
 	}
