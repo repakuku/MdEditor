@@ -32,6 +32,7 @@
 "MainMenu.newFile" = "New File";
 "MainMenu.openFile" = "Open File";
 "MainMenu.search" = "Search";
+"MainMenu.tags" = "Tags";
 "MainMenu.about" = "About";
 
 // MARK: - TextEditorScreen

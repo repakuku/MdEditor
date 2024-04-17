@@ -10,21 +10,13 @@ import UIKit
 
 final class FileManagerAssembler {
 
-	// MARK: - Dependencies
-
-	private let fileExplorer: IFileExplorer
-	private let file: File?
-
-	// MARK: - Initializers
-
-	init(fileExplorer: IFileExplorer, file: File?) {
-		self.fileExplorer = fileExplorer
-		self.file = file
-	}
-
 	// MARK: - Public methods
 
-	func assembly() -> (FileManagerViewController, FileManagerInteractor) {
+	func assembly(
+		fileExplorer: IFileExplorer,
+		file: File?,
+		delegate: IFileManagerDelegate
+	) -> FileManagerViewController {
 		let viewController = FileManagerViewController()
 		let presenter = FileManagerPresenter(
 			viewController: viewController
@@ -32,9 +24,10 @@ final class FileManagerAssembler {
 		let interactor = FileManagerInteractor(
 			presenter: presenter,
 			fileExplorer: fileExplorer,
+			delegate: delegate,
 			file: file
 		)
 		viewController.interactor = interactor
-		return (viewController, interactor)
+		return viewController
 	}
 }

@@ -32,6 +32,7 @@
 "MainMenu.newFile" = "Новый документ";
 "MainMenu.openFile" = "Открыть документ";
 "MainMenu.search" = "Поиск";
+"MainMenu.tags" = "Теги";
 "MainMenu.about" = "О приложении";
 
 // MARK: - TextEditorScreen

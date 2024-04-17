@@ -34,13 +34,16 @@ final class MainCoordinator: BaseCoordinator {
 private extension MainCoordinator {
 
 	func showMessage(message: String) {
+		let allert = UIAlertController(title: L10n.Message.text, message: message, preferredStyle: .alert)
+		let okAction = UIAlertAction(title: L10n.Ok.text, style: .default)
+		allert.addAction(okAction)
+		navigationController.present(allert, animated: true)
 	}
 
 	func showMainMenuScene() {
-		let assembler = MainMenuAssembler(recentFileManager: recentFileManager)
-		let (viewController, interactor) = assembler.assembly()
+		let assembler = MainMenuAssembler()
+		let viewController = assembler.assembly(recentFileManager: recentFileManager, delegate: self)
 		viewController.navigationItem.setHidesBackButton(true, animated: true)
-		interactor.delegate = self
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -53,23 +56,25 @@ private extension MainCoordinator {
 
 		taskManager.addTasks(tasks: taskRepository.getTasks())
 
-		let assembler = TodoListAssembler(taskManager: OrderedTaskManager(taskManager: taskManager))
-		let viewController = assembler.assembly(createTaskClosure: nil)
+		let assembler = TodoListAssembler()
+		let viewController = assembler.assembly(
+			taskManager: OrderedTaskManager(taskManager: taskManager),
+			createTaskClosure: nil
+		)
 
 		navigationController.present(viewController, animated: true)
 	}
 
 	func showTextEditorScene(file: File) {
-		let assembler = TextEditorAssembler(file: file)
-		let (viewController, interactor) = assembler.assembly()
-		interactor.delegate = self
+		let assembler = TextEditorAssembler()
+		let viewController = assembler.assembly(file: file, delegate: self)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
 	func showPdfPreviewScene(file: File) {
-		let assembler = PdfPreviewAssembler(file: file)
-		let (viewController, _) = assembler.assembly()
+		let assembler = PdfPreviewAssembler()
+		let viewController = assembler.assembly(file: file)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -127,7 +132,7 @@ extension MainCoordinator: IMainMenuDelegate {
 	}
 
 	func newFile() {
-		showMessage(message: "")
+		showMessage(message: L10n.MainMenu.newFile)
 	}
 
 	func search() {

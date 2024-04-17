@@ -35,6 +35,7 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	}
 
 	func fetchData(request: SearchManagerModel.Request) {
+		// TODO: Replace test implementation
 		if case let .searchButtonPressed(searchText) = request {
 			let result = SearchManagerModel.Response.SearchModel(
 				fileUrl: Endpoints.documentTest,
@@ -46,6 +47,7 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	}
 
 	func performAction(request: SearchManagerModel.Request) {
+		// TODO: Replace test implementation
 		if case let .resultSelected(indexPath) = request {
 			switch File.parse(url: Endpoints.documentTest) {
 			case .success(let file):

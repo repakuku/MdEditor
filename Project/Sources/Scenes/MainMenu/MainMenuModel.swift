@@ -14,7 +14,9 @@ enum MainMenuModel {
 		case openFile
 		case newFile
 		case search
+		case tags
 		case showAbout
+		case separator
 	}
 
 	enum Request {

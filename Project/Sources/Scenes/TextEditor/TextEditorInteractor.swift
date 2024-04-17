@@ -21,13 +21,10 @@ protocol ITextEditorInteractor {
 
 final class TextEditorInteractor: ITextEditorInteractor {
 
-	// MARK: - Public properties
-
-	weak var delegate: ITextEditorDelegate?
-
 	// MARK: - Dependencies
 
 	private let presenter: ITextEditorPresenter
+	private var delegate: ITextEditorDelegate?
 
 	// MARK: - Private properties
 
@@ -35,9 +32,10 @@ final class TextEditorInteractor: ITextEditorInteractor {
 
 	// MARK: - Initialization
 
-	init(presenter: ITextEditorPresenter, file: File) {
+	init(presenter: ITextEditorPresenter, file: File, delegate: ITextEditorDelegate) {
 		self.presenter = presenter
 		self.file = file
+		self.delegate = delegate
 	}
 
 	// MARK: - Public Methods

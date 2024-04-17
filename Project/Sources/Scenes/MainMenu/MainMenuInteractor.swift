@@ -23,21 +23,21 @@ protocol IMainMenuInteractor {
 
 final class MainMenuInteractor: IMainMenuInteractor {
 
-	// MARK: - Public properties
-
-	weak var delegate: IMainMenuDelegate?
-
 	// MARK: - Dependencies
 
 	private let presenter: IMainMenuPresenter
 	private let recentFileManager: IRecentFileManager
+	private var delegate: IMainMenuDelegate?
 
 	// MARK: - Private properties
 
 	private let menu: [MainMenuModel.MenuIdentifier] = [
 		.newFile,
 		.openFile,
+		.separator,
 		.search,
+		.tags,
+		.separator,
 		.showAbout
 	]
 
@@ -45,10 +45,12 @@ final class MainMenuInteractor: IMainMenuInteractor {
 
 	init(
 		presenter: IMainMenuPresenter,
-		recentFileManager: IRecentFileManager
+		recentFileManager: IRecentFileManager,
+		delegate: IMainMenuDelegate
 	) {
 		self.presenter = presenter
 		self.recentFileManager = recentFileManager
+		self.delegate = delegate
 	}
 
 	// MARK: - Public Methods
@@ -70,8 +72,13 @@ final class MainMenuInteractor: IMainMenuInteractor {
 				delegate?.newFile()
 			case .search:
 				delegate?.search()
+			case .tags:
+				// TODO: Change method
+				delegate?.search()
 			case .showAbout:
 				delegate?.showAbout()
+			case .separator:
+				break
 			}
 		case .recentFileSelected(let indexPath):
 			let recentFiles = recentFileManager.getRecentFiles()

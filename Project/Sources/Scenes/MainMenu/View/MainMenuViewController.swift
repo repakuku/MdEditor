@@ -36,6 +36,7 @@ final class MainMenuViewController: UIViewController {
 	private lazy var folderImage = makeFolderImage()
 	private lazy var fileImage = makeFileImage()
 	private lazy var searchImage = makeSearchImage()
+	private lazy var tagImage = makeTagImage()
 	private lazy var aboutImage = makeAboutImage()
 
 	private var constraints = [NSLayoutConstraint]()
@@ -101,9 +102,9 @@ private extension MainMenuViewController {
 		let layout = makeFlowLayout()
 
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.isPagingEnabled = true
 		collectionView.backgroundColor = Theme.backgroundColor
-		collectionView.translatesAutoresizingMaskIntoConstraints = false
 
 		collectionView.accessibilityIdentifier = accessibilityIdentifier
 		collectionView.dataSource = self
@@ -114,9 +115,13 @@ private extension MainMenuViewController {
 
 	func makeTableView(accessibilityIdentifier: String) -> UITableView {
 		let tableView = UITableView()
+
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.backgroundColor = Theme.backgroundColor
 		tableView.isScrollEnabled = false
+		tableView.backgroundColor = Theme.backgroundColor
+		tableView.separatorStyle = .none
+
+		tableView.accessibilityIdentifier = accessibilityIdentifier
 		tableView.delegate = self
 		tableView.dataSource = self
 
@@ -139,6 +144,13 @@ private extension MainMenuViewController {
 
 	func makeSearchImage() -> UIImage {
 		UIImage(systemName: "magnifyingglass")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeTagImage() -> UIImage {
+		UIImage(systemName: "tag.fill")?.withTintColor(
 			Theme.mainColor,
 			renderingMode: .alwaysOriginal
 		) ?? UIImage()
@@ -224,8 +236,12 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
 		case .search:
 			cell.configure(menuTitle: menuItem.title, menuImage: searchImage)
+		case .tags:
+			cell.configure(menuTitle: menuItem.title, menuImage: tagImage)
 		case .showAbout:
 			cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
+		case .separator:
+			break
 		}
 
 		return cell
@@ -234,6 +250,18 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		interactor?.performAction(request: .menuItemSelected(indexPath: indexPath))
+	}
+
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		let menuItem = viewModel.menu[indexPath.row]
+
+		switch menuItem.item {
+		case .separator:
+			return Sizes.Padding.normal
+		default:
+			return Sizes.M.height
+			return Sizes.M.height
+		}
 	}
 }
 
@@ -251,8 +279,11 @@ extension MainMenuViewController: IMainMenuViewController {
 
 struct MainMenuViewControllerProvider: PreviewProvider {
 	static var previews: some View {
-		MainMenuAssembler(
-			recentFileManager: StubRecentFileManager()
-		).assembly().0.preview()
+		MainMenuAssembler()
+			.assembly(
+				recentFileManager: StubRecentFileManager(),
+				delegate: MainCoordinator(navigationController: UINavigationController())
+			)
+			.preview()
 	}
 }

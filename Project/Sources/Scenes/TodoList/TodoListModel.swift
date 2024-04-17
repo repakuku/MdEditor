@@ -27,7 +27,6 @@ enum TodoListModel {
 
 	struct ViewModel {
 
-		/// Содержит в себе список заданий для отображения, разделенные на секции
 		let tasksBySections: [Section]
 
 		struct Section {
@@ -35,19 +34,16 @@ enum TodoListModel {
 			let tasks: [Task]
 		}
 
-		/// Перечисление представляющее наши заданий для отображения на экране
 		enum Task {
 			case regularTask(RegularTask)
 			case importantTask(ImportantTask)
 		}
 
-		/// Обычное задание, содержит только то, что отображается на экране
 		struct RegularTask {
 			let title: String
 			let completed: Bool
 		}
 
-		/// Важное задание, содержит только то, что отображается на экране
 		struct ImportantTask {
 			let title: String
 			let completed: Bool

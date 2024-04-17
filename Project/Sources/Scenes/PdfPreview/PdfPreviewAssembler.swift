@@ -11,24 +11,19 @@ import MarkdownPackage
 
 final class PdfPreviewAssembler {
 
-	// MARK: - Dependencies
-
-	private let file: File
-
 	// MARK: - Private properties
 
 	private let pdfAuthor: String
 
 	// MARK: - Initializers
 
-	init(file: File) {
-		self.file = file
+	init() {
 		pdfAuthor = (Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String) ?? ""
 	}
 
 	// MARK: - Public methods
 
-	func assembly() -> (PdfPreviewController, PdfPreviewInteractor) {
+	func assembly(file: File) -> PdfPreviewController {
 		let viewController = PdfPreviewController()
 
 		let presenter: IPdfPreviewPresenter = PdfPreviewPresenter(
@@ -43,6 +38,6 @@ final class PdfPreviewAssembler {
 
 		viewController.interactor = interactor
 
-		return (viewController, interactor)
+		return viewController
 	}
 }
