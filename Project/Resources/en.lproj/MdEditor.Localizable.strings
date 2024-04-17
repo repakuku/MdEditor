@@ -63,6 +63,10 @@
 
 "Search.placeholder" = "Search";
 
+// MARK: - TagScreen
+
+"Tag.placeholder" = "Tags";
+
 // MARK: - TaskData string
 
 "Task.doHomework" = "Do homework";

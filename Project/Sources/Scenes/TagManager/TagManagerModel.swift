@@ -6,3 +6,11 @@
 //  Copyright © 2024 repakuku. All rights reserved.
 //
 
+enum TagManagerModel {
+
+	struct Request { }
+
+	struct Response { }
+
+	struct ViewModel {  }
+}

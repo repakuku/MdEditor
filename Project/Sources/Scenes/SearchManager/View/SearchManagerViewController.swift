@@ -137,6 +137,7 @@ extension SearchManagerViewController: UITableViewDelegate, UITableViewDataSourc
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 		interactor?.performAction(request: .resultSelected(indexPath: indexPath))
 	}
 }
@@ -162,8 +163,8 @@ extension SearchManagerViewController: UISearchBarDelegate {
 
 // MARK: - Preview
 
- struct SearchManagerViewControlleProviderr: PreviewProvider {
+struct SearchManagerViewControlleProviderr: PreviewProvider {
 	static var previews: some View {
 		SearchManagerAssembler().assembly(delegate: MainCoordinator(navigationController: UINavigationController())).preview()
 	}
- }
+}

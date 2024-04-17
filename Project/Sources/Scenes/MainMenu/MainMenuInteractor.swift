@@ -13,6 +13,7 @@ protocol IMainMenuDelegate: AnyObject {
 	func openFileExplorer()
 	func openFile(file: File)
 	func search()
+	func showTags()
 	func newFile()
 }
 
@@ -73,8 +74,7 @@ final class MainMenuInteractor: IMainMenuInteractor {
 			case .search:
 				delegate?.search()
 			case .tags:
-				// TODO: Change method
-				delegate?.search()
+				delegate?.showTags()
 			case .showAbout:
 				delegate?.showAbout()
 			case .separator:

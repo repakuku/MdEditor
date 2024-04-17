@@ -104,4 +104,15 @@ enum AccessibilityIdentifier {
 			}
 		}
 	}
+
+	enum TagManagerScene: CustomStringConvertible {
+		case table
+
+		var description: String {
+			switch self {
+			case .table:
+				return "tagManagerSceene.table"
+			}
+		}
+	}
 }

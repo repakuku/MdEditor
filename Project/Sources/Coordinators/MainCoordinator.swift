@@ -86,6 +86,13 @@ private extension MainCoordinator {
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
+	func showTagManager() {
+		let assembler = TagManagerAssembler()
+		let viewController = assembler.assembly()
+
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
 	func runFileManagerFlow() {
 		let topViewController = navigationController.topViewController
 		let coordinator = FileManagerCoordinator(
@@ -137,6 +144,10 @@ extension MainCoordinator: IMainMenuDelegate {
 
 	func search() {
 		showSearchManager()
+	}
+
+	func showTags() {
+		showTagManager()
 	}
 }
 

@@ -260,7 +260,6 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			return Sizes.Padding.normal
 		default:
 			return Sizes.M.height
-			return Sizes.M.height
 		}
 	}
 }
