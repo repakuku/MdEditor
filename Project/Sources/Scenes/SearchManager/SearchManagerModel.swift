@@ -11,7 +11,7 @@ import Foundation
 enum SearchManagerModel {
 
 	enum Request {
-		case searchButtonPressed(searchText: String)
+		case fetch(searchText: String)
 		case resultSelected(indexPath: IndexPath)
 	}
 

@@ -35,7 +35,7 @@ final class TagManagerInteractor: ITagManagerInteractor {
 
 	func fetchData(request: TagManagerModel.Request) {
 		// TODO: Replace
-		if case .searchButtonPressed(let searchTag) = request {
+		if case .fetch(let searchTag) = request {
 			let result = TagManagerModel.Response.SearchModel(
 				fileUrl: Endpoints.documentTest,
 				text: searchTag,

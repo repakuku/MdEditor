@@ -22,6 +22,7 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	// MARK: - Dependencies
 
 	private let presenter: ISearchManagerPresenter
+	private let searchService = SearchService()
 
 	// MARK: - Private properties
 
@@ -35,26 +36,24 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	}
 
 	func fetchData(request: SearchManagerModel.Request) {
-		// TODO: Replace
-		if case let .searchButtonPressed(searchText) = request {
-			let result = SearchManagerModel.Response.SearchModel(
-				fileUrl: Endpoints.documentTest,
-				text: searchText,
-				lineNumber: 1
-			)
-			presenter.present(response: SearchManagerModel.Response(result: [result]))
+		if case let .fetch(searchText) = request {
+			let result = searchService.searchTextInFiles(atPath: Endpoints.examples, text: searchText)
+			let searchResult: [SearchManagerModel.Response.SearchModel] = result.map {
+				SearchManagerModel.Response.SearchModel(
+					fileUrl: $0.fileUrl,
+					text: $0.lineText,
+					lineNumber: $0.lineNumber
+				)
+			}
+			let response = SearchManagerModel.Response(result: searchResult)
+			presenter.present(response: response)
 		}
 	}
 
 	func performAction(request: SearchManagerModel.Request) {
 		// TODO: Replace
-		if case .resultSelected = request {
-			switch File.parse(url: Endpoints.documentTest) {
-			case .success(let file):
-				delegate?.openFile(file: file)
-			case .failure(let error):
-				print(error.localizedDescription) // swiftlint:disable:this print_using
-			}
+		if case .resultSelected(let indexPath) = request {
+//			delegate?.openFile(file: file)
 		}
 	}
 }

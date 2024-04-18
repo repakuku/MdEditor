@@ -27,7 +27,7 @@ final class SearchManagerPresenter: ISearchManagerPresenter {
 	func present(response: SearchManagerModel.Response) {
 		let result: [SearchManagerModel.ViewModel.SearchModel] = response.result.map {
 			SearchManagerModel.ViewModel.SearchModel(
-				fileName: $0.fileUrl.lastPathComponent,
+				fileName: "\($0.fileUrl.lastPathComponent):\($0.lineNumber)",
 				text: $0.text
 			)
 		}

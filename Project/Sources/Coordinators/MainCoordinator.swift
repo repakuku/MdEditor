@@ -142,7 +142,7 @@ extension MainCoordinator: IMainMenuDelegate {
 		showMessage(message: L10n.MainMenu.newFile)
 	}
 
-	func search() {
+	func startSearch() {
 		showSearchManager()
 	}
 

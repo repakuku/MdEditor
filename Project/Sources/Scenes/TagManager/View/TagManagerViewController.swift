@@ -139,7 +139,7 @@ extension TagManagerViewController: UISearchBarDelegate {
 		searchBar.resignFirstResponder()
 
 		if let searchTag = searchBar.text {
-			interactor?.fetchData(request: .searchButtonPressed(searchTag: searchTag))
+			interactor?.fetchData(request: .fetch(searchTag: searchTag))
 		}
 	}
 }

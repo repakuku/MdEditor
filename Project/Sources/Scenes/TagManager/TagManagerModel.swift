@@ -11,7 +11,7 @@ import UIKit
 enum TagManagerModel {
 
 	enum Request {
-		case searchButtonPressed(searchTag: String)
+		case fetch(searchTag: String)
 		case resultSelected(indexPath: IndexPath)
 	}
 

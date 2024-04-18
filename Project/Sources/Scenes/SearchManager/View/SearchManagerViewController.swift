@@ -151,12 +151,14 @@ extension SearchManagerViewController: ISearchManagerViewController {
 	}
 }
 
+// MARK: - UISearchBarDelegate
+
 extension SearchManagerViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
 
 		if let seachText = searchBar.text {
-			interactor?.fetchData(request: .searchButtonPressed(searchText: seachText))
+			interactor?.fetchData(request: .fetch(searchText: seachText))
 		}
 	}
 }
