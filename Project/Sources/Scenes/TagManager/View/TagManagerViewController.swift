@@ -43,6 +43,7 @@ final class TagManagerViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
+		interactor?.fetchData()
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -137,10 +138,7 @@ struct TagManagerViewControllerProvider: PreviewProvider {
 extension TagManagerViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
-
-		if let searchTag = searchBar.text {
-			interactor?.fetchData(request: .fetch(searchTag: searchTag))
-		}
+		// TODO: Complete
 	}
 }
 
@@ -155,7 +153,7 @@ extension TagManagerViewController: UITableViewDelegate, UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
 		if let item = viewModel?.result[indexPath.row] {
-			configureCell(cell, with: item.text)
+			configureCell(cell, with: item)
 		}
 
 		return cell

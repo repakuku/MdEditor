@@ -146,3 +146,7 @@ Text between lines.
 - [ ] Text decoration
 - [x] Text blocks
 
+## 12. Tags
+
+#tag
+#anothertag

@@ -37,9 +37,7 @@ final class SearchService: ISearchService {
 					result.append(searchResult)
 				}
 			}
-		} catch {
-			print("Error: \(error.localizedDescription)")
-		}
+		} catch { }
 
 		return result
 	}
@@ -51,8 +49,10 @@ final class SearchService: ISearchService {
 		let enumerator = fileManager.enumerator(at: searchPath, includingPropertiesForKeys: nil)
 
 		while let fileUrl = enumerator?.nextObject() as? URL {
-			let searchResult = searchText(inFile: fileUrl, text: text)
-			result.append(contentsOf: searchResult)
+			if fileExtension == fileUrl.pathExtension {
+				let searchResult = searchText(inFile: fileUrl, text: text)
+				result.append(contentsOf: searchResult)
+			}
 		}
 
 		return result

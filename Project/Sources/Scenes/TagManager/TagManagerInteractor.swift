@@ -11,7 +11,7 @@ protocol ITagManagerDelegate: AnyObject {
 }
 
 protocol ITagManagerInteractor {
-	func fetchData(request: TagManagerModel.Request)
+	func fetchData()
 	func performAction(request: TagManagerModel.Request)
 }
 
@@ -21,6 +21,7 @@ final class TagManagerInteractor: ITagManagerInteractor {
 
 	private let presenter: ITagManagerPresenter
 	private let delegate: ITagManagerDelegate?
+	private let extractTagService = ExtractTagService()
 
 	// MARK: - Private Properties
 
@@ -33,27 +34,13 @@ final class TagManagerInteractor: ITagManagerInteractor {
 
 	// MARK: - Public Methods
 
-	func fetchData(request: TagManagerModel.Request) {
-		// TODO: Replace
-		if case .fetch(let searchTag) = request {
-			let result = TagManagerModel.Response.SearchModel(
-				fileUrl: Endpoints.documentTest,
-				text: searchTag,
-				lineNumber: 1
-			)
-			presenter.present(response: TagManagerModel.Response(result: [result]))
-		}
+	func fetchData() {
+		let result = extractTagService.extractTagFromFiles(atPath: Endpoints.examples)
+		let response = TagManagerModel.Response(result: result)
+		presenter.present(response: response)
 	}
 
 	func performAction(request: TagManagerModel.Request) {
-		// TODO: Replace
-		if case let .resultSelected(indexPath) = request {
-			switch File.parse(url: Endpoints.documentTest) {
-			case .success(let file):
-				delegate?.openFile(file: file)
-			case .failure(let error):
-				print(error.localizedDescription) // swiftlint:disable:this print_using
-			}
-		}
+		// TODO: Complete
 	}
 }

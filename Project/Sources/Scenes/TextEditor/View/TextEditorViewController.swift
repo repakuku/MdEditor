@@ -22,6 +22,8 @@ final class TextEditorViewController: UIViewController {
 
 	private var hasTasks = false
 
+	private let searchManager = NLPSearchManager()
+
 	private lazy var segmentedControl = makeSegmentedControl()
 
 	private lazy var textViewEditor = makeTextView(
@@ -31,6 +33,8 @@ final class TextEditorViewController: UIViewController {
 	private lazy var textViewPreview = makeTextView(
 		accessibilityIdentifier: AccessibilityIdentifier.TextPreviewScene.textView.description
 	)
+
+	private lazy var searchBar = makeSearchBar()
 
 	private var constraints = [NSLayoutConstraint]()
 
@@ -121,6 +125,7 @@ private extension TextEditorViewController {
 		)
 
 		view.addSubview(segmentedControl)
+		view.addSubview(searchBar)
 		view.addSubview(textViewEditor)
 		view.addSubview(textViewPreview)
 	}
@@ -151,6 +156,20 @@ private extension TextEditorViewController {
 
 		return segmentedControl
 	}
+
+	func makeSearchBar() -> UISearchBar {
+		let searchBar = UISearchBar()
+		searchBar.translatesAutoresizingMaskIntoConstraints = false
+		searchBar.delegate = self
+
+		searchBar.barTintColor = Theme.backgroundColor
+		searchBar.searchTextField.backgroundColor = Theme.inputColor
+
+		searchBar.placeholder = L10n.Search.placeholder
+		searchBar.autocapitalizationType = .none
+
+		return searchBar
+	}
 }
 
 // MARK: - Layout UI
@@ -164,7 +183,11 @@ private extension TextEditorViewController {
 			segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 			segmentedControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
 
-			textViewEditor.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: Sizes.Padding.small),
+			searchBar.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: Sizes.Padding.small),
+			searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+			searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+
+			textViewEditor.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: Sizes.Padding.small),
 			textViewEditor.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.Padding.normal),
 			textViewEditor.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Sizes.Padding.normal),
 			textViewEditor.bottomAnchor.constraint(
@@ -172,7 +195,7 @@ private extension TextEditorViewController {
 				constant: Sizes.Padding.normal
 			),
 
-			textViewPreview.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: Sizes.Padding.small),
+			textViewPreview.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: Sizes.Padding.small),
 			textViewPreview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.Padding.normal),
 			textViewPreview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Sizes.Padding.normal),
 			textViewPreview.bottomAnchor.constraint(
@@ -208,6 +231,42 @@ extension TextEditorViewController: ITextEditorViewController {
 			printController.printingItem = text
 			printController.present(animated: true)
 		}
+	}
+}
+
+// MARK: - UISearchBarDelegate
+
+extension TextEditorViewController: UISearchBarDelegate {
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchBar.resignFirstResponder()
+
+		if let searchText = searchBar.text {
+			let result = searchManager.search(word: searchText, inText: textViewEditor.text)
+			highlight(ranges: result)
+		}
+	}
+
+	// TODO: After highlighting the text font changes.
+	private func highlight(ranges: [Range<String.Index>]) {
+		let attributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: Theme.mainColor,
+			.font: UIFont.systemFont(ofSize: 18, weight: .semibold)
+		]
+
+		let text = textViewEditor.text ?? ""
+		let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
+
+		let highlighAttributes: [NSAttributedString.Key: Any] = [
+			.foregroundColor: Theme.highlightColor,
+			.font: UIFont.systemFont(ofSize: 18, weight: .bold)
+		]
+
+		for range in ranges {
+			let nsRange = NSRange(range, in: text)
+			attributedString.addAttributes(highlighAttributes, range: nsRange)
+		}
+
+		textViewEditor.attributedText = attributedString
 	}
 }
 

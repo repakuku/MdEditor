@@ -11,25 +11,14 @@ import UIKit
 enum TagManagerModel {
 
 	enum Request {
-		case fetch(searchTag: String)
 		case resultSelected(indexPath: IndexPath)
 	}
 
 	struct Response {
-		let result: [SearchModel]
-
-		struct SearchModel {
-			let fileUrl: URL
-			let text: String
-			let lineNumber: Int
-		}
+		let result: [String]
 	}
 
 	struct ViewModel {
-		let result: [SearchModel]
-
-		struct SearchModel {
-			let text: String
-		}
+		let result: [String]
 	}
 }

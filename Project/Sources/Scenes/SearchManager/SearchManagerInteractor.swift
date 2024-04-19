@@ -22,11 +22,14 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	// MARK: - Dependencies
 
 	private let presenter: ISearchManagerPresenter
-	private let searchService = SearchService()
+
+	private let searchService = FreqWordService()
 
 	// MARK: - Private properties
 
 	private let delegate: ISearchManagerDelegate?
+
+	private var files: [File] = []
 
 	// MARK: - Initialization
 
@@ -37,23 +40,27 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 
 	func fetchData(request: SearchManagerModel.Request) {
 		if case let .fetch(searchText) = request {
-			let result = searchService.searchTextInFiles(atPath: Endpoints.examples, text: searchText)
-			let searchResult: [SearchManagerModel.Response.SearchModel] = result.map {
+			let freqWords = searchService.freqWordsInFiles(atPath: Endpoints.examples)
+			let searchResult = searchService.searchWord(searchText, wordCount: freqWords)
+
+			let result = searchResult.keys.map {
 				SearchManagerModel.Response.SearchModel(
-					fileUrl: $0.fileUrl,
-					text: $0.lineText,
-					lineNumber: $0.lineNumber
+					fileUrl: $0,
+					text: searchText,
+					lineNumber: searchResult[$0] ?? 0
 				)
 			}
-			let response = SearchManagerModel.Response(result: searchResult)
+
+			let response = SearchManagerModel.Response(result: result)
 			presenter.present(response: response)
 		}
 	}
 
 	func performAction(request: SearchManagerModel.Request) {
-		// TODO: Replace
 		if case .resultSelected(let indexPath) = request {
-//			delegate?.openFile(file: file)
+			if indexPath.row < files.count {
+				delegate?.openFile(file: files[indexPath.row])
+			}
 		}
 	}
 }
