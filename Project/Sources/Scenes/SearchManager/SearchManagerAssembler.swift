@@ -15,7 +15,6 @@ final class SearchManagerAssembler {
 		let viewController = SearchManagerViewController()
 		let presenter = SearchManagerPresenter(viewController: viewController)
 		let interactor = SearchManagerInteractor(presenter: presenter, delegate: delegate)
-
 		viewController.interactor = interactor
 
 		return viewController

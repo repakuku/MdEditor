@@ -51,6 +51,12 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 				)
 			}
 
+			result.forEach {
+				if case let .success(file) = File.parse(url: $0.fileUrl) {
+					files.append(file)
+				}
+			}
+
 			let response = SearchManagerModel.Response(result: result)
 			presenter.present(response: response)
 		}
