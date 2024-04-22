@@ -161,6 +161,11 @@ extension SearchManagerViewController: UISearchBarDelegate {
 			interactor?.fetchData(request: .fetch(searchText: seachText))
 		}
 	}
+
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+		viewModel = nil
+		tableView.reloadData()
+	}
 }
 
 // MARK: - Preview
