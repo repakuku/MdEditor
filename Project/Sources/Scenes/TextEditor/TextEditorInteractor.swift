@@ -29,12 +29,19 @@ final class TextEditorInteractor: ITextEditorInteractor {
 	// MARK: - Private properties
 
 	private let file: File
+	private let searchText: String?
 
 	// MARK: - Initialization
 
-	init(presenter: ITextEditorPresenter, file: File, delegate: ITextEditorDelegate) {
+	init(
+		presenter: ITextEditorPresenter,
+		file: File,
+		searchText: String? = nil,
+		delegate: ITextEditorDelegate
+	) {
 		self.presenter = presenter
 		self.file = file
+		self.searchText = searchText
 		self.delegate = delegate
 	}
 
@@ -42,7 +49,11 @@ final class TextEditorInteractor: ITextEditorInteractor {
 
 	func fetchData() {
 		let content = String(data: file.contentOfFile() ?? Data(), encoding: .utf8) ?? ""
-		let response = TextEditorModel.Response.initial(fileUrl: file.url, fileContent: content)
+		let response = TextEditorModel.Response.initial(
+			fileUrl: file.url,
+			fileContent: content,
+			searchText: searchText
+		)
 		presenter.present(response: response)
 	}
 

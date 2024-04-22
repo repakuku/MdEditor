@@ -65,9 +65,9 @@ private extension MainCoordinator {
 		navigationController.present(viewController, animated: true)
 	}
 
-	func showTextEditorScene(file: File) {
+	func showTextEditorScene(file: File, searchText: String? = nil) {
 		let assembler = TextEditorAssembler()
-		let viewController = assembler.assembly(file: file, delegate: self)
+		let viewController = assembler.assembly(file: file, searchText: searchText, delegate: self)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -161,7 +161,11 @@ extension MainCoordinator: ITextEditorDelegate {
 
 // MARK: - ISearchManagerDelegate
 
-extension MainCoordinator: ISearchManagerDelegate { }
+extension MainCoordinator: ISearchManagerDelegate {
+	func openFile(file: File, searchText: String) {
+		showTextEditorScene(file: file, searchText: searchText)
+	}
+}
 
 // MARK: - ITagmanagerDelegate
 

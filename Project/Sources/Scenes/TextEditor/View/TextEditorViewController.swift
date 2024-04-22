@@ -54,6 +54,7 @@ final class TextEditorViewController: UIViewController {
 		super.viewDidLoad()
 		interactor?.fetchData()
 		setupUI()
+		searchBarTextDidEndEditing(searchBar)
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -215,8 +216,9 @@ private extension TextEditorViewController {
 extension TextEditorViewController: ITextEditorViewController {
 	func render(viewModel: TextEditorModel.ViewModel) {
 		switch viewModel {
-		case .initial(let text, let title, let hasTasks):
+		case .initial(let text, let title, let hasTasks, let searchText):
 			self.title = title
+			searchBar.text = searchText
 			textViewEditor.isScrollEnabled = false
 			textViewEditor.text = text
 			textViewEditor.isScrollEnabled = true
@@ -239,14 +241,16 @@ extension TextEditorViewController: ITextEditorViewController {
 extension TextEditorViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		searchBar.resignFirstResponder()
+		searchBarTextDidEndEditing(searchBar)
+	}
 
+	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
 		if let searchText = searchBar.text {
 			let result = searchManager.search(word: searchText, inText: textViewEditor.text)
 			highlight(ranges: result)
 		}
 	}
 
-	// TODO: After highlighting the text font changes.
 	private func highlight(ranges: [Range<String.Index>]) {
 		let attributes: [NSAttributedString.Key: Any] = [
 			.foregroundColor: Theme.mainColor,

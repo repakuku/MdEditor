@@ -12,7 +12,7 @@ enum SearchManagerModel {
 
 	enum Request {
 		case fetch(searchText: String)
-		case resultSelected(indexPath: IndexPath)
+		case resultSelected(indexPath: IndexPath, searchText: String)
 	}
 
 	struct Response {

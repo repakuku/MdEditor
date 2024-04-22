@@ -13,12 +13,17 @@ final class TextEditorAssembler {
 
 	// MARK: - Public methods
 
-	func assembly(file: File, delegate: ITextEditorDelegate) -> TextEditorViewController {
+	func assembly(
+		file: File,
+		searchText: String? = nil,
+		delegate: ITextEditorDelegate
+	) -> TextEditorViewController {
 		let viewController = TextEditorViewController()
 		let presenter: ITextEditorPresenter = TextEditorPresenter(viewController: viewController)
 		let interactor = TextEditorInteractor(
 			presenter: presenter,
 			file: file,
+			searchText: searchText,
 			delegate: delegate
 		)
 		viewController.interactor = interactor

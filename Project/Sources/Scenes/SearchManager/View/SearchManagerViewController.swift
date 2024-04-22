@@ -138,7 +138,10 @@ extension SearchManagerViewController: UITableViewDelegate, UITableViewDataSourc
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		interactor?.performAction(request: .resultSelected(indexPath: indexPath))
+
+		if let searchText = searchBar.text {
+			interactor?.performAction(request: .resultSelected(indexPath: indexPath, searchText: searchText))
+		}
 	}
 }
 

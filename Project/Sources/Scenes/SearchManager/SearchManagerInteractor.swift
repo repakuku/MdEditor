@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ISearchManagerDelegate: AnyObject {
-	func openFile(file: File)
+	func openFile(file: File, searchText: String)
 }
 
 protocol ISearchManagerInteractor {
@@ -63,9 +63,9 @@ final class SearchManagerInteractor: ISearchManagerInteractor {
 	}
 
 	func performAction(request: SearchManagerModel.Request) {
-		if case .resultSelected(let indexPath) = request {
+		if case .resultSelected(let indexPath, let searchText) = request {
 			if indexPath.row < files.count {
-				delegate?.openFile(file: files[indexPath.row])
+				delegate?.openFile(file: files[indexPath.row], searchText: searchText)
 			}
 		}
 	}
