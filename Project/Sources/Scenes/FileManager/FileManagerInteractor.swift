@@ -20,14 +20,11 @@ protocol IFileManagerInteractor {
 
 final class FileManagerInteractor: IFileManagerInteractor {
 
-	// MARK: - Public properties
-
-	weak var delegate: IFileManagerDelegate?
-
 	// MARK: - Dependencies
 
 	private let presenter: IFileManagerPresenter
 	private let fileExplorer: IFileExplorer
+	private let delegate: IFileManagerDelegate?
 
 	// MARK: - Private properties
 
@@ -39,10 +36,12 @@ final class FileManagerInteractor: IFileManagerInteractor {
 	init(
 		presenter: IFileManagerPresenter,
 		fileExplorer: IFileExplorer,
+		delegate: IFileManagerDelegate,
 		file: File?
 	) {
 		self.presenter = presenter
 		self.fileExplorer = fileExplorer
+		self.delegate = delegate
 		self.currentFile = file
 	}
 

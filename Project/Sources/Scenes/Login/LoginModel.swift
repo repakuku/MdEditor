@@ -7,14 +7,23 @@
 
 import Foundation
 
-/// LoginModel является NameSpace для отделения ViewData различных экранов друг отдруга
+/// Encapsulates all data models used for the login process.
 enum LoginModel {
+
+	/// Represents a login request containing user credentials.
 	struct Request {
+
+		/// User's login identifier.
 		var login: String
+
+		/// User's password.
 		var password: String
 	}
-
+	
+	/// Represents the response from a login attempt.
 	struct Response {
+
+		/// The result of the login attempt.
 		var result: Result<Void, LoginError>
 	}
 }

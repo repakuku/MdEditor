@@ -73,11 +73,11 @@ public extension IAppearance {
 	}
 
 	var codeTextSize: CGFloat {
-		18
+		16
 	}
 
 	var codeLangSize: CGFloat {
-		16
+		14
 	}
 
 	var codeBlockBackgroundColor: UIColor {

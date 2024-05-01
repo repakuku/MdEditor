@@ -46,8 +46,14 @@ extension MainMenuModel.MenuIdentifier: CustomStringConvertible {
 			return  L10n.MainMenu.openFile
 		case .newFile:
 			return L10n.MainMenu.newFile
+		case .search:
+			return L10n.MainMenu.search
+		case .tags:
+			return L10n.MainMenu.tags
 		case .showAbout:
 			return L10n.MainMenu.about
+		case .separator:
+			return ""
 		}
 	}
 }

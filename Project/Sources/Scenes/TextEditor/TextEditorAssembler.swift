@@ -11,29 +11,23 @@ import MarkdownPackage
 
 final class TextEditorAssembler {
 
-	// MARK: - Dependencies
-
-	private let file: File
-
-	// MARK: - Initializers
-
-	init(
-		file: File
-	) {
-		self.file = file
-	}
-
 	// MARK: - Public methods
 
-	func assembly() -> (TextEditorViewController, TextEditorInteractor) {
+	func assembly(
+		file: File,
+		searchText: String? = nil,
+		delegate: ITextEditorDelegate
+	) -> TextEditorViewController {
 		let viewController = TextEditorViewController()
 		let presenter: ITextEditorPresenter = TextEditorPresenter(viewController: viewController)
 		let interactor = TextEditorInteractor(
 			presenter: presenter,
-			file: file
+			file: file,
+			searchText: searchText,
+			delegate: delegate
 		)
 		viewController.interactor = interactor
 
-		return (viewController, interactor)
+		return viewController
 	}
 }

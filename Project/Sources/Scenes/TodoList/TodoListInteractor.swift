@@ -8,14 +8,8 @@
 import Foundation
 
 protocol ITodoListInteractor {
-
-	/// Событие на предоставление информации для списка заданий.
 	func fetchData()
-
-	/// Событие, что задание было выбрано.
-	/// - Parameter request: Запрос, содержащий информацию о выбранном задании.
 	func didTaskSelected(request: TodoListModel.Request.TaskSelected)
-
 	func createTask()
 }
 
@@ -41,7 +35,6 @@ final class TodoListInteractor: ITodoListInteractor {
 
 	// MARK: - Public methods
 
-	/// Событие на предоставление информации для списка заданий.
 	func fetchData() {
 		var responseData = [TodoListModel.Response.SectionWithTasks]()
 
@@ -57,8 +50,6 @@ final class TodoListInteractor: ITodoListInteractor {
 		presenter.present(response: response)
 	}
 
-	/// Событие, что задание было выбрано.
-	/// - Parameter request: Запрос, содержащий информацию о выбранном задании.
 	func didTaskSelected(request: TodoListModel.Request.TaskSelected) {
 		let section = sectionManager.getSection(forIndex: request.indexPath.section)
 		let task = sectionManager.getTasksForSection(section: section)[request.indexPath.row]

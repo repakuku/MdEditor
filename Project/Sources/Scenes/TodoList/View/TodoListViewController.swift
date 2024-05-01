@@ -8,15 +8,10 @@
 import SwiftUI
 import TaskManagerPackage
 
-/// Протокол главного экрана приложения.
 protocol ITodoListViewController: AnyObject {
-
-	/// Метод отрисовки информации на экране.
-	/// - Parameter viewModel: данные для отрисовки на экране.
 	func render(viewModel: TodoListModel.ViewModel)
 }
 
-/// Главный экран приложения.
 final class TodoListViewController: UITableViewController {
 
 	// MARK: - Dependencies
@@ -137,9 +132,6 @@ private extension TodoListViewController {
 // MARK: - IMainViewController
 
 extension TodoListViewController: ITodoListViewController {
-
-	/// Метод отрисовки информации на экране.
-	/// - Parameter viewModel: данные для отрисовки на экране.
 	func render(viewModel: TodoListModel.ViewModel) {
 		self.viewModel = viewModel
 		tableView.reloadData()
@@ -150,10 +142,11 @@ extension TodoListViewController: ITodoListViewController {
 
 struct TodoListViewControllerProvider: PreviewProvider {
 	static var previews: some View {
-		TodoListAssembler(
-			taskManager: TaskManager(
-				taskList: TaskRepositoryStub().getTasks()
+		TodoListAssembler()
+			.assembly(
+				taskManager: TaskManager(taskList: TaskRepositoryStub().getTasks()),
+				createTaskClosure: nil
 			)
-		).assembly(createTaskClosure: nil).preview()
+			.preview()
 	}
 }

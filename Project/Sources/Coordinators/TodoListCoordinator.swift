@@ -38,8 +38,11 @@ final class TodoListCoordinator: ICoordinator {
 
 			taskManager.addTasks(tasks: taskRepository.getTasks())
 
-			let assembler = TodoListAssembler(taskManager: OrderedTaskManager(taskManager: taskManager))
-			let viewController = assembler.assembly(createTaskClosure: nil)
+			let assembler = TodoListAssembler()
+			let viewController = assembler.assembly(
+				taskManager: OrderedTaskManager(taskManager: taskManager),
+				createTaskClosure: nil
+			)
 
 			navigationController.setViewControllers([viewController], animated: true)
 		}

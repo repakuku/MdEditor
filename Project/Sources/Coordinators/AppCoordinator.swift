@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MarkdownPackage
 
 final class AppCoordinator: BaseCoordinator {
 
@@ -28,6 +27,7 @@ final class AppCoordinator: BaseCoordinator {
 }
 
 // MARK: - Private methods
+
 private extension AppCoordinator {
 	func runLoginFlow() {
 		let coordinator = LoginCoordinator(navigationController: navigationController)

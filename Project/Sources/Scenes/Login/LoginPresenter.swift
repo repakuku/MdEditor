@@ -7,15 +7,18 @@
 
 import Foundation
 
+/// Protocol defining the responsibilities of a login presenter.
 protocol ILoginPresenter {
 
-	/// Отображение экрана со авторизации.
-	/// - Parameter response: Подготовленные к отображению данные.
+	/// Presents the response from a login attempt.
+	/// - Parameter responce: The result of the login attempt.
 	func present(responce: LoginModel.Response)
 }
 
+/// Closure type for handling the result of a login operation.
 typealias LoginResultClosure = (Result<Void, LoginError>) -> Void
 
+/// A presenter class responsible for handling the presentation logic of the login process.
 final class LoginPresenter: ILoginPresenter {
 
 	// MARK: - Dependencies
@@ -24,16 +27,20 @@ final class LoginPresenter: ILoginPresenter {
 	private let loginResultClosure: LoginResultClosure?
 
 	// MARK: - Initialization
-
+	
+	/// Initializes a new instance of 'LoginPresenter.'
+	/// - Parameters:
+	///   - viewController: The view controller that handles login UI interactions.
+	///   - loginResultClosure: A closure that is executed with the result of the login operation.
 	init(viewController: ILoginViewController?, loginResultClosure: LoginResultClosure?) {
 		self.viewController = viewController
 		self.loginResultClosure = loginResultClosure
 	}
 
 	// MARK: - Public methods
-
-	/// Отображение экрана со авторизации.
-	/// - Parameter response: Подготовленные к отображению данные.
+	
+	/// Presents the response from a login attempt.
+	/// - Parameter responce: The result of the login attempt.
 	func present(responce: LoginModel.Response) {
 		loginResultClosure?(responce.result)
 	}

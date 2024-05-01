@@ -13,13 +13,13 @@ protocol ILoginCoordinator: ICoordinator {
 
 final class LoginCoordinator: ILoginCoordinator {
 
-	// MARK: - Dependencies
-
-	private let navigationController: UINavigationController
-
 	// MARK: - Internal properties
 
 	var finishFlow: (() -> Void)?
+
+	// MARK: - Dependencies
+
+	private let navigationController: UINavigationController
 
 	// MARK: - Initialization
 
@@ -32,14 +32,20 @@ final class LoginCoordinator: ILoginCoordinator {
 	func start() {
 		showLoginScene()
 	}
+}
 
+// MARK: - Private methods
+
+private extension LoginCoordinator {
 	func showLoginScene() {
 		let viewController = LoginAssembler().assembly { [weak self] result in
+			guard let self = self else { return }
+
 			switch result {
 			case .success:
-				self?.finishFlow?()
+				finishFlow?()
 			case .failure(let error):
-				self?.showError(message: error.localizedDescription)
+				showError(message: error.localizedDescription)
 			}
 		}
 		navigationController.pushViewController(viewController, animated: true)

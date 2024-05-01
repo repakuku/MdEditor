@@ -29,13 +29,14 @@ final class TextEditorPresenter: ITextEditorPresenter {
 
 	func present(response: TextEditorModel.Response) {
 		switch response {
-		case .initial(let fileUrl, let fileContent):
+		case .initial(let fileUrl, let fileContent, let searchText):
 			let document = MarkdownToDocument().convert(markdownText: fileContent)
 			let taskRepository: ITaskRepository = TaskScanner(document: document)
 			let viewModel = TextEditorModel.ViewModel.initial(
 				text: fileContent,
 				title: fileUrl.lastPathComponent,
-				hasTasks: !taskRepository.getTasks().isEmpty
+				hasTasks: !taskRepository.getTasks().isEmpty,
+				searchText: searchText
 			)
 			viewController?.render(viewModel: viewModel)
 		case .convert(let text):

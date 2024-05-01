@@ -20,7 +20,7 @@ final class MainMenuViewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: MainMenuModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var viewModel: MainMenuModel.ViewModel?
 
 	private let coverHeight: CGFloat = 200
 	private let coverWidth: CGFloat = 100
@@ -35,6 +35,8 @@ final class MainMenuViewController: UIViewController {
 
 	private lazy var folderImage = makeFolderImage()
 	private lazy var fileImage = makeFileImage()
+	private lazy var searchImage = makeSearchImage()
+	private lazy var tagImage = makeTagImage()
 	private lazy var aboutImage = makeAboutImage()
 
 	private var constraints = [NSLayoutConstraint]()
@@ -100,9 +102,9 @@ private extension MainMenuViewController {
 		let layout = makeFlowLayout()
 
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.isPagingEnabled = true
 		collectionView.backgroundColor = Theme.backgroundColor
-		collectionView.translatesAutoresizingMaskIntoConstraints = false
 
 		collectionView.accessibilityIdentifier = accessibilityIdentifier
 		collectionView.dataSource = self
@@ -113,9 +115,13 @@ private extension MainMenuViewController {
 
 	func makeTableView(accessibilityIdentifier: String) -> UITableView {
 		let tableView = UITableView()
+
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.backgroundColor = Theme.backgroundColor
 		tableView.isScrollEnabled = false
+		tableView.backgroundColor = Theme.backgroundColor
+		tableView.separatorStyle = .none
+
+		tableView.accessibilityIdentifier = accessibilityIdentifier
 		tableView.delegate = self
 		tableView.dataSource = self
 
@@ -131,6 +137,20 @@ private extension MainMenuViewController {
 
 	func makeFileImage() -> UIImage {
 		UIImage(systemName: "doc.fill")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeSearchImage() -> UIImage {
+		UIImage(systemName: "magnifyingglass")?.withTintColor(
+			Theme.mainColor,
+			renderingMode: .alwaysOriginal
+		) ?? UIImage()
+	}
+
+	func makeTagImage() -> UIImage {
+		UIImage(systemName: "tag.fill")?.withTintColor(
 			Theme.mainColor,
 			renderingMode: .alwaysOriginal
 		) ?? UIImage()
@@ -175,17 +195,19 @@ private extension MainMenuViewController {
 
 extension MainMenuViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		viewModel.recentFiles.count
+		viewModel?.recentFiles.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(
+		guard let cell = collectionView.dequeueReusableCell(
 			withReuseIdentifier: RecentFileCollectionViewCell.reusableIdentifier,
 			for: indexPath
-		) as! RecentFileCollectionViewCell // swiftlint:disable:this force_cast
+		) as? RecentFileCollectionViewCell else { return UICollectionViewCell() }
 
-		let recentFile = viewModel.recentFiles[indexPath.row]
-		cell.configure(fileName: recentFile.fileName, previewText: recentFile.previewText)
+		if let viewModel = viewModel {
+			let recentFile = viewModel.recentFiles[indexPath.row]
+			cell.configure(fileName: recentFile.fileName, previewText: recentFile.previewText)
+		}
 
 		return cell
 	}
@@ -199,7 +221,7 @@ extension MainMenuViewController: UICollectionViewDataSource, UICollectionViewDe
 
 extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		viewModel.menu.count
+		viewModel?.menu.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -208,14 +230,22 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			for: indexPath
 		) as! MainMenuTableViewCell // swiftlint:disable:this force_cast
 
-		let menuItem = viewModel.menu[indexPath.row]
-		switch menuItem.item {
-		case .openFile:
-			cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
-		case .newFile:
-			cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
-		case .showAbout:
-			cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
+		if let viewModel = viewModel {
+			let menuItem = viewModel.menu[indexPath.row]
+			switch menuItem.item {
+			case .openFile:
+				cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
+			case .newFile:
+				cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
+			case .search:
+				cell.configure(menuTitle: menuItem.title, menuImage: searchImage)
+			case .tags:
+				cell.configure(menuTitle: menuItem.title, menuImage: tagImage)
+			case .showAbout:
+				cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
+			case .separator:
+				break
+			}
 		}
 
 		return cell
@@ -224,6 +254,21 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		interactor?.performAction(request: .menuItemSelected(indexPath: indexPath))
+	}
+
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		if let viewModel = viewModel {
+			let menuItem = viewModel.menu[indexPath.row]
+
+			switch menuItem.item {
+			case .separator:
+				return Sizes.Padding.normal
+			default:
+				return Sizes.M.height
+			}
+		}
+
+		return .zero
 	}
 }
 
@@ -241,8 +286,11 @@ extension MainMenuViewController: IMainMenuViewController {
 
 struct MainMenuViewControllerProvider: PreviewProvider {
 	static var previews: some View {
-		MainMenuAssembler(
-			recentFileManager: StubRecentFileManager()
-		).assembly().0.preview()
+		MainMenuAssembler()
+			.assembly(
+				recentFileManager: StubRecentFileManager(),
+				delegate: MainCoordinator(navigationController: UINavigationController())
+			)
+			.preview()
 	}
 }

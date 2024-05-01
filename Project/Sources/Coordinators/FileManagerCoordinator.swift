@@ -53,17 +53,15 @@ final class FileManagerCoordinator: NSObject, IFileManagerCoordinator {
 private extension FileManagerCoordinator {
 
 	func showFileManagerScene(file: File?) {
-		let assembler = FileManagerAssembler(fileExplorer: fileExplorer, file: file)
-		let (viewController, interactor) = assembler.assembly()
-		interactor.delegate = self
+		let assembler = FileManagerAssembler()
+		let viewController = assembler.assembly(fileExplorer: fileExplorer, file: file, delegate: self)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
 
 	func showTextEditorScene(file: File) {
-		let assembler = TextEditorAssembler(file: file)
-		let (viewController, interactor) = assembler.assembly()
-		interactor.delegate = self
+		let assembler = TextEditorAssembler()
+		let viewController = assembler.assembly(file: file, delegate: self)
 
 		navigationController.pushViewController(viewController, animated: true)
 	}
@@ -76,8 +74,11 @@ private extension FileManagerCoordinator {
 
 		taskManager.addTasks(tasks: taskRepository.getTasks())
 
-		let assembler = TodoListAssembler(taskManager: OrderedTaskManager(taskManager: taskManager))
-		let viewController = assembler.assembly(createTaskClosure: nil)
+		let assembler = TodoListAssembler()
+		let viewController = assembler.assembly(
+			taskManager: OrderedTaskManager(taskManager: taskManager),
+			createTaskClosure: nil
+		)
 
 		navigationController.present(viewController, animated: true)
 	}

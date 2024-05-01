@@ -7,3 +7,30 @@
 //
 
 import Foundation
+
+enum SearchManagerModel {
+
+	enum Request {
+		case fetch(searchText: String)
+		case resultSelected(indexPath: IndexPath, searchText: String)
+	}
+
+	struct Response {
+		let result: [SearchModel]
+
+		struct SearchModel {
+			let fileUrl: URL
+			let text: String
+			let lineNumber: Int
+		}
+	}
+
+	struct ViewModel {
+		let result: [SearchModel]
+
+		struct SearchModel {
+			let fileName: String
+			let text: String
+		}
+	}
+}

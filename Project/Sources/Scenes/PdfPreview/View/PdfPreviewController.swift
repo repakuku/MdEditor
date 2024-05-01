@@ -60,7 +60,7 @@ final class PdfPreviewController: UIViewController {
 // MARK: - Setup UI
 
 private extension PdfPreviewController {
-	private func  setupUI() {
+	func  setupUI() {
 		view.backgroundColor = Theme.backgroundColor
 		navigationController?.navigationBar.prefersLargeTitles = true
 

@@ -10,29 +10,18 @@ import UIKit
 
 final class MainMenuAssembler {
 
-	// MARK: - Dependencies
-
-	private let recentFileManager: IRecentFileManager
-
-	// MARK: - Initializers
-
-	init(
-		recentFileManager: IRecentFileManager
-	) {
-		self.recentFileManager = recentFileManager
-	}
-
 	// MARK: - Public methods
 
-	func assembly() -> (MainMenuViewController, MainMenuInteractor) {
+	func assembly(recentFileManager: IRecentFileManager, delegate: IMainMenuDelegate) -> MainMenuViewController {
 		let viewController = MainMenuViewController()
 		let presenter = MainMenuPresenter(viewController: viewController)
 		let interactor = MainMenuInteractor(
 			presenter: presenter,
-			recentFileManager: recentFileManager
+			recentFileManager: recentFileManager,
+			delegate: delegate
 		)
 		viewController.interactor = interactor
 
-		return (viewController, interactor)
+		return viewController
 	}
 }
