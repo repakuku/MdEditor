@@ -20,7 +20,7 @@ final class MainMenuViewController: UIViewController {
 
 	// MARK: - Private Properties
 
-	private var viewModel: MainMenuModel.ViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var viewModel: MainMenuModel.ViewModel?
 
 	private let coverHeight: CGFloat = 200
 	private let coverWidth: CGFloat = 100
@@ -195,17 +195,19 @@ private extension MainMenuViewController {
 
 extension MainMenuViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		viewModel.recentFiles.count
+		viewModel?.recentFiles.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(
+		guard let cell = collectionView.dequeueReusableCell(
 			withReuseIdentifier: RecentFileCollectionViewCell.reusableIdentifier,
 			for: indexPath
-		) as! RecentFileCollectionViewCell // swiftlint:disable:this force_cast
+		) as? RecentFileCollectionViewCell else { return UICollectionViewCell() }
 
-		let recentFile = viewModel.recentFiles[indexPath.row]
-		cell.configure(fileName: recentFile.fileName, previewText: recentFile.previewText)
+		if let viewModel = viewModel {
+			let recentFile = viewModel.recentFiles[indexPath.row]
+			cell.configure(fileName: recentFile.fileName, previewText: recentFile.previewText)
+		}
 
 		return cell
 	}
@@ -219,7 +221,7 @@ extension MainMenuViewController: UICollectionViewDataSource, UICollectionViewDe
 
 extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		viewModel.menu.count
+		viewModel?.menu.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -228,20 +230,22 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 			for: indexPath
 		) as! MainMenuTableViewCell // swiftlint:disable:this force_cast
 
-		let menuItem = viewModel.menu[indexPath.row]
-		switch menuItem.item {
-		case .openFile:
-			cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
-		case .newFile:
-			cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
-		case .search:
-			cell.configure(menuTitle: menuItem.title, menuImage: searchImage)
-		case .tags:
-			cell.configure(menuTitle: menuItem.title, menuImage: tagImage)
-		case .showAbout:
-			cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
-		case .separator:
-			break
+		if let viewModel = viewModel {
+			let menuItem = viewModel.menu[indexPath.row]
+			switch menuItem.item {
+			case .openFile:
+				cell.configure(menuTitle: menuItem.title, menuImage: folderImage)
+			case .newFile:
+				cell.configure(menuTitle: menuItem.title, menuImage: fileImage)
+			case .search:
+				cell.configure(menuTitle: menuItem.title, menuImage: searchImage)
+			case .tags:
+				cell.configure(menuTitle: menuItem.title, menuImage: tagImage)
+			case .showAbout:
+				cell.configure(menuTitle: menuItem.title, menuImage: aboutImage)
+			case .separator:
+				break
+			}
 		}
 
 		return cell
@@ -253,14 +257,18 @@ extension MainMenuViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		let menuItem = viewModel.menu[indexPath.row]
+		if let viewModel = viewModel {
+			let menuItem = viewModel.menu[indexPath.row]
 
-		switch menuItem.item {
-		case .separator:
-			return Sizes.Padding.normal
-		default:
-			return Sizes.M.height
+			switch menuItem.item {
+			case .separator:
+				return Sizes.Padding.normal
+			default:
+				return Sizes.M.height
+			}
 		}
+
+		return .zero
 	}
 }
 

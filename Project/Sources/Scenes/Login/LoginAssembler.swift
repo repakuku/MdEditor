@@ -7,22 +7,24 @@
 
 import UIKit
 
+/// Assembles components for the login module.
 final class LoginAssembler {
 
-	/// Сборка модуля авторизации
-	/// - Parameter loginResultClosure: замыкание оповещающие о результате авторизации
-	/// - Returns: вью
+	/// Assemble the login module.
+	/// - Parameter loginResultClosure: A closure that notifies about the result of the login process.
+	/// - Returns: A configured instance of 'LoginViewConroller'.
 	func assembly(loginResultClosure: LoginResultClosure?) -> LoginViewController {
 		let viewController = LoginViewController()
 		let presenter = LoginPresenter(
 			viewController: viewController,
 			loginResultClosure: loginResultClosure
 		)
-		let worker = StubLoginWorker()
+		let worker = LoginWorker()
 		let interactor = LoginInteractor(
 			presenter: presenter,
 			worker: worker
 		)
+
 		viewController.interactor = interactor
 
 		return viewController

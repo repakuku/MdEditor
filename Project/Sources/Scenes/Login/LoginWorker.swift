@@ -8,12 +8,6 @@
 import Foundation
 
 protocol ILoginWorker {
-
-	/// Авторизация пользователя.
-	/// - Parameters:
-	///   - login: Логин пользователя.
-	///   - password: Пароль пользователя.
-	/// - Returns: Результат прохождения авторизации.
 	func login(login: String, password: String, completion: @escaping (Result<Void, LoginError>) -> Void)
 }
 
